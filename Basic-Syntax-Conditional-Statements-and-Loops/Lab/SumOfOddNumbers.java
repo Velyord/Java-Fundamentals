@@ -45,7 +45,7 @@ public class SumOfOddNumbers {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int countOfOddNumbers = setValue(1, biggestInt);
+        int countOfOddNumbers = setValue(1, 100);
         generateOddNumbersAndShowSum(countOfOddNumbers);
     }
 
