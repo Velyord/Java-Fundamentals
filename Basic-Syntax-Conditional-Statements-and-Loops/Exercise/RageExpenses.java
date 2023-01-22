@@ -81,7 +81,6 @@ public class RageExpenses {
         for (int i=1; i <= lostGamesCount; i++) {
             boolean hasTrashedHeadset = false;
             boolean hasTrashedMouse = false;
-            boolean hasTrashedKeyboard = false;
             trashingHeadsetCounter++;
             if (trashingHeadsetCounter == 2) {
                 trashingHeadsetCounter = 0;
