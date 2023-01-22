@@ -37,6 +37,12 @@ public class EvenNumber {
 
     public static void main(String[] args) {
         int number = setValue(smallestInt, biggestInt);
+
+        while(number % 2 != 0) {
+            out.println("Please write an even number.");
+            number = setValue(smallestInt, biggestInt);
+        }
+
         out.printf("The number is: %d", abs(number));
     }
 
@@ -111,10 +117,6 @@ public class EvenNumber {
                     else
                         out.printf("Моля въведете число между %s и %s:\n", min, max);
 
-                    return setValue(min, max);
-                }
-                if ((int) value % 2 == 1) {
-                    out.println("Please write an even number.");
                     return setValue(min, max);
                 }
             }
