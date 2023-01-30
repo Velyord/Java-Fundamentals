@@ -36,6 +36,8 @@ public class CharsToString {
         char secondChar = scanner.nextLine().charAt(0);
         char thirdChar = scanner.nextLine().charAt(0);
 
-        out.printf("%c%c%c", firstChar, secondChar, thirdChar);
+        out.printf(
+                "%c%c%c", firstChar, secondChar, thirdChar
+        );
     }
 }
