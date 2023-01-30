@@ -2,7 +2,7 @@
 Условие:
 
 */
-package SoftUni.PackageName;
+package PackageName;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -14,6 +14,8 @@ import java.util.List;
 public class MainTemplate {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
+    static long smallestLong = Long.MIN_VALUE;
+    static long biggestLong = Long.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
     static double biggestDouble = Double.MAX_VALUE;
     static int stringCount = 0;
@@ -74,7 +76,9 @@ public class MainTemplate {
         }
         else {
             try {
-                if (max instanceof Integer)
+                if (max instanceof Long)
+                    value = Long.parseLong(scanner.nextLine());
+                else if (max instanceof Integer)
                     value = Integer.parseInt(scanner.nextLine());
                 else if (max instanceof Double)
                     value = Double.parseDouble(scanner.nextLine());
@@ -88,7 +92,16 @@ public class MainTemplate {
                 out.println("Не сте въвели число. Пробвайте пак!");
                 return setValue(min, max);
             }
+            if (max instanceof Long) {
+                if ((long) value < (long) min || (long) value > (long) max) {
+                    if ((long) min == 0 && (long) max == biggestLong)
+                        out.println("Моля въведете положително число:");
+                    else
+                        out.printf("Моля въведете число между %s и %s:\n", min, max);
 
+                    return setValue(min, max);
+                }
+            }
             if (max instanceof Integer) {
                 if ((int) value < (int) min || (int) value > (int) max) {
                     if ((int) min == 0 && (int) max == biggestInt)
