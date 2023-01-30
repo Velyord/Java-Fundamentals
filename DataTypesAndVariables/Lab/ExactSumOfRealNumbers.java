@@ -37,11 +37,12 @@ public class ExactSumOfRealNumbers {
 
     public static void main(String[] args) {
         int countOfNumbers = setValue(0, biggestInt);
-        double sum = 0;
+        BigDecimal sum = new BigDecimal(0);
         for (int i=1; i<=countOfNumbers; i++) {
-            sum += setValue(smallestDouble, biggestDouble);
+            BigDecimal currentNumber = new BigDecimal(scanner.nextLine());
+            sum = sum.add(currentNumber);
         }
-        out.println(BigDecimal.valueOf(sum));
+        out.println(sum);
     }
 
     @SuppressWarnings("unchecked")
