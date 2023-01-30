@@ -17,6 +17,8 @@ public class MainTemplate {
     static long smallestLong = Long.MIN_VALUE;
     static long biggestLong = Long.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
+    static short smallestShort = Short.MIN_VALUE;
+    static short biggestShort = Short.MAX_VALUE;
     static double biggestDouble = Double.MAX_VALUE;
     static int stringCount = 0;
     static boolean requiredString = false;
@@ -33,7 +35,7 @@ public class MainTemplate {
         // out.println("Въведете :");
 
         if (min == null && max == null) {
-            String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|}0123456789";
+            String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
             boolean isSpecChar = false;
             value = scanner.nextLine();
 
@@ -80,6 +82,8 @@ public class MainTemplate {
                     value = Long.parseLong(scanner.nextLine());
                 else if (max instanceof Integer)
                     value = Integer.parseInt(scanner.nextLine());
+                else if (max instanceof Short)
+                    value = Short.parseShort(scanner.nextLine());
                 else if (max instanceof Double)
                     value = Double.parseDouble(scanner.nextLine());
                 else {
@@ -105,6 +109,16 @@ public class MainTemplate {
             if (max instanceof Integer) {
                 if ((int) value < (int) min || (int) value > (int) max) {
                     if ((int) min == 0 && (int) max == biggestInt)
+                        out.println("Моля въведете положително число:");
+                    else
+                        out.printf("Моля въведете число между %s и %s:\n", min, max);
+
+                    return setValue(min, max);
+                }
+            }
+            if (max instanceof Short) {
+                if ((short) value < (short) min || (short) value > (short) max) {
+                    if ((long) min == 0 && (short) max == biggestShort)
                         out.println("Моля въведете положително число:");
                     else
                         out.printf("Моля въведете число между %s и %s:\n", min, max);
