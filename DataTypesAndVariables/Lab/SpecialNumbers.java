@@ -61,7 +61,8 @@ public class SpecialNumbers {
 
         for (int i=1; i<=number; i++) {
             boolean isSpecial = checkIfIsSpecial(i);
-            out.printf("%d -> %b\n", i, isSpecial);
+            String trueOrFalse = isSpecial ? "true" : "false";
+            out.printf("%d -> %s\n", i, trueOrFalse);
         }
     }
 
