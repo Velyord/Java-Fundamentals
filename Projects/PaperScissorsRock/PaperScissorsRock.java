@@ -8,6 +8,7 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
 
+import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 
@@ -21,13 +22,76 @@ public class PaperScissorsRock {
     static short biggestShort = Short.MAX_VALUE;
     static double biggestDouble = Double.MAX_VALUE;
     static int stringCount = 0;
-    static boolean requiredString = false;
+    static boolean requiredString = true;
 
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int add = setValue(0,100);
-        out.print(add+1);
+        playGame();
+    }
+
+    private static void playGame() {
+        out.print("Choose [p]aper, [s]cissors, [r]ock: ");
+        String userInput = setValue(null, null);
+        String computersChoice = randomComputerChoice();
+        out.printf("The computer chose %s.\n", computersChoice);
+        displayGameWonOrLost(userInput, computersChoice);
+        playAgain();
+    }
+
+    private static void playAgain() {
+        out.println("Do you want to play again? [y]es/[n]o?");
+        String userInput = setValue(null, null);
+        if (userInput.equals("yes"))
+            playGame();
+        else
+            out.println("Have a good day!");
+    }
+
+    private static void displayGameWonOrLost(String userInput, String computersChoice) {
+        boolean isWon = false;
+        boolean isLost = false;
+        boolean isDraw = false;
+
+        switch (userInput) {
+            case "paper", "p":
+                switch (computersChoice) {
+                    case "Paper"    -> isDraw = true;
+                    case "Scissors" -> isLost = true;
+                    case "Rock"     -> isWon  = true;
+                }
+                break;
+            case "scissors", "s":
+                switch (computersChoice) {
+                    case "Paper"    -> isWon  = true;
+                    case "Scissors" -> isDraw = true;
+                    case "Rock"     -> isLost = true;
+                }
+                break;
+            case "rock", "r":
+                switch (computersChoice) {
+                    case "Paper"    -> isLost = true;
+                    case "Scissors" -> isWon  = true;
+                    case "Rock"     -> isDraw = true;
+                }
+                break;
+        }
+        if (isDraw)
+            out.println("This game was a draw");
+        else if (isWon)
+            out.println("You win.");
+        else if (isLost)
+            out.println("You lose.");
+    }
+
+    private static String randomComputerChoice() {
+        Random rand = new Random();
+        return switch (rand.nextInt(3)) {
+            case 0 -> "Paper";
+            case 1 -> "Scissors";
+            case 2 -> "Rock";
+            default -> "";
+        };
     }
 
     @SuppressWarnings("unchecked")
@@ -36,33 +100,18 @@ public class PaperScissorsRock {
         // out.println("Въведете :");
 
         if (min == null && max == null) {
-            String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
-            boolean isSpecChar = false;
             value = scanner.nextLine();
 
-            for (int i = 0; i < ((String) value).length(); i++)
-                if (specialCharacters.contains(Character.toString(((String) value).charAt(i)))) {
-                    isSpecChar = true;
-                    break;
-                }
-
-            if (isSpecChar) {
-                out.println("Моля въведете правилно наименование!");
-                return setValue(null, null);
-            }
-
-            if (requiredString){
+            if (requiredString) {
                 stringCount++;
                 String[] required = {};
 
+                if (stringCount > 2)
+                    stringCount = 1;
                 if (stringCount == 1)
-                    required = new String[] {"Spring", "Summer", "Autumn", "Winter"};
+                    required = new String[] {"p", "paper", "s", "scissors", "r", "rock"};
                 if (stringCount == 2)
-                    required = new String[] {"Y", "N"};
-                if (stringCount > 2) {
-                    requiredString = false;
-                    return (T) value;
-                }
+                    required = new String[] {"y", "yes", "n", "no"};
 
                 List<String> requiredList = List.of(required);
 
@@ -75,6 +124,20 @@ public class PaperScissorsRock {
                     stringCount--;
                     return setValue(null, null);
                 }
+            }
+
+            String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
+            boolean isSpecChar = false;
+
+            for (int i = 0; i < ((String) value).length(); i++)
+                if (specialCharacters.contains(Character.toString(((String) value).charAt(i)))) {
+                    isSpecChar = true;
+                    break;
+                }
+
+            if (isSpecChar) {
+                out.println("Моля въведете правилно наименование!");
+                return setValue(null, null);
             }
         }
         else {
