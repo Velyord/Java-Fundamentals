@@ -27,7 +27,7 @@ public class PaperScissorsRock {
 
     public static void main(String[] args) {
         int add = setValue(0,100);
-        out.print(add);
+        out.print(add+1);
     }
 
     @SuppressWarnings("unchecked")
