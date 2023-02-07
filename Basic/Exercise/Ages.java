@@ -14,7 +14,7 @@ Examples:
     1	baby
     100	elder
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
