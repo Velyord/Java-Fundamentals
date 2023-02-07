@@ -37,7 +37,7 @@ Examples:
     ->
     The sum equals: 1263
 */
-package DataTypesAndVariables.Exer;
+package DataTypesAndVariables.Exercise;
 
 import static java.lang.System.out;
 import static java.lang.System.in;

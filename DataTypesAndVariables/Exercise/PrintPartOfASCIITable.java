@@ -1,13 +1,31 @@
 /*
 Условие:
-    You will be given a single integer.
-    Your task is to find the sum of its digits.
+    Find online more information about ASCII (American Standard Code for Information Interchange)
+    and write a program that prints part of the ASCII table of characters at the console.
+    On the first line of input, you will receive the char index you should start with,
+    and on the second line - the index of the last character you should print.
 Examples:
-    245678	32
-    97561	28
-    543	12
+    60
+    65
+    ->
+    < = > ? @ A
+
+    69
+    79
+    ->
+    E F G H I J K L M N O
+
+    97
+    104
+    ->
+    a b c d e f g h
+
+    40
+    55
+    ->
+    ( ) * + , - . / 0 1 2 3 4 5 6 7
 */
-package DataTypesAndVariables.Exer;
+package DataTypesAndVariables.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -16,7 +34,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class SumDigits {
+public class PrintPartOfASCIITable {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static long smallestLong = Long.MIN_VALUE;
@@ -31,14 +49,12 @@ public class SumDigits {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int number = setValue(0, biggestInt);
-        int sum = 0;
-        while(number / 10 != 0) {
-            sum += number % 10;
-            number /= 10;
+        int start = setValue(33, 126);
+        int end = setValue(start, 126);
+
+        for (int i=start; i<=end; i++) {
+            out.print((char) i + " ");
         }
-        sum += number;
-        out.println(sum);
     }
 
     @SuppressWarnings("unchecked")

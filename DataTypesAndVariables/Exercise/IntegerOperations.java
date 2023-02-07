@@ -1,50 +1,28 @@
 /*
 Условие:
-    Write a program to read an integer n and print all triples of the first n small Latin letters,
-    ordered alphabetically:
+    Read four integer numbers. Add first to the second,
+    divide (integer) the sum by the third number,
+    and multiply the result by the fourth number.
+    Print the result.
+Constraints
+    •	The four numbers from the input
+    are in the range [-2,147,483,648… 2,147,483,647].
 Examples:
+    10
+    20
+    3
     3
     ->
-    aaa
-    aab
-    aac
-    aba
-    abb
-    abc
-    aca
-    acb
-    acc
-    baa
-    bab
-    bac
-    bba
-    bbb
-    bbc
-    bca
-    bcb
-    bcc
-    caa
-    cab
-    cac
-    cba
-    cbb
-    cbc
-    cca
-    ccb
-    ccc
+    30
 
+    15
+    14
     2
+    3
     ->
-    aaa
-    aab
-    aba
-    abb
-    baa
-    bab
-    bba
-    bbb
+    42
 */
-package DataTypesAndVariables.Exer;
+package DataTypesAndVariables.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -53,7 +31,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class TriplesOfLatinLetters {
+public class IntegerOperations {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static long smallestLong = Long.MIN_VALUE;
@@ -68,11 +46,23 @@ public class TriplesOfLatinLetters {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int n = setValue(0, biggestInt);
-        for (int i=0; i<n; i++)
-            for (int j=0; j<n; j++)
-                for (int k=0; k<n; k++)
-                    out.printf("%c%c%c%n", (char) (i+97), (char) (j+97), (char) (k+97));
+        long firstNum =  setValue(smallestLong, biggestLong);
+        long secondNum = setValue(smallestLong, biggestLong);
+        long thirdNum =  setValue(smallestLong, biggestLong);
+        long fourNum =   setValue(smallestLong, biggestLong);
+
+        double calc = calc(firstNum, secondNum, thirdNum, fourNum);
+
+        out.printf("%.0f", calc);
+    }
+
+    private static double calc(
+            long firstNum,
+            long secondNum,
+            long thirdNum,
+            long fourNum
+    ) {
+        return (double) (firstNum + secondNum) / thirdNum * fourNum;
     }
 
     @SuppressWarnings("unchecked")

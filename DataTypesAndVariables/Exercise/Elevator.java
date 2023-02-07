@@ -24,7 +24,7 @@ Examples:
     2
         2 courses * 5 people
 */
-package DataTypesAndVariables.Exer;
+package DataTypesAndVariables.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
