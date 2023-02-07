@@ -37,7 +37,7 @@ Examples:
     Incorrect password. Try again.
     User sunny blocked!
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;

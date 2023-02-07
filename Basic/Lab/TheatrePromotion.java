@@ -1,30 +1,38 @@
 /*
 Условие:
-    You will be given an integer, 
-    and you have to print on the console 
-    whether that number is divisible by the following numbers: 
-    2, 3, 6, 7, 10. 
-    You should always take the bigger division. 
-    If the number is divisible by both 2 and 3 
-    it is also divisible by 6, 
-    and you should print only the division by 6.
-    If a number is divisible by 2 
-    it is sometimes also divisible by 10, 
-    and you should print the division by 10. 
-    If the number is not divisible by any given number, 
-    print "Not divisible". Otherwise, 
-    print "The number is divisible by {number}".
-Examples:
-    30	
-    -> The number is divisible by 10
-    15	
-    -> The number is divisible by 3
-    12	
-    -> The number is divisible by 6
-    1643	
-    -> Not divisible
+    A theatre is having a ticket sale, but they need a program
+    to calculate the price of a single ticket. If the given age
+    does not fit one of the categories, you should print "Error!".
+    You can see the prices in the table below:
+    Day / Age	0 <= age <= 18	18 < age <= 64	64 < age <= 122
+    Weekday	         12$	         18$	         12$
+    Weekend	         15$	         20$	         15$
+    Holiday	         5$	             12$	         10$
+Input:
+    The input comes in two lines.
+    On the first line, you will receive the type of day.
+    On the second – is the age of the person.
+Output:
+    Print the ticket price according to the table, or "Error!"
+    if the age is not in the table.
+Constraints:
+    •	The age will be in the interval [-1000…1000].
+    •	The type of day will always be valid.
+Examples
+    Weekday
+    42
+    -> 18$
+    Holiday
+    -12
+    -> Error!
+    Holiday
+    15
+    -> 5$
+    Weekend
+    122
+    -> 15$
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -33,40 +41,54 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class Division {
+public class TheatrePromotion {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
     static double biggestDouble = Double.MAX_VALUE;
     static int stringCount = 0;
-    static boolean requiredString = false;
+    static boolean requiredString = true;
 
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int number = setValue(smallestInt, biggestInt);
-        findTheCorrectDevisible(number);
+        String typeOfDay = setValue(null, null);
+        int ageOfPerson = setValue(-1000, 1000);
+
+        displayTicketCost(typeOfDay, ageOfPerson);
     }
 
-    private static void findTheCorrectDevisible(int number) {
-        int divisible;
-        if (number % 10 == 0)
-            divisible = 10;
-        else if (number % 7 == 0)
-            divisible = 7;
-        else if (number % 6 == 0)
-            divisible = 6;
-        else if (number % 3 == 0)
-            divisible = 3;
-        else if (number % 2 == 0)
-            divisible = 2;
-        else 
-            divisible = 0;
-        
-        if (divisible != 0)
-            out.printf("The number is divisible by %d", divisible);
-        else 
-            out.println("Not divisible");
+    private static void displayTicketCost(String typeOfDay, int ageOfPerson) {
+        switch (typeOfDay) {
+            case "Weekday":
+                if (ageOfPerson >= 0 && ageOfPerson <= 18 ||
+                        ageOfPerson > 64 && ageOfPerson <= 122)
+                    out.println("12$");
+                else if (ageOfPerson > 18 && ageOfPerson <= 64)
+                    out.println("18$");
+                else
+                    out.println("Error!");
+                break;
+            case "Weekend":
+                if (ageOfPerson >= 0 && ageOfPerson <= 18 ||
+                        ageOfPerson > 64 && ageOfPerson <= 122)
+                    out.println("15$");
+                else if (ageOfPerson > 18 && ageOfPerson <= 64)
+                    out.println("20$");
+                else
+                    out.println("Error!");
+                break;
+            case "Holiday":
+                if (ageOfPerson >= 0 && ageOfPerson <= 18)
+                    out.println("5$");
+                else if (ageOfPerson > 18 && ageOfPerson <= 64)
+                    out.println("12$");
+                else if (ageOfPerson > 64 && ageOfPerson <= 122)
+                    out.println("10$");
+                else
+                    out.println("Error!");
+                break;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -95,10 +117,8 @@ public class Division {
                 String[] required = {};
 
                 if (stringCount == 1)
-                    required = new String[] {"Spring", "Summer", "Autumn", "Winter"};
-                if (stringCount == 2)
-                    required = new String[] {"Y", "N"};
-                if (stringCount > 2) {
+                    required = new String[] {"Weekday", "Weekend", "Holiday"};
+                if (stringCount > 1) {
                     requiredString = false;
                     return (T) value;
                 }

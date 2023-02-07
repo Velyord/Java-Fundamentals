@@ -1,23 +1,41 @@
 /*
 Условие:
-    Take as an input an even number and
-    print its absolute value with a message:
-    "The number is: {absoluteValue}".
-    If the number is odd, print "Please write an even number."
-    and continue reading numbers.
+    You will receive an integer as input from the console.
+    Print the 10 times table for this integer.
+    See the examples below for more information.
+Output:
+    Print every row of the table in the following format:
+    {theInteger} X {times} = {product}
+Constraints:
+    •	The integer will be in the interval [1…100]
 Examples:
-    1
-    3
-    6
-    -> Please write an even number.
-       Please write an even number.
-       The number is: 6
-    -6
-    -> The number is: 6
+    5
+    ->
+    5 X 1 = 5
+    5 X 2 = 10
+    5 X 3 = 15
+    5 X 4 = 20
+    5 X 5 = 25
+    5 X 6 = 30
+    5 X 7 = 35
+    5 X 8 = 40
+    5 X 9 = 45
+    5 X 10 = 50
+    2
+    ->
+    2 X 1 = 2
+    2 X 2 = 4
+    2 X 3 = 6
+    2 X 4 = 8
+    2 X 5 = 10
+    2 X 6 = 12
+    2 X 7 = 14
+    2 X 8 = 16
+    2 X 9 = 18
+    2 X 10 = 20
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
-import static java.lang.Math.abs;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
@@ -25,7 +43,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class EvenNumber {
+public class MultiplicationTable2 {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -36,14 +54,26 @@ public class EvenNumber {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int number = setValue(smallestInt, biggestInt);
+        int integer = setValue(1, 100);
+        int multiplier = setValue(1, biggestInt);
+        generateMultiplicationTable(integer, multiplier);
+    }
 
-        while(number % 2 != 0) {
-            out.println("Please write an even number.");
-            number = setValue(smallestInt, biggestInt);
-        }
-
-        out.printf("The number is: %d", abs(number));
+    private static void generateMultiplicationTable(
+            int integer,
+            int multiplier
+    ) {
+        if (multiplier > 10) {
+            out.printf(
+                    "%d X %d = %d\n",
+                    integer, multiplier, integer * multiplier
+            );
+        } else
+            for (int i=multiplier; i<=10; i++)
+                out.printf(
+                        "%d X %d = %d\n",
+                        integer, i, integer * i
+                );
     }
 
     @SuppressWarnings("unchecked")

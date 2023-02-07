@@ -1,26 +1,23 @@
 /*
 Условие:
-    Write a program to display numbers from given start to 
-    given end and their sum. All the numbers will be integers. 
-    On the first line, you will receive the start number, 
-    on the second the end number.
-Examples
-    5
-    10	
-    -> 5 6 7 8 9 10
-       Sum: 45
-    0
-    26	
-    -> 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
-       22 23 24 25 26 
-       Sum: 351
-    50
-    60	
-    -> 50 51 52 53 54 55 56 57 58 59 60
-       Sum: 605
+    Take as an input an even number and
+    print its absolute value with a message:
+    "The number is: {absoluteValue}".
+    If the number is odd, print "Please write an even number."
+    and continue reading numbers.
+Examples:
+    1
+    3
+    6
+    -> Please write an even number.
+       Please write an even number.
+       The number is: 6
+    -6
+    -> The number is: 6
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Lab;
 
+import static java.lang.Math.abs;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
@@ -28,7 +25,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class PrintAndSum {
+public class EvenNumber {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -39,22 +36,14 @@ public class PrintAndSum {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int start = setValue(0, biggestInt);
-        int end = setValue(0, biggestInt);
-        
-        generateNumbersAndSumNumbers(start, end);
-    }
+        int number = setValue(smallestInt, biggestInt);
 
-    private static void generateNumbersAndSumNumbers(
-            int start, 
-            int end
-    ) {
-        int sum = 0;
-        for (int i = start; i <= end; i++) {
-            out.print(i + " ");
-            sum += i;
+        while(number % 2 != 0) {
+            out.println("Please write an even number.");
+            number = setValue(smallestInt, biggestInt);
         }
-        out.printf("\nSum: %d", sum);
+
+        out.printf("The number is: %d", abs(number));
     }
 
     @SuppressWarnings("unchecked")

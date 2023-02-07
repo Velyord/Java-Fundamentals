@@ -1,52 +1,61 @@
 /*
 Условие:
-    As a MOBA challenger player, Peter has the bad habit of
-    trashing his PC when he loses a game and rage quits.
-    His gaming setup consists of a headset, mouse, keyboard,
-    and display. You will receive Peter's lost games count.
-    Every second lost game, Peter trashes his headset.
-    Every third lost game, Peter trashes his mouse.
-    When Peter trashes both his mouse and headset in the same
-    lost game, he also trashes his keyboard.
-    Every second time when he trashes his keyboard, he also
-    trashes his display.
-    You will receive the price of each item in his gaming setup.
-    Calculate his rage expenses for renewing his gaming
-    equipment.
-Input / Constraints:
-    •	On the first input line - lost games count –
-    integer in the range [0, 1000].
-    •	On the second line – headset price -
-    the floating-point number in the range [0, 1000].
-    •	On the third line – mouse price -
-    the floating-point number in the range [0, 1000].
-    •	On the fourth line – keyboard price -
-    the floating-point number in the range [0, 1000].
-    •	On the fifth line – display price -
-    the floating-point number in the range [0, 1000].
-Output:
-    •	As output you must print Peter's total expenses:
-    "Rage expenses: {expenses} lv."
-    •	Allowed working time / memory: 100ms / 16MB.
-Examples:
-    7
+    Write a program that emulates typing an SMS, following this guide:
+    1
     2
+    abc
     3
+    def
     4
+    ghi
     5
-    -> Rage expenses: 16.00 lv.
-        Trashed headset -> 3 times
-        Trashed mouse -> 2 times
-        Trashed keyboard -> 1 time
-        Total: 6 + 6 + 4 = 16.00 lv;
-    23
-    12.50
-    21.50
-    40
-    200
-    -> Rage expenses: 608.00 lv.
+    jkl
+    6
+    mno
+    7
+    pqrs
+    8
+    tuv
+    9
+    wxyz
+    0
+    space
+    Following the guide, 2 becomes "a", 22 becomes "b" and so on.
+Examples:
+    5
+    44
+    33
+    555
+    555
+    666
+    ->
+    hello
+
+    9
+    44
+    33
+    999
+    0
+    8
+    44
+    33
+    777
+    33
+    ->
+    hey there
+
+    7
+    6
+    33
+    33
+    8
+    0
+    6
+    33
+    ->
+    meet me
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.MoreExercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -55,7 +64,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class RageExpenses {
+public class Messages {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -66,48 +75,41 @@ public class RageExpenses {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int lostGamesCount = setValue(0, 1000);
-        double headsetPrice = setValue(0.0, 1000.0);
-        double mousePrice = setValue(0.0, 1000.0);
-        double keyboardPrice = setValue(0.0, 1000.0);
-        double displayPrice = setValue(0.0, 1000.0);
-        int trashingHeadsetCounter = 0;
-        int trashingMouseCounter  = 0;
-        int trashingKeyboardCounter  = 0;
-        int trashedHeadsets = 0;
-        int trashedMouses = 0;
-        int trashedKeyboards = 0;
-        int trashedDisplays = 0;
-        for (int i=1; i <= lostGamesCount; i++) {
-            boolean hasTrashedHeadset = false;
-            boolean hasTrashedMouse = false;
-            trashingHeadsetCounter++;
-            if (trashingHeadsetCounter == 2) {
-                trashingHeadsetCounter = 0;
-                trashedHeadsets++;
-                hasTrashedHeadset = true;
-            }
-            trashingMouseCounter++;
-            if (trashingMouseCounter == 3) {
-                trashingMouseCounter = 0;
-                trashedMouses++;
-                hasTrashedMouse = true;
-            }
-            if (hasTrashedHeadset && hasTrashedMouse) {
-                trashedKeyboards++;
-                trashingKeyboardCounter++;
-            }
-            if (trashingKeyboardCounter == 2) {
-                trashingKeyboardCounter = 0;
-                trashedDisplays++;
+        int messageLength = setValue(0, biggestInt);
+        String message = "";
+        for (int i=0; i<messageLength; i++) {
+            int input = setValue(0, 9999);
+            switch (input) {
+                case 0:    message += " "; break;
+                case 2:    message += "a"; break;
+                case 22:   message += "b"; break;
+                case 222:  message += "c"; break;
+                case 3:    message += "d"; break;
+                case 33:   message += "e"; break;
+                case 333:  message += "f"; break;
+                case 4:    message += "g"; break;
+                case 44:   message += "h"; break;
+                case 444:  message += "i"; break;
+                case 5:    message += "j"; break;
+                case 55:   message += "k"; break;
+                case 555:  message += "l"; break;
+                case 6:    message += "m"; break;
+                case 66:   message += "n"; break;
+                case 666:  message += "o"; break;
+                case 7:    message += "p"; break;
+                case 77:   message += "q"; break;
+                case 777:  message += "r"; break;
+                case 7777: message += "s"; break;
+                case 8:    message += "t"; break;
+                case 88:   message += "u"; break;
+                case 888:  message += "v"; break;
+                case 9:    message += "w"; break;
+                case 99:   message += "x"; break;
+                case 999:  message += "y"; break;
+                case 9999: message += "z"; break;
             }
         }
-        double rageExpenses =
-                trashedHeadsets * headsetPrice +
-                trashedMouses * mousePrice +
-                trashedKeyboards * keyboardPrice +
-                trashedDisplays * displayPrice;
-        out.printf("Rage expenses: %.2f lv.", rageExpenses);
+        out.println(message);
     }
 
     @SuppressWarnings("unchecked")

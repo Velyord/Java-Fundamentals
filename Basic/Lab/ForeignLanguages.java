@@ -16,7 +16,7 @@ Examples
     Germany
     -> unknown
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import static java.lang.System.out;
 import static java.lang.System.in;

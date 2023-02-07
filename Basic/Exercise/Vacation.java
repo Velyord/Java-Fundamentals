@@ -34,7 +34,7 @@ Examples:
     Friday
     -> Total price: 545.00
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Exercise;
 
 import java.util.Scanner;
 import java.util.List;

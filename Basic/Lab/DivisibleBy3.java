@@ -4,7 +4,7 @@
     which are divisible by 3. You have to use a single for loop.
     The program should not receive input.
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import static java.lang.System.out;
 

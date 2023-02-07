@@ -1,16 +1,31 @@
 /*
 Условие:
-    Write a program to check whether or not a given number is
-    strong. A number is strong if the sum of the Factorial of
-    each digit is equal to the number. For example 145 is a
-    strong number, because 1! + 4! + 5! = 145. Print "yes" if
-    the number is strong and "no" if the number is not strong.
+    Write a program that prints the next n odd numbers
+    (starting from 1) and on the last row prints the sum of them.
+Input:
+    On the first line, you will receive a number – n.
+    This number shows how many odd numbers you should print.
+Output:
+    Print the next n odd numbers, starting from 1,
+    separated by new lines. On the last line,
+    print the sum of these numbers.
+Constraints:
+    •	n will be in the interval [1…100]
 Examples:
-    2 -> yes
-    3451 -> no
-    40585 -> yes
+    5
+    1
+    3
+    5
+    7
+    9
+    -> Sum: 25
+    3
+    1
+    3
+    5
+    -> Sum: 9
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -19,7 +34,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class StrongNumber {
+public class SumOfOddNumbers {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -30,32 +45,19 @@ public class StrongNumber {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int originalNumber = setValue(smallestInt, biggestInt);
-        int number = originalNumber;
-        int[] arr = new int [0];
-        while (number != 0) {
-            arr = addX(arr.length, arr, number % 10);
-            number /= 10;
-        }
-        int sum = 0;
-        int factorialOfNumber = 0;
-        for (int i=0; i<arr.length; i++) {
-            factorialOfNumber = factorialOf(arr[i]);
-            sum += factorialOfNumber;
-        }
-        if (sum == originalNumber)
-            out.println("yes");
-        else
-            out.println("no");
+        int countOfOddNumbers = setValue(1, 100);
+        generateOddNumbersAndShowSum(countOfOddNumbers);
     }
 
-    private static int factorialOf(int i) {
-        int factorial = i;
-        while (i>1) {
-            factorial *= (i - 1);
-            i--;
+    private static void generateOddNumbersAndShowSum(
+            int countOfOddNumbers
+    ) {
+        int sumNumbers = 0;
+        for (int i=1; i<=countOfOddNumbers * 2; i+=2) {
+            out.println(i);
+            sumNumbers += i;
         }
-        return factorial;
+        out.println("Sum: " + sumNumbers);
     }
 
     @SuppressWarnings("unchecked")
@@ -79,14 +81,14 @@ public class StrongNumber {
                 return setValue(null, null);
             }
 
-            if (requiredString) {
+            if (requiredString){
                 stringCount++;
                 String[] required = {};
 
                 if (stringCount == 1)
-                    required = new String[]{"Spring", "Summer", "Autumn", "Winter"};
+                    required = new String[] {"Spring", "Summer", "Autumn", "Winter"};
                 if (stringCount == 2)
-                    required = new String[]{"Y", "N"};
+                    required = new String[] {"Y", "N"};
                 if (stringCount > 2) {
                     requiredString = false;
                     return (T) value;
@@ -94,7 +96,7 @@ public class StrongNumber {
 
                 List<String> requiredList = List.of(required);
 
-                if (!requiredList.contains(value)) {
+                if (!requiredList.contains(value)){
                     out.print("Моля въведете един от следните избори: \n| ");
                     for (String thing : required)
                         out.print(thing + " | ");
@@ -104,7 +106,8 @@ public class StrongNumber {
                     return setValue(null, null);
                 }
             }
-        } else {
+        }
+        else {
             try {
                 if (max instanceof Integer)
                     value = Integer.parseInt(scanner.nextLine());
@@ -115,7 +118,8 @@ public class StrongNumber {
                     value = null;
                     exit(1);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 out.println("Не сте въвели число. Пробвайте пак!");
                 return setValue(min, max);
             }
@@ -143,23 +147,5 @@ public class StrongNumber {
         }
 
         return (T) value;
-    }
-
-    //    add x to array
-    public static int[] addX(int size, int[] arr, int x) {
-        int i;
-
-        // create a new array of size n+1
-        int[] newArr = new int[size + 1];
-
-        // insert the elements from the old array into the new array
-        // insert all elements till n
-        // then insert x at n+1
-        for (i = 0; i < size; i++)
-            newArr[i] = arr[i];
-
-        newArr[size] = x;
-
-        return newArr;
     }
 }

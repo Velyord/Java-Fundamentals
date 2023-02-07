@@ -1,43 +1,77 @@
 /*
 Условие:
-    Read three real numbers and sort them in descending order.
-    Print each number on a new line.
+    Yoda is starting his newly created Jedi academy.
+    So, he asked Master George Lucas to buy the needed
+    equipment. The number of items depends on how many students
+    will sign up. The equipment for the Padawan contains
+    lightsabers, belts, and robes.
+    You will be given the amount of money George Lucas has,
+    the number of students, and the prices of each item.
+    You have to help George Lucas calculate if the money he has
+    is enough to buy all of the equipment or how much more
+    money he needs.
+    Because the lightsabers sometimes break, George Lucas
+    should buy 10% more, rounded up to the next integer. Also,
+    every sixth belt is free.
+Input / Constraints:
+    The input data should be read from the console. It will
+    consist of exactly 5 lines:
+    •	The amount of money George Lucas has – the
+    floating-point number in the range [0.00…1,000.00].
+    •	The count of students – integer in the range [0…100].
+    •	The price of lightsabers for a single saber – the
+    floating-point number in the range [0.00…100.00].
+    •	The price of robes for a single robe – the
+    floating-point number in the range [0.00…100.00].
+    •	The price of belts for a single belt – the
+    floating-point number in the range [0.00…100.00].
+    The input data will always be valid. There is no need to
+    check it explicitly.
+Output:
+    The output should be printed on the console.
+    •	If the calculated price of the equipment is less or
+    equal to the money George Lucas has:
+    "The money is enough - it would cost {the cost of the
+    equipment}lv."
+    •	If the calculated price of the equipment is more than
+    the money George Lucas has:
+     "George Lucas will need {neededMoney}lv more."
+    •	All prices must be rounded to two digits after the
+    decimal point.
 Examples:
+    100
     2
-    1
-    3
-    ->
-    3
-    2
-    1
-
-    -2
-    1
-    3
-    ->
-    3
-    1
-    -2
-
-    0
-    0
-    2
-    ->
-    2
-    0
-    0
+    1.0
+    2.0
+    3.0
+    -> The money is enough - it would cost 13.00lv.
+        Needed equipment for 2 padawans:
+        sabresPrice * (studentsCount + 10%) + robesPrice *
+        (studentsCount) + beltsPrice * (studentsCount - freeBelts)
+        1*(3) + 2*(2) + 3*(2) = 13.00
+        13.00 <= 100 – the money will be enough.
+    100
+    42
+    12.0
+    4.0
+    3.0
+    -> George Lucas will need 737.00lv more.
+        Needed equipment for 42 padawans:
+        12*47 + 4*42 + 3*35 = 837.00
+        837 > 100 – need 737.00 lv. more.
 */
-package SoftUni.Fundamentals.ME;
+package Basic.Exercise;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.ceil;
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 
-public class SortNumbers {
+public class PadawanEquipment {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -48,34 +82,28 @@ public class SortNumbers {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int[] arr = new int[3];
-        developArray(arr);
-        bubbleSortReversed(arr);
-        displayArray(arr);
-    }
+        double amountOfMoney = setValue(0.00, 1000.00);
+        int countOfStudents = setValue(0, 100);
+        double priceOfLightsaber = setValue(0.00, 100.00);
+        double priceOfRobe = setValue(0.00, 100.00);
+        double priceOfBelt = setValue(0.00, 100.00);
 
-    private static void displayArray(int[] arr) {
-        for (int i=0; i<arr.length; i++)
-            out.println(arr[i]);
-    }
-
-    private static void developArray(int[] arr) {
-        for (int i=0; i<arr.length; i++)
-            arr[i] = setValue(smallestInt, biggestInt);
-    }
-
-    public static void bubbleSortReversed(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n-1; i++) {
-            for (int j = 0; j < n-i-1; j++) {
-                if (arr[j] < arr[j+1]) {
-                    // swap arr[j+1] and arr[j]
-                    int temp = arr[j];
-                    arr[j] = arr[j+1];
-                    arr[j+1] = temp;
-                }
-            }
-        }
+        int freeBelts = countOfStudents / 6;
+        double totalPrice =
+            priceOfLightsaber * (ceil(countOfStudents * 1.1)) +
+            priceOfRobe * countOfStudents +
+            priceOfBelt * (countOfStudents - freeBelts);
+        double difference = amountOfMoney - totalPrice;
+        if (difference >= 0)
+            out.printf(
+                "The money is enough - it would cost %.2flv.",
+                totalPrice
+            );
+        else
+            out.printf(
+                "George Lucas will need %.2flv more.",
+                abs(difference)
+            );
     }
 
     @SuppressWarnings("unchecked")

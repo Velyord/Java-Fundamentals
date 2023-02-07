@@ -1,21 +1,43 @@
 /*
 Условие:
-    Write a program that takes as an input a grade
-    and prints "Passed!"
-    if the grade is equal or more than 3.00.
+    Every time John tries to pay his bills,
+    he sees on the cash desk the sign:
+    "I will be back in 30 minutes".
+    One day John was sick of waiting and decided he needed a
+    program that prints the time after 30 minutes.
+    That way he won't have to wait at the desk and come at the
+    appropriate time. He gave the assignment to you,
+    so you have to do it.
 Input:
-    The input comes as a single floating-point number.
+    The input will be on two lines. On the first line,
+    you will receive the hours, and on the second,
+    you will receive the minutes.
 Output:
-    The output is either "Passed!"
-    if the grade is equal or more than 3.00, otherwise,
-    you should print nothing.
+    Print on the console the time after 30 minutes.
+    The result should be in the format "hh:mm".
+    The hours have one or two numbers,
+    and the minutes always have two numbers (with leading zero).
+Constraints:
+    •	The hours will be between 0 and 23.
+    •	The minutes will be between 0 and 59.
 Examples:
-    5.32
-    -> Passed!
-    2.34
-    -> (no output)
+    1
+    46
+    -> 2:16
+    0
+    01
+    -> 0:31
+    23
+    59
+    -> 0:29
+    11
+    08
+    -> 11:38
+    11
+    32
+    -> 12:02
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -24,7 +46,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class Passed {
+public class BackIn30Minutes {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -35,10 +57,22 @@ public class Passed {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        double grade = setValue(2.00, biggestDouble); // judge tests with bigger grade than 6.00
+        int hours = setValue(0, 23);
+        int minutes = setValue(0, 59);
+        
+        calcTimeAfter30Min(hours, minutes);
+    }
 
-        if (grade >= 3.00)
-            out.println("Passed!");
+    private static void calcTimeAfter30Min(int hours, int minutes) {
+        minutes += 30;
+        if (minutes > 59) {
+            minutes -= 60;
+            hours += 1;
+        }
+        if (hours > 23)
+            hours -= 24;
+
+        out.printf("%d:%02d", hours, minutes);
     }
 
     @SuppressWarnings("unchecked")

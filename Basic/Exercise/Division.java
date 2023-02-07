@@ -1,40 +1,30 @@
 /*
 Условие:
-    You will receive an integer as input from the console.
-    Print the 10 times table for this integer.
-    See the examples below for more information.
-Output:
-    Print every row of the table in the following format:
-    {theInteger} X {times} = {product}
-Constraints:
-    •	The integer will be in the interval [1…100]
+    You will be given an integer, 
+    and you have to print on the console 
+    whether that number is divisible by the following numbers: 
+    2, 3, 6, 7, 10. 
+    You should always take the bigger division. 
+    If the number is divisible by both 2 and 3 
+    it is also divisible by 6, 
+    and you should print only the division by 6.
+    If a number is divisible by 2 
+    it is sometimes also divisible by 10, 
+    and you should print the division by 10. 
+    If the number is not divisible by any given number, 
+    print "Not divisible". Otherwise, 
+    print "The number is divisible by {number}".
 Examples:
-    5
-    ->
-    5 X 1 = 5
-    5 X 2 = 10
-    5 X 3 = 15
-    5 X 4 = 20
-    5 X 5 = 25
-    5 X 6 = 30
-    5 X 7 = 35
-    5 X 8 = 40
-    5 X 9 = 45
-    5 X 10 = 50
-    2
-    ->
-    2 X 1 = 2
-    2 X 2 = 4
-    2 X 3 = 6
-    2 X 4 = 8
-    2 X 5 = 10
-    2 X 6 = 12
-    2 X 7 = 14
-    2 X 8 = 16
-    2 X 9 = 18
-    2 X 10 = 20
+    30	
+    -> The number is divisible by 10
+    15	
+    -> The number is divisible by 3
+    12	
+    -> The number is divisible by 6
+    1643	
+    -> Not divisible
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -43,7 +33,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class MultiplicationTable2 {
+public class Division {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -54,26 +44,29 @@ public class MultiplicationTable2 {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int integer = setValue(1, 100);
-        int multiplier = setValue(1, biggestInt);
-        generateMultiplicationTable(integer, multiplier);
+        int number = setValue(smallestInt, biggestInt);
+        findTheCorrectDevisible(number);
     }
 
-    private static void generateMultiplicationTable(
-            int integer,
-            int multiplier
-    ) {
-        if (multiplier > 10) {
-            out.printf(
-                    "%d X %d = %d\n",
-                    integer, multiplier, integer * multiplier
-            );
-        } else
-            for (int i=multiplier; i<=10; i++)
-                out.printf(
-                        "%d X %d = %d\n",
-                        integer, i, integer * i
-                );
+    private static void findTheCorrectDevisible(int number) {
+        int divisible;
+        if (number % 10 == 0)
+            divisible = 10;
+        else if (number % 7 == 0)
+            divisible = 7;
+        else if (number % 6 == 0)
+            divisible = 6;
+        else if (number % 3 == 0)
+            divisible = 3;
+        else if (number % 2 == 0)
+            divisible = 2;
+        else 
+            divisible = 0;
+        
+        if (divisible != 0)
+            out.printf("The number is divisible by %d", divisible);
+        else 
+            out.println("Not divisible");
     }
 
     @SuppressWarnings("unchecked")

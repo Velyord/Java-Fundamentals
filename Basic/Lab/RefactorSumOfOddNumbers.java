@@ -34,7 +34,7 @@ SumOddNumbers.java
     System.out.printf("Sum: %d%n", sum);
 
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import java.util.Scanner;
 

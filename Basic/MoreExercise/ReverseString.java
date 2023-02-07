@@ -6,7 +6,7 @@ Examples:
     SoftUni -> inUtfoS
     1234 -> 4321
 */
-package SoftUni.Fundamentals.ME1;
+package Basic.MoreExercise;
 
 import static java.lang.System.out;
 import static java.lang.System.in;

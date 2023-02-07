@@ -1,26 +1,43 @@
 /*
 Условие:
-    Write a method that returns the English name of the last
-    digit of a given number. Write a program that reads an
-    integer and prints the returned value from this method.
+    Read three real numbers and sort them in descending order.
+    Print each number on a new line.
 Examples:
-    512
-    -> two
+    2
     1
-    -> one
-    1643
-    -> three
+    3
+    ->
+    3
+    2
+    1
+
+    -2
+    1
+    3
+    ->
+    3
+    1
+    -2
+
+    0
+    0
+    2
+    ->
+    2
+    0
+    0
 */
-package SoftUni.Fundamentals.ME;
+package Basic.MoreExercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 
-public class EnglishNameOfTheLastDigit {
+public class SortNumbers {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -31,23 +48,33 @@ public class EnglishNameOfTheLastDigit {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int number = setValue(smallestInt, biggestInt);
-        writeLastDigit(number);
+        int[] arr = new int[3];
+        developArray(arr);
+        bubbleSortReversed(arr);
+        displayArray(arr);
     }
 
-    private static void writeLastDigit(int number) {
-        int lastDigit = number % 10;
-        switch (lastDigit) {
-            case 0: out.println("zero");  break;
-            case 1: out.println("one");   break;
-            case 2: out.println("two");   break;
-            case 3: out.println("three"); break;
-            case 4: out.println("four");  break;
-            case 5: out.println("five");  break;
-            case 6: out.println("six");   break;
-            case 7: out.println("seven"); break;
-            case 8: out.println("eight"); break;
-            case 9: out.println("nine");  break;
+    private static void displayArray(int[] arr) {
+        for (int i=0; i<arr.length; i++)
+            out.println(arr[i]);
+    }
+
+    private static void developArray(int[] arr) {
+        for (int i=0; i<arr.length; i++)
+            arr[i] = setValue(smallestInt, biggestInt);
+    }
+
+    public static void bubbleSortReversed(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n-i-1; j++) {
+                if (arr[j] < arr[j+1]) {
+                    // swap arr[j+1] and arr[j]
+                    int temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j+1] = temp;
+                }
+            }
         }
     }
 

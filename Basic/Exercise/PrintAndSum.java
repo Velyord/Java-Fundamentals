@@ -1,48 +1,25 @@
 /*
 Условие:
-    We are placing N orders at a time. You need to calculate
-    the price on the following formula:
-    ((daysInMonth * capsulesCount) * pricePerCapsule)
-Input / Constraints:
-    •	On the first line, you will receive integer N – the
-    count of orders the shop will receive.
-    •	For each order, you will receive the following
-    information:
-    o	Price per capsule - floating-point number in the range
-    [0.00…1000.00].
-    o	Days – integer in the range [1…31].
-    o	Capsules count - integer in the range [0…2000].
-    The input will be in the described format, there is no need
-    to check it explicitly.
-Output:
-    The output should consist of N + 1 line. For each order, you
-    must print a single line in the following format:
-    •	"The price for the coffee is: ${price}"
-    On the last line, you need to print the total price in the
-    following format:
-    •	 "Total: ${totalPrice}"
-    The price must be formatted to 2 decimal places.
-Examples:
-    1
-    1.53
-    30
-    8
-    -> The price for the coffee is: $367.20
-       Total: $367.20
-            We are given only 1 order. Then we  use the formulas:
-            orderPrice = 30 * 8 * 1.53 = 367.20
-    2
-    4.99
-    31
-    3
-    0.35
-    31
+    Write a program to display numbers from given start to 
+    given end and their sum. All the numbers will be integers. 
+    On the first line, you will receive the start number, 
+    on the second the end number.
+Examples
     5
-        The price for the coffee is: $464.07
-        The price for the coffee is: $54.25
-        Total: $518.32
+    10	
+    -> 5 6 7 8 9 10
+       Sum: 45
+    0
+    26	
+    -> 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+       22 23 24 25 26 
+       Sum: 351
+    50
+    60	
+    -> 50 51 52 53 54 55 56 57 58 59 60
+       Sum: 605
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -51,7 +28,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class Orders {
+public class PrintAndSum {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -62,21 +39,22 @@ public class Orders {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int countOfOrders = setValue(0, biggestInt);
-        double totalPrice = 0;
-        for (int i = 0; i< countOfOrders; i++) {
-            double pricePerCapsule = Double.parseDouble(scanner.nextLine());
-            int days = setValue(1, 31);
-            int capsulesCount = Integer.parseInt(scanner.nextLine());
-            double price =
-                    days * capsulesCount * pricePerCapsule;
-            out.printf(
-                    "The price for the coffee is: $%.2f\n",
-                    price
-            );
-            totalPrice += price;
+        int start = setValue(0, biggestInt);
+        int end = setValue(0, biggestInt);
+        
+        generateNumbersAndSumNumbers(start, end);
+    }
+
+    private static void generateNumbersAndSumNumbers(
+            int start, 
+            int end
+    ) {
+        int sum = 0;
+        for (int i = start; i <= end; i++) {
+            out.print(i + " ");
+            sum += i;
         }
-        out.printf("Total: $%.2f", totalPrice);
+        out.printf("\nSum: %d", sum);
     }
 
     @SuppressWarnings("unchecked")

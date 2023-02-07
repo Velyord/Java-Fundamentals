@@ -1,21 +1,31 @@
 /*
 Условие:
-    Write a program that takes as an input a grade
-    and prints "Passed!"
-    if the grade is equal or more than 3.00.
-Input:
-    The input comes as a single floating-point number.
-Output:
-    The output is either "Passed!"
-    if the grade is equal or more than 3.00, otherwise,
-    you should print nothing.
+    Write a program that receives a number –
+    n and prints a triangle from 1 to n as in the examples.
+Constraints
+    •	n will be in the interval [1...20].
 Examples:
-    5.32
-    -> Passed!
-    2.34
-    -> (no output)
+    3
+    1
+    2 2
+    3 3 3
+    ->
+    5
+    1
+    2 2
+    3 3 3
+    4 4 4 4
+    5 5 5 5 5
+    ->
+    6
+    1
+    2 2
+    3 3 3
+    4 4 4 4
+    5 5 5 5 5
+    6 6 6 6 6 6
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -24,7 +34,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class PassedOrFailed {
+public class TriangleOfNumbers {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -35,12 +45,16 @@ public class PassedOrFailed {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        double grade = setValue(smallestDouble, biggestDouble); // judge tests with grades smaller than 2 and bigger than 6
+        int n = setValue(1, 20);
+        generateTriangle(n);
+    }
 
-        if (grade >= 3.00)
-            out.println("Passed!");
-        else
-            out.println("Failed!");
+    private static void generateTriangle(int n) {
+        for (int i=1; i<=n; i++) {
+            for (int j=1; j<=i; j++)
+                out.print(i + " ");
+            out.println();
+        }
     }
 
     @SuppressWarnings("unchecked")

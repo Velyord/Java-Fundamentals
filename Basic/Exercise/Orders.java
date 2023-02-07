@@ -1,61 +1,48 @@
 /*
 Условие:
-    Write a program that emulates typing an SMS, following this guide:
-    1
-    2
-    abc
-    3
-    def
-    4
-    ghi
-    5
-    jkl
-    6
-    mno
-    7
-    pqrs
-    8
-    tuv
-    9
-    wxyz
-    0
-    space
-    Following the guide, 2 becomes "a", 22 becomes "b" and so on.
+    We are placing N orders at a time. You need to calculate
+    the price on the following formula:
+    ((daysInMonth * capsulesCount) * pricePerCapsule)
+Input / Constraints:
+    •	On the first line, you will receive integer N – the
+    count of orders the shop will receive.
+    •	For each order, you will receive the following
+    information:
+    o	Price per capsule - floating-point number in the range
+    [0.00…1000.00].
+    o	Days – integer in the range [1…31].
+    o	Capsules count - integer in the range [0…2000].
+    The input will be in the described format, there is no need
+    to check it explicitly.
+Output:
+    The output should consist of N + 1 line. For each order, you
+    must print a single line in the following format:
+    •	"The price for the coffee is: ${price}"
+    On the last line, you need to print the total price in the
+    following format:
+    •	 "Total: ${totalPrice}"
+    The price must be formatted to 2 decimal places.
 Examples:
+    1
+    1.53
+    30
+    8
+    -> The price for the coffee is: $367.20
+       Total: $367.20
+            We are given only 1 order. Then we  use the formulas:
+            orderPrice = 30 * 8 * 1.53 = 367.20
+    2
+    4.99
+    31
+    3
+    0.35
+    31
     5
-    44
-    33
-    555
-    555
-    666
-    ->
-    hello
-
-    9
-    44
-    33
-    999
-    0
-    8
-    44
-    33
-    777
-    33
-    ->
-    hey there
-
-    7
-    6
-    33
-    33
-    8
-    0
-    6
-    33
-    ->
-    meet me
+        The price for the coffee is: $464.07
+        The price for the coffee is: $54.25
+        Total: $518.32
 */
-package SoftUni.Fundamentals.ME1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -64,7 +51,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class Messages {
+public class Orders {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -75,41 +62,21 @@ public class Messages {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int messageLength = setValue(0, biggestInt);
-        String message = "";
-        for (int i=0; i<messageLength; i++) {
-            int input = setValue(0, 9999);
-            switch (input) {
-                case 0:    message += " "; break;
-                case 2:    message += "a"; break;
-                case 22:   message += "b"; break;
-                case 222:  message += "c"; break;
-                case 3:    message += "d"; break;
-                case 33:   message += "e"; break;
-                case 333:  message += "f"; break;
-                case 4:    message += "g"; break;
-                case 44:   message += "h"; break;
-                case 444:  message += "i"; break;
-                case 5:    message += "j"; break;
-                case 55:   message += "k"; break;
-                case 555:  message += "l"; break;
-                case 6:    message += "m"; break;
-                case 66:   message += "n"; break;
-                case 666:  message += "o"; break;
-                case 7:    message += "p"; break;
-                case 77:   message += "q"; break;
-                case 777:  message += "r"; break;
-                case 7777: message += "s"; break;
-                case 8:    message += "t"; break;
-                case 88:   message += "u"; break;
-                case 888:  message += "v"; break;
-                case 9:    message += "w"; break;
-                case 99:   message += "x"; break;
-                case 999:  message += "y"; break;
-                case 9999: message += "z"; break;
-            }
+        int countOfOrders = setValue(0, biggestInt);
+        double totalPrice = 0;
+        for (int i = 0; i< countOfOrders; i++) {
+            double pricePerCapsule = Double.parseDouble(scanner.nextLine());
+            int days = setValue(1, 31);
+            int capsulesCount = Integer.parseInt(scanner.nextLine());
+            double price =
+                    days * capsulesCount * pricePerCapsule;
+            out.printf(
+                    "The price for the coffee is: $%.2f\n",
+                    price
+            );
+            totalPrice += price;
         }
-        out.println(message);
+        out.printf("Total: $%.2f", totalPrice);
     }
 
     @SuppressWarnings("unchecked")

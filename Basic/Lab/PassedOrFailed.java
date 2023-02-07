@@ -1,27 +1,21 @@
 /*
 Условие:
-    You will be given 3 lines of input –
-    student name, age, and average grade.
-    Your task is to print all the info about the student in
-    the following format:
-    "Name: {student name},
-    Age: {student age},
-    Grade: {student grade}".
+    Write a program that takes as an input a grade
+    and prints "Passed!"
+    if the grade is equal or more than 3.00.
+Input:
+    The input comes as a single floating-point number.
+Output:
+    The output is either "Passed!"
+    if the grade is equal or more than 3.00, otherwise,
+    you should print nothing.
 Examples:
-    John
-    15
-    -> 5.40
-        Name: John, Age: 15, Grade: 5.40
-    Steve
-    16
-    -> 2.50
-        Name: Steve, Age: 16, Grade: 2.50
-    Marry
-    12
-    -> 6.00
-        Name: Marry, Age: 12, Grade: 6.00
+    5.32
+    -> Passed!
+    2.34
+    -> (no output)
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -30,7 +24,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class StudentInformation {
+public class PassedOrFailed {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -41,14 +35,12 @@ public class StudentInformation {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        String studentName = setValue(null, null);
-        int studentAge = setValue(0, biggestInt);
-        double studentGrade = setValue(2.00, 6.00);
+        double grade = setValue(smallestDouble, biggestDouble); // judge tests with grades smaller than 2 and bigger than 6
 
-        out.printf(
-                "Name: %s, Age: %d, Grade: %.2f",
-                studentName, studentAge, studentGrade
-        );
+        if (grade >= 3.00)
+            out.println("Passed!");
+        else
+            out.println("Failed!");
     }
 
     @SuppressWarnings("unchecked")

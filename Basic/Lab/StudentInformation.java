@@ -1,38 +1,27 @@
 /*
 Условие:
-    A theatre is having a ticket sale, but they need a program
-    to calculate the price of a single ticket. If the given age
-    does not fit one of the categories, you should print "Error!".
-    You can see the prices in the table below:
-    Day / Age	0 <= age <= 18	18 < age <= 64	64 < age <= 122
-    Weekday	         12$	         18$	         12$
-    Weekend	         15$	         20$	         15$
-    Holiday	         5$	             12$	         10$
-Input:
-    The input comes in two lines.
-    On the first line, you will receive the type of day.
-    On the second – is the age of the person.
-Output:
-    Print the ticket price according to the table, or "Error!"
-    if the age is not in the table.
-Constraints:
-    •	The age will be in the interval [-1000…1000].
-    •	The type of day will always be valid.
-Examples
-    Weekday
-    42
-    -> 18$
-    Holiday
-    -12
-    -> Error!
-    Holiday
+    You will be given 3 lines of input –
+    student name, age, and average grade.
+    Your task is to print all the info about the student in
+    the following format:
+    "Name: {student name},
+    Age: {student age},
+    Grade: {student grade}".
+Examples:
+    John
     15
-    -> 5$
-    Weekend
-    122
-    -> 15$
+    -> 5.40
+        Name: John, Age: 15, Grade: 5.40
+    Steve
+    16
+    -> 2.50
+        Name: Steve, Age: 16, Grade: 2.50
+    Marry
+    12
+    -> 6.00
+        Name: Marry, Age: 12, Grade: 6.00
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -41,54 +30,25 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class TheatrePromotion {
+public class StudentInformation {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
     static double biggestDouble = Double.MAX_VALUE;
     static int stringCount = 0;
-    static boolean requiredString = true;
+    static boolean requiredString = false;
 
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        String typeOfDay = setValue(null, null);
-        int ageOfPerson = setValue(-1000, 1000);
+        String studentName = setValue(null, null);
+        int studentAge = setValue(0, biggestInt);
+        double studentGrade = setValue(2.00, 6.00);
 
-        displayTicketCost(typeOfDay, ageOfPerson);
-    }
-
-    private static void displayTicketCost(String typeOfDay, int ageOfPerson) {
-        switch (typeOfDay) {
-            case "Weekday":
-                if (ageOfPerson >= 0 && ageOfPerson <= 18 ||
-                        ageOfPerson > 64 && ageOfPerson <= 122)
-                    out.println("12$");
-                else if (ageOfPerson > 18 && ageOfPerson <= 64)
-                    out.println("18$");
-                else
-                    out.println("Error!");
-                break;
-            case "Weekend":
-                if (ageOfPerson >= 0 && ageOfPerson <= 18 ||
-                        ageOfPerson > 64 && ageOfPerson <= 122)
-                    out.println("15$");
-                else if (ageOfPerson > 18 && ageOfPerson <= 64)
-                    out.println("20$");
-                else
-                    out.println("Error!");
-                break;
-            case "Holiday":
-                if (ageOfPerson >= 0 && ageOfPerson <= 18)
-                    out.println("5$");
-                else if (ageOfPerson > 18 && ageOfPerson <= 64)
-                    out.println("12$");
-                else if (ageOfPerson > 64 && ageOfPerson <= 122)
-                    out.println("10$");
-                else
-                    out.println("Error!");
-                break;
-        }
+        out.printf(
+                "Name: %s, Age: %d, Grade: %.2f",
+                studentName, studentAge, studentGrade
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -117,8 +77,10 @@ public class TheatrePromotion {
                 String[] required = {};
 
                 if (stringCount == 1)
-                    required = new String[] {"Weekday", "Weekend", "Holiday"};
-                if (stringCount > 1) {
+                    required = new String[] {"Spring", "Summer", "Autumn", "Winter"};
+                if (stringCount == 2)
+                    required = new String[] {"Y", "N"};
+                if (stringCount > 2) {
                     requiredString = false;
                     return (T) value;
                 }

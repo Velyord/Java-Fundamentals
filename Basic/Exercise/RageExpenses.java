@@ -1,31 +1,52 @@
 /*
 Условие:
-    Write a program that prints the next n odd numbers
-    (starting from 1) and on the last row prints the sum of them.
-Input:
-    On the first line, you will receive a number – n.
-    This number shows how many odd numbers you should print.
+    As a MOBA challenger player, Peter has the bad habit of
+    trashing his PC when he loses a game and rage quits.
+    His gaming setup consists of a headset, mouse, keyboard,
+    and display. You will receive Peter's lost games count.
+    Every second lost game, Peter trashes his headset.
+    Every third lost game, Peter trashes his mouse.
+    When Peter trashes both his mouse and headset in the same
+    lost game, he also trashes his keyboard.
+    Every second time when he trashes his keyboard, he also
+    trashes his display.
+    You will receive the price of each item in his gaming setup.
+    Calculate his rage expenses for renewing his gaming
+    equipment.
+Input / Constraints:
+    •	On the first input line - lost games count –
+    integer in the range [0, 1000].
+    •	On the second line – headset price -
+    the floating-point number in the range [0, 1000].
+    •	On the third line – mouse price -
+    the floating-point number in the range [0, 1000].
+    •	On the fourth line – keyboard price -
+    the floating-point number in the range [0, 1000].
+    •	On the fifth line – display price -
+    the floating-point number in the range [0, 1000].
 Output:
-    Print the next n odd numbers, starting from 1,
-    separated by new lines. On the last line,
-    print the sum of these numbers.
-Constraints:
-    •	n will be in the interval [1…100]
+    •	As output you must print Peter's total expenses:
+    "Rage expenses: {expenses} lv."
+    •	Allowed working time / memory: 100ms / 16MB.
 Examples:
-    5
-    1
-    3
-    5
     7
-    9
-    -> Sum: 25
+    2
     3
-    1
-    3
+    4
     5
-    -> Sum: 9
+    -> Rage expenses: 16.00 lv.
+        Trashed headset -> 3 times
+        Trashed mouse -> 2 times
+        Trashed keyboard -> 1 time
+        Total: 6 + 6 + 4 = 16.00 lv;
+    23
+    12.50
+    21.50
+    40
+    200
+    -> Rage expenses: 608.00 lv.
 */
-package SoftUni.Fundamentals.Lab1;
+package Basic.Exercise;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -34,7 +55,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class SumOfOddNumbers {
+public class RageExpenses {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -45,19 +66,48 @@ public class SumOfOddNumbers {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int countOfOddNumbers = setValue(1, 100);
-        generateOddNumbersAndShowSum(countOfOddNumbers);
-    }
-
-    private static void generateOddNumbersAndShowSum(
-            int countOfOddNumbers
-    ) {
-        int sumNumbers = 0;
-        for (int i=1; i<=countOfOddNumbers * 2; i+=2) {
-            out.println(i);
-            sumNumbers += i;
+        int lostGamesCount = setValue(0, 1000);
+        double headsetPrice = setValue(0.0, 1000.0);
+        double mousePrice = setValue(0.0, 1000.0);
+        double keyboardPrice = setValue(0.0, 1000.0);
+        double displayPrice = setValue(0.0, 1000.0);
+        int trashingHeadsetCounter = 0;
+        int trashingMouseCounter  = 0;
+        int trashingKeyboardCounter  = 0;
+        int trashedHeadsets = 0;
+        int trashedMouses = 0;
+        int trashedKeyboards = 0;
+        int trashedDisplays = 0;
+        for (int i=1; i <= lostGamesCount; i++) {
+            boolean hasTrashedHeadset = false;
+            boolean hasTrashedMouse = false;
+            trashingHeadsetCounter++;
+            if (trashingHeadsetCounter == 2) {
+                trashingHeadsetCounter = 0;
+                trashedHeadsets++;
+                hasTrashedHeadset = true;
+            }
+            trashingMouseCounter++;
+            if (trashingMouseCounter == 3) {
+                trashingMouseCounter = 0;
+                trashedMouses++;
+                hasTrashedMouse = true;
+            }
+            if (hasTrashedHeadset && hasTrashedMouse) {
+                trashedKeyboards++;
+                trashingKeyboardCounter++;
+            }
+            if (trashingKeyboardCounter == 2) {
+                trashingKeyboardCounter = 0;
+                trashedDisplays++;
+            }
         }
-        out.println("Sum: " + sumNumbers);
+        double rageExpenses =
+                trashedHeadsets * headsetPrice +
+                trashedMouses * mousePrice +
+                trashedKeyboards * keyboardPrice +
+                trashedDisplays * displayPrice;
+        out.printf("Rage expenses: %.2f lv.", rageExpenses);
     }
 
     @SuppressWarnings("unchecked")

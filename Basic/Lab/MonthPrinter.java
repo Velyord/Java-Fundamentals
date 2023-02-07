@@ -1,31 +1,20 @@
 /*
 Условие:
-    Write a program that receives a number –
-    n and prints a triangle from 1 to n as in the examples.
-Constraints
-    •	n will be in the interval [1...20].
+    Write a program that takes an integer from the console and
+    prints the corresponding month.
+    If the number is more than 12 or less than 1 print "Error!".
+Input:
+    You will receive a single integer on a single line.
+Output:
+    If the number is within the boundaries, print the
+    corresponding month, otherwise, print "Error!".
 Examples:
-    3
-    1
-    2 2
-    3 3 3
-    ->
-    5
-    1
-    2 2
-    3 3 3
-    4 4 4 4
-    5 5 5 5 5
-    ->
-    6
-    1
-    2 2
-    3 3 3
-    4 4 4 4
-    5 5 5 5 5
-    6 6 6 6 6 6
+    2
+    -> February
+    13
+    -> Error!
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Lab;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
@@ -34,7 +23,7 @@ import static java.lang.System.in;
 import java.util.Scanner;
 import java.util.List;
 
-public class TriangleOfNumbers {
+public class MonthPrinter {
     static int smallestInt = Integer.MIN_VALUE;
     static int biggestInt = Integer.MAX_VALUE;
     static double smallestDouble = -1 * Double.MAX_VALUE;
@@ -45,15 +34,22 @@ public class TriangleOfNumbers {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        int n = setValue(1, 20);
-        generateTriangle(n);
-    }
-
-    private static void generateTriangle(int n) {
-        for (int i=1; i<=n; i++) {
-            for (int j=1; j<=i; j++)
-                out.print(i + " ");
-            out.println();
+        int month = setValue(smallestInt, biggestInt);
+        
+        switch (month) {
+            case 1:  out.println("January");   break;
+            case 2:  out.println("February");  break;
+            case 3:  out.println("March");     break;
+            case 4:  out.println("April");     break;
+            case 5:  out.println("May");       break;
+            case 6:  out.println("June");      break;
+            case 7:  out.println("July");      break;
+            case 8:  out.println("August");    break;
+            case 9:  out.println("September"); break;
+            case 10: out.println("October");   break;
+            case 11: out.println("November");  break;
+            case 12: out.println("December");  break;
+            default: out.println("Error!");    break;
         }
     }
 

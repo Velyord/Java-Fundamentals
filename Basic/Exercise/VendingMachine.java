@@ -48,7 +48,7 @@ Examples:
     Purchased Coke
     Change: 0.00
 */
-package SoftUni.Fundamentals.Exer1;
+package Basic.Exercise;
 
 import java.util.Scanner;
 import java.util.List;
