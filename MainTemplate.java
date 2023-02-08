@@ -16,12 +16,21 @@ public class MainTemplate {
 
     }
     @SuppressWarnings("unchecked")
-    private static <T> T setValue(T min, T max, String type) {
+    private static <T> T setValue(T min, T max) {
+        String type = getStringType(max);
         Object value;
         value = setAndCheckInputFor(type);
         if (!isValueBetweenMinAndMax(value, min, max, type))
-            return setValue(min, max, type);
+            return setValue(min, max);
         return (T) value;
+    }
+    private static <T> String getStringType(T max) {
+        if (max instanceof Double)
+            return "double";
+        else if (max instanceof Long)
+            return "long";
+        else
+            return "int";
     }
     @SuppressWarnings("unchecked")
     private static <T> T setAndCheckInputFor(String type) {
