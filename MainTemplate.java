@@ -18,8 +18,7 @@ public class MainTemplate {
     @SuppressWarnings("unchecked")
     private static <T> T setValue(T min, T max) {
         String type = getType(max);
-        Object value;
-        value = setAndCheckInputFor(type);
+        Object value = setAndCheckInputFor(type);
         if (!isValueBetweenMinAndMax(value, min, max, type))
             return setValue(min, max);
         return (T) value;
@@ -75,8 +74,7 @@ public class MainTemplate {
     }
     static int stringCount = 0;
     private static String setValue() {
-        String value;
-        value = scanner.nextLine();
+        String value = scanner.nextLine();
         if (!hasValidChars(value) || !doesFollowTemplate(value))
             return setValue();
         return value;
