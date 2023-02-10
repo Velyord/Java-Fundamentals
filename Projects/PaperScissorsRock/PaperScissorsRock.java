@@ -4,7 +4,6 @@
 */
 package Projects.PaperScissorsRock;
 
-import static java.lang.System.exit;
 import static java.lang.System.out;
 import static java.lang.System.in;
 
@@ -13,17 +12,6 @@ import java.util.Scanner;
 import java.util.List;
 
 public class PaperScissorsRock {
-    static int smallestInt = Integer.MIN_VALUE;
-    static int biggestInt = Integer.MAX_VALUE;
-    static long smallestLong = Long.MIN_VALUE;
-    static long biggestLong = Long.MAX_VALUE;
-    static double smallestDouble = -1 * Double.MAX_VALUE;
-    static short smallestShort = Short.MIN_VALUE;
-    static short biggestShort = Short.MAX_VALUE;
-    static double biggestDouble = Double.MAX_VALUE;
-    static int stringCount = 0;
-    static boolean requiredString = true;
-
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
@@ -32,7 +20,7 @@ public class PaperScissorsRock {
 
     private static void playGame() {
         out.print("Choose [p]aper, [s]cissors, [r]ock: ");
-        String userInput = setValue(null, null);
+        String userInput = setValue();
         String computersChoice = randomComputerChoice();
         out.printf("The computer chose %s.\n", computersChoice);
         displayGameWonOrLost(userInput, computersChoice);
@@ -41,7 +29,7 @@ public class PaperScissorsRock {
 
     private static void playAgain() {
         out.println("Do you want to play again? [y]es/[n]o?");
-        String userInput = setValue(null, null);
+        String userInput = setValue();
         if (userInput.equals("yes"))
             playGame();
         else
@@ -96,112 +84,120 @@ public class PaperScissorsRock {
 
     @SuppressWarnings("unchecked")
     private static <T> T setValue(T min, T max) {
-        Object value;
-        // out.println("Въведете :");
-
-        if (min == null && max == null) {
-            value = scanner.nextLine();
-
-            if (requiredString) {
-                stringCount++;
-                String[] required = {};
-
-                if (stringCount > 2)
-                    stringCount = 1;
-                if (stringCount == 1)
-                    required = new String[] {"p", "paper", "s", "scissors", "r", "rock"};
-                if (stringCount == 2)
-                    required = new String[] {"y", "yes", "n", "no"};
-
-                List<String> requiredList = List.of(required);
-
-                if (!requiredList.contains(value)){
-                    out.print("Моля въведете един от следните избори: \n| ");
-                    for (String thing : required)
-                        out.print(thing + " | ");
-                    out.println();
-
-                    stringCount--;
-                    return setValue(null, null);
-                }
-            }
-
-            String specialCharacters = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
-            boolean isSpecChar = false;
-
-            for (int i = 0; i < ((String) value).length(); i++)
-                if (specialCharacters.contains(Character.toString(((String) value).charAt(i)))) {
-                    isSpecChar = true;
-                    break;
-                }
-
-            if (isSpecChar) {
-                out.println("Моля въведете правилно наименование!");
-                return setValue(null, null);
-            }
-        }
-        else {
-            try {
-                if (max instanceof Long)
-                    value = Long.parseLong(scanner.nextLine());
-                else if (max instanceof Integer)
-                    value = Integer.parseInt(scanner.nextLine());
-                else if (max instanceof Short)
-                    value = Short.parseShort(scanner.nextLine());
-                else if (max instanceof Double)
-                    value = Double.parseDouble(scanner.nextLine());
-                else {
-                    out.println("Грешка!");
-                    value = null;
-                    exit(1);
-                }
-            }
-            catch (Exception e) {
-                out.println("Не сте въвели число. Пробвайте пак!");
-                return setValue(min, max);
-            }
-            if (max instanceof Long) {
-                if ((long) value < (long) min || (long) value > (long) max) {
-                    if ((long) min == 0 && (long) max == biggestLong)
-                        out.println("Моля въведете положително число:");
-                    else
-                        out.printf("Моля въведете число между %s и %s:\n", min, max);
-
-                    return setValue(min, max);
-                }
-            }
-            if (max instanceof Integer) {
-                if ((int) value < (int) min || (int) value > (int) max) {
-                    if ((int) min == 0 && (int) max == biggestInt)
-                        out.println("Моля въведете положително число:");
-                    else
-                        out.printf("Моля въведете число между %s и %s:\n", min, max);
-
-                    return setValue(min, max);
-                }
-            }
-            if (max instanceof Short) {
-                if ((short) value < (short) min || (short) value > (short) max) {
-                    if ((long) min == 0 && (short) max == biggestShort)
-                        out.println("Моля въведете положително число:");
-                    else
-                        out.printf("Моля въведете число между %s и %s:\n", min, max);
-
-                    return setValue(min, max);
-                }
-            }
-            if (max instanceof Double) {
-                if ((double) value < (double) min || (double) value > (double) max) {
-                    if ((double) min == 0 && (double) max == biggestDouble)
-                        out.println("Моля въведете положително число:");
-                    else
-                        out.printf("Моля въведете число между %s и %s:\n", min, max);
-
-                    return setValue(min, max);
-                }
-            }
-        }
-
+        String type = getType(max);
+        Object value = setAndCheckInputFor(type);
+        if (!isValueBetweenMinAndMax(value, min, max, type))
+            return setValue(min, max);
         return (T) value;
+    }
+    private static <T> String getType(T max) {
+        if (max instanceof Double)
+            return "double";
+        else if (max instanceof Float)
+            return "float";
+        else if (max instanceof Long)
+            return "long";
+        else
+            return "int";
+    }
+    @SuppressWarnings("unchecked")
+    private static <T> T setAndCheckInputFor(String type) {
+        Object value;
+        try {
+            switch (type) {
+                case "double": value = Double.parseDouble(scanner.nextLine()); break;
+                case "float":  value = Float.parseFloat(scanner.nextLine());   break;
+                case "long":   value = Long.parseLong(scanner.nextLine());     break;
+                case "int":    value = Integer.parseInt(scanner.nextLine());   break;
+                default:       value = null;                                   break;
+            }
+        } catch (Exception e) {
+            out.println("Невалидно число. Пробвайте пак!");
+            return setAndCheckInputFor(type);
+        }
+        return (T) value;
+    }
+    private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
+        double minDouble;
+        float minFloat;
+        switch (type) {
+            case "double":
+                minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
+                if ((double) value >= minDouble && (double) value <= (double) max)
+                    return true;
+                break;
+            case "float":
+                minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
+                if ((float) value >= minFloat && (float) value <= (float) max)
+                    return true;
+                break;
+            case "long":
+                if ((long) value >= (long) min && (long) value <= (long) max)
+                    return true;
+                break;
+            case "int":
+                if ((int) value >= (int) min && (int) value <= (int) max)
+                    return true;
+                break;
+        }
+        out.printf("Моля въведете число между %s и %s:\n", min, max);
+        return false;
+    }
+    static int stringCount = 0;
+    private static String setValue() {
+        String value = scanner.nextLine();
+        if (!hasValidChars(value) || !doesFollowTemplate(value))
+            return setValue();
+        return value;
+    }
+    private static <T> boolean hasValidChars(T value) {
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
+        boolean isSpecialChar = false;
+        char specialChar = ' ';
+        for (int i = 0; i < ((String) value).length(); i++)
+            if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
+                isSpecialChar = true;
+                specialChar = value.toString().charAt(i);
+                break;
+            }
+        if (isSpecialChar) {
+            if (specialChar == ' ')
+                out.println("Разтоянията не са позволени. Пробвайте пак!");
+            else
+                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
+            return false;
+        }
+        return true;
+    }
+    private static <T> boolean doesFollowTemplate(T value) {
+        stringCount++;
+        String[] requiredStrings = {};
+        if (stringCount > 2)
+            stringCount = 1;
+        if (stringCount == 1)
+            requiredStrings = new String[]{"p", "paper", "s", "scissors", "r", "rock"}; // fill if needed
+        if (stringCount == 2)
+            requiredStrings = new String[]{"y", "yes", "n", "no"}; // fill for second var
+//        if (stringCount > 2)
+//            requiredStrings = new String[]{}; // Keep empty
+        if (requiredStrings.length != 0) {
+            List<String> requiredList = List.of(requiredStrings);
+            if (!requiredList.contains(value.toString())) {
+                out.print("Моля въведете един от следните избори: \n| ");
+                for (String requiredString : requiredStrings)
+                    out.print(requiredString + " | ");
+                out.println(); // new line
+                stringCount--;
+                return false;
+            }
+        }
+        return true;
+    }
+    public static int[] addIntToArray(int toBeAdded, int[] array) {
+        int[] newArray = new int[array.length + 1];
+        for (int i = 0; i < array.length; i++)
+            newArray[i] = array[i];
+        newArray[array.length] = toBeAdded;
+        return newArray;
     }
 }
