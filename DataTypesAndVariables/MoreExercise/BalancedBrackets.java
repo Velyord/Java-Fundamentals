@@ -53,38 +53,45 @@ public class BalancedBrackets {
         boolean closingBracket = false;
 
         outer: for (int i=1; i<=linesCount; i++) {
-
             String input = scanner.nextLine();
 
             for (int j=0; j<input.length(); j++) {
-                if (input.charAt(j) == '(' && openingBracket || input.charAt(j) == ')' && closingBracket) {
+                char currentChar = input.charAt(j);
+                boolean consecutiveOpeningBrackets = (currentChar == '(' && openingBracket);
+                boolean consecutiveClosingBrackets = (currentChar == ')' && closingBracket);
+                boolean pairedBrackets = openingBracket && closingBracket;
+                boolean startedWithClosingBracket = !openingBracket && closingBracket;
+
+                if (consecutiveOpeningBrackets || consecutiveClosingBrackets) {
                     isBalanced = false;
                     break outer;
                 }
 
-                if (input.charAt(j) == '(')
+                if (currentChar == '(')
                     openingBracket = true;
 
-                if (input.charAt(j) == ')')
+                if (currentChar == ')')
                     closingBracket = true;
 
-                if (openingBracket && closingBracket) {
+                if (pairedBrackets) {
                     openingBracket = false;
                     closingBracket = false;
                 }
 
-                if (!openingBracket && closingBracket) {
+                if (startedWithClosingBracket) {
                     isBalanced = false;
                     break outer;
                 }
             }
         }
+        displayResult(isBalanced);
+    }
 
+    private static void displayResult(boolean isBalanced) {
         if (isBalanced)
             out.println("BALANCED");
         else
             out.println("UNBALANCED");
-
     }
 
     @SuppressWarnings("unchecked")
