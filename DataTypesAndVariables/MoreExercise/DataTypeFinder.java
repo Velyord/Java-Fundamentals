@@ -43,7 +43,7 @@ public class DataTypeFinder {
                 int testVariable = Integer.parseInt(variable);
             } catch (Exception e) {
                 try {
-                    float testVariable = Float.parseFloat(variable);
+                    double testVariable = Double.parseDouble(variable);
                 } catch (Exception e2) {
                     String testVariable = variable;
                     if (testVariable.equals("END"))
