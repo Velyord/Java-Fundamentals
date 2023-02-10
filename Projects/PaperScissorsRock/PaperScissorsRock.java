@@ -1,18 +1,26 @@
 /*
 Условие:
-
+    Rock - Paper - Scissors is a simple two player game where you and your opponent (the computer)
+    simultaneously choose one of the following three options: "rock", "paper" or "scissors".
+    The rules are as follows:
+    · Rock beats scissors (the scissors get broken by the rock)
+    · Scissors beats paper (the paper gets cut by the scissors)
+    · Paper beats rock (the paper covers the rock)
+    The winner is the player whose choice beats the choice of his opponent.
+    If both players choose the same option (e.g. "paper"), the game outcome is "draw":
 */
 package Projects.PaperScissorsRock;
-
-import static java.lang.System.out;
-import static java.lang.System.in;
 
 import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 
+import static java.lang.System.*;
+
 public class PaperScissorsRock {
     static Scanner scanner = new Scanner(in);
+    static int playerScore = 0;
+    static int computerScore = 0;
 
     public static void main(String[] args) {
         playGame();
@@ -24,16 +32,17 @@ public class PaperScissorsRock {
         String computersChoice = randomComputerChoice();
         out.printf("The computer chose %s.\n", computersChoice);
         displayGameWonOrLost(userInput, computersChoice);
+        out.printf("Your score: %d | Computer's score: %d\n", playerScore, computerScore);
         playAgain();
     }
 
     private static void playAgain() {
         out.println("Do you want to play again? [y]es/[n]o?");
         String userInput = setValue();
-        if (userInput.equals("yes"))
+        if (userInput.equals("yes") || userInput.equals("y"))
             playGame();
         else
-            out.println("Have a good day!");
+            out.printf("Game Over!\nYour score: %d | Computer's score: %d\n", playerScore, computerScore);
     }
 
     private static void displayGameWonOrLost(String userInput, String computersChoice) {
@@ -64,12 +73,19 @@ public class PaperScissorsRock {
                 }
                 break;
         }
+
         if (isDraw)
-            out.println("This game was a draw");
-        else if (isWon)
+            out.println("This game was a draw.");
+
+        else if (isWon) {
+            playerScore++;
             out.println("You win.");
-        else if (isLost)
+        }
+
+        else if (isLost) {
+            computerScore++;
             out.println("You lose.");
+        }
     }
 
     private static String randomComputerChoice() {
@@ -82,74 +98,15 @@ public class PaperScissorsRock {
         };
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> T setValue(T min, T max) {
-        String type = getType(max);
-        Object value = setAndCheckInputFor(type);
-        if (!isValueBetweenMinAndMax(value, min, max, type))
-            return setValue(min, max);
-        return (T) value;
-    }
-    private static <T> String getType(T max) {
-        if (max instanceof Double)
-            return "double";
-        else if (max instanceof Float)
-            return "float";
-        else if (max instanceof Long)
-            return "long";
-        else
-            return "int";
-    }
-    @SuppressWarnings("unchecked")
-    private static <T> T setAndCheckInputFor(String type) {
-        Object value;
-        try {
-            switch (type) {
-                case "double": value = Double.parseDouble(scanner.nextLine()); break;
-                case "float":  value = Float.parseFloat(scanner.nextLine());   break;
-                case "long":   value = Long.parseLong(scanner.nextLine());     break;
-                case "int":    value = Integer.parseInt(scanner.nextLine());   break;
-                default:       value = null;                                   break;
-            }
-        } catch (Exception e) {
-            out.println("Невалидно число. Пробвайте пак!");
-            return setAndCheckInputFor(type);
-        }
-        return (T) value;
-    }
-    private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
-        double minDouble;
-        float minFloat;
-        switch (type) {
-            case "double":
-                minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
-                if ((double) value >= minDouble && (double) value <= (double) max)
-                    return true;
-                break;
-            case "float":
-                minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
-                if ((float) value >= minFloat && (float) value <= (float) max)
-                    return true;
-                break;
-            case "long":
-                if ((long) value >= (long) min && (long) value <= (long) max)
-                    return true;
-                break;
-            case "int":
-                if ((int) value >= (int) min && (int) value <= (int) max)
-                    return true;
-                break;
-        }
-        out.printf("Моля въведете число между %s и %s:\n", min, max);
-        return false;
-    }
     static int stringCount = 0;
+
     private static String setValue() {
         String value = scanner.nextLine();
         if (!hasValidChars(value) || !doesFollowTemplate(value))
             return setValue();
         return value;
     }
+
     private static <T> boolean hasValidChars(T value) {
         String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
         boolean isSpecialChar = false;
@@ -162,13 +119,14 @@ public class PaperScissorsRock {
             }
         if (isSpecialChar) {
             if (specialChar == ' ')
-                out.println("Разтоянията не са позволени. Пробвайте пак!");
+                out.println("Spaces are not allowed. Try again!");
             else
-                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
+                out.printf("%c is not allowed. Try again!\n", specialChar);
             return false;
         }
         return true;
     }
+
     private static <T> boolean doesFollowTemplate(T value) {
         stringCount++;
         String[] requiredStrings = {};
@@ -183,7 +141,7 @@ public class PaperScissorsRock {
         if (requiredStrings.length != 0) {
             List<String> requiredList = List.of(requiredStrings);
             if (!requiredList.contains(value.toString())) {
-                out.print("Моля въведете един от следните избори: \n| ");
+                out.print("Please pick one of the following choices: \n| ");
                 for (String requiredString : requiredStrings)
                     out.print(requiredString + " | ");
                 out.println(); // new line
@@ -192,12 +150,5 @@ public class PaperScissorsRock {
             }
         }
         return true;
-    }
-    public static int[] addIntToArray(int toBeAdded, int[] array) {
-        int[] newArray = new int[array.length + 1];
-        for (int i = 0; i < array.length; i++)
-            newArray[i] = array[i];
-        newArray[array.length] = toBeAdded;
-        return newArray;
     }
 }
