@@ -12,30 +12,39 @@ import java.util.List;
 
 public class MainTemplate {
     static Scanner scanner = new Scanner(in);
+
     public static void main(String[] args) {
 
     }
+
     @SuppressWarnings("unchecked")
     private static <T> T setValue(T min, T max) {
         String type = getType(max);
         Object value = setAndCheckInputFor(type);
-        if (!isValueBetweenMinAndMax(value, min, max, type))
+
+        if (!isValueBetweenMinAndMax(value, min, max, type)) {
             return setValue(min, max);
-        return (T) value;
+        } else {
+            return (T) value;
+        }
     }
+
     private static <T> String getType(T max) {
-        if (max instanceof Double)
+        if (max instanceof Double) {
             return "double";
-        else if (max instanceof Float)
+        } else if (max instanceof Float) {
             return "float";
-        else if (max instanceof Long)
+        } else if (max instanceof Long) {
             return "long";
-        else
+        } else {
             return "int";
+        }
     }
+
     @SuppressWarnings("unchecked")
     private static <T> T setAndCheckInputFor(String type) {
         Object value;
+
         try {
             switch (type) {
                 case "double": value = Double.parseDouble(scanner.nextLine()); break;
@@ -48,87 +57,117 @@ public class MainTemplate {
             out.println("Невалидно число. Пробвайте пак!");
             return setAndCheckInputFor(type);
         }
+
         return (T) value;
     }
+
     private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
         double minDouble;
         float minFloat;
+
         switch (type) {
             case "double":
                 minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
-                if ((double) value >= minDouble && (double) value <= (double) max)
+                if ((double) value >= minDouble && (double) value <= (double) max) {
                     return true;
-                break;
+                } break;
             case "float":
                 minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
-                if ((float) value >= minFloat && (float) value <= (float) max)
+                if ((float) value >= minFloat && (float) value <= (float) max) {
                     return true;
-                break;
+                } break;
             case "long":
-                if ((long) value >= (long) min && (long) value <= (long) max)
+                if ((long) value >= (long) min && (long) value <= (long) max) {
                     return true;
-                break;
+                } break;
             case "int":
-                if ((int) value >= (int) min && (int) value <= (int) max)
+                if ((int) value >= (int) min && (int) value <= (int) max) {
                     return true;
-                break;
+                } break;
         }
+
         out.printf("Моля въведете число между %s и %s:\n", min, max);
         return false;
     }
+
     static int stringCount = 0;
+
     private static String setValue() {
         String value = scanner.nextLine();
-        if (!hasValidChars(value) || !doesFollowTemplate(value))
+
+        if (!hasValidChars(value) || !doesFollowTemplate(value)) {
             return setValue();
-        return value;
+        } else {
+            return value;
+        }
     }
+
     private static <T> boolean hasValidChars(T value) {
         String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
         boolean isSpecialChar = false;
         char specialChar = ' ';
-        for (int i = 0; i < ((String) value).length(); i++)
+
+        for (int i = 0; i < ((String) value).length(); i++) {
             if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
                 isSpecialChar = true;
                 specialChar = value.toString().charAt(i);
                 break;
             }
+        }
+
         if (isSpecialChar) {
-            if (specialChar == ' ')
+            if (specialChar == ' ') {
                 out.println("Разтоянията не са позволени. Пробвайте пак!");
-            else
+            } else {
                 out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
+            }
+
             return false;
         }
+
         return true;
     }
+
     private static <T> boolean doesFollowTemplate(T value) {
         stringCount++;
         String[] requiredStrings = {};
-        if (stringCount == 1)
+
+        if (stringCount == 1) {
             requiredStrings = new String[]{}; // fill if needed
-        if (stringCount == 2)
+        } else if (stringCount == 2) {
             requiredStrings = new String[]{}; // fill for second var
-        if (stringCount > 2)
+        } else { // no more required strings
             requiredStrings = new String[]{}; // Keep empty
+        }
+
         if (requiredStrings.length != 0) {
             List<String> requiredList = List.of(requiredStrings);
+
             if (!requiredList.contains(value.toString())) {
                 out.print("Моля въведете един от следните избори: \n| ");
-                for (String requiredString : requiredStrings)
+
+                for (String requiredString : requiredStrings) {
                     out.print(requiredString + " | ");
-                out.println(); // new line
+                } out.println(); // new line
+
                 stringCount--;
+
                 return false;
             }
         }
+
         return true;
     }
+
     public static int[] addIntToArray(int toBeAdded, int[] array) {
         int[] newArray = new int[array.length + 1];
-        for (int i = 0; i < array.length; i++)
+
+        for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
+        }
+
         newArray[array.length] = toBeAdded;
+
         return newArray;
     }
 }
