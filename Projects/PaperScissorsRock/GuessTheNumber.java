@@ -17,13 +17,20 @@ import java.util.List;
 
 public class GuessTheNumber {
     static Scanner scanner = new Scanner(in);
+    static int correctGuesses = 0;
+    static int allGuesses = 0;
 
     public static void main(String[] args) {
+        playGame();
+    }
+
+    private static void playGame() {
         boolean hasGuessedCorrectly = false;
         int guessCount = 0;
         int computerNumber = pickARandomNumberBetween(1, 100);
 
         while (!hasGuessedCorrectly) {
+            out.print("Guess a number (1-100): ");
             int playerGuess = setValue(1, 100);
             guessCount++;
 
@@ -32,10 +39,27 @@ public class GuessTheNumber {
             } else if (playerGuess > computerNumber) {
                 out.println("Too High");
             } else {
+                correctGuesses++;
+                allGuesses += guessCount;
                 out.println("You guessed it");
                 out.println("Count of guesses: " + guessCount);
                 hasGuessedCorrectly = true;
             }
+        }
+        playAgain();
+    }
+
+    private static void playAgain() {
+        out.println("Do you want to play again? [y]es/[n]o?");
+        String userInput = setValue();
+        if (userInput.equals("yes") || userInput.equals("y")) {
+            playGame();
+        } else {
+            double averageGuessCount = (double) allGuesses / correctGuesses;
+            out.printf(
+                "Game Over!\nGuessed numbers: %d | Guesses made: %d | Average guesses: %.1f\n",
+                correctGuesses, allGuesses, averageGuessCount
+            );
         }
     }
 
@@ -107,5 +131,72 @@ public class GuessTheNumber {
         }
         out.printf("Please pick a number between %s and %s:\n", min, max);
         return false;
+    }
+
+    static int stringCount = 0;
+
+    private static String setValue() {
+        String value = scanner.nextLine();
+
+        if (!hasValidChars(value) || !doesFollowTemplate(value)) {
+            return setValue();
+        } else {
+            return value;
+        }
+    }
+
+    private static <T> boolean hasValidChars(T value) {
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|} 0123456789";
+        boolean isSpecialChar = false;
+        char specialChar = ' ';
+
+        for (int i = 0; i < ((String) value).length(); i++) {
+            if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
+                isSpecialChar = true;
+                specialChar = value.toString().charAt(i);
+                break;
+            }
+        }
+
+        if (isSpecialChar) {
+            if (specialChar == ' ') {
+                out.println("Разтоянията не са позволени. Пробвайте пак!");
+            } else {
+                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private static <T> boolean doesFollowTemplate(T value) {
+        stringCount++;
+        String[] requiredStrings = {};
+
+        if (stringCount > 1)
+            stringCount = 1;
+        else {
+            requiredStrings = new String[]{"y", "yes", "n", "no"}; // fill if needed
+        }
+
+        if (requiredStrings.length != 0) {
+            List<String> requiredList = List.of(requiredStrings);
+
+            if (!requiredList.contains(value.toString())) {
+                out.print("Please pick one of the following choices: \n| ");
+
+                for (String requiredString : requiredStrings) {
+                    out.print(requiredString + " | ");
+                } out.println(); // new line
+
+                stringCount--;
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }
