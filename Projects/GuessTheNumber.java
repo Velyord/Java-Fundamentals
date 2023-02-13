@@ -30,7 +30,7 @@ public class GuessTheNumber {
         int computerNumber = pickARandomNumberBetween(1, 100);
 
         while (!hasGuessedCorrectly) {
-            out.print("Guess a number (1-100): ");
+            out.print("\nGuess a number (1-100): ");
             int playerGuess = setValue(1, 100);
             guessCount++;
 
@@ -57,7 +57,7 @@ public class GuessTheNumber {
         } else {
             double averageGuessCount = (double) allGuesses / correctGuesses;
             out.printf(
-                "Game Over!\nGuessed numbers: %d | Guesses made: %d | Average guesses: %.1f\n",
+                "\nGame Over!\nGuessed numbers: %d | Guesses made: %d | Average guesses: %.1f\n",
                 correctGuesses, allGuesses, averageGuessCount
             );
         }
