@@ -9,7 +9,7 @@
     The winner is the player whose choice beats the choice of his opponent.
     If both players choose the same option (e.g. "paper"), the game outcome is "draw":
 */
-package Projects.PaperScissorsRock;
+package Projects;
 
 import java.util.Random;
 import java.util.Scanner;
