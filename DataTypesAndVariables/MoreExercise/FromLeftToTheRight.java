@@ -39,39 +39,38 @@ public class FromLeftToTheRight {
 
         for (int i=1; i<=linesCount; i++) {
             String input = setValue();
-            String firstNumber = "";
-            String secondNumber = "";
-            boolean isSpace = false;
+            String[] numbers = input.split(" ");
 
-            for (int j=0; j<input.length(); j++) {
-                if (input.charAt(j) == ' ') {
-                    isSpace = true;
-                    continue;
-                }
-                if (!isSpace)
-                    firstNumber += input.charAt(j);
-                else
-                    secondNumber += input.charAt(j);
-            }
-            long firstNumberAsNumber = Long.parseLong(firstNumber);
-            long secondNumberAsNumber = Long.parseLong(secondNumber);
+            byte firstNumberIndex = 0;
+            byte secondNumberIndex = 1;
+
+            long firstNumber = Long.parseLong(numbers[firstNumberIndex]);
+            long secondNumber = Long.parseLong(numbers[secondNumberIndex]);
+
             int sum;
 
-            if (firstNumberAsNumber > secondNumberAsNumber)
-                sum = sumDigitsOf(firstNumber);
-            else
-                sum = sumDigitsOf(secondNumber);
+            if (firstNumber > secondNumber) {
+                sum = sumDigitsOf(numbers[firstNumberIndex]);
+            } else {
+                sum = sumDigitsOf(numbers[secondNumberIndex]);
+            }
 
             out.println(sum);
         }
     }
+
     private static int sumDigitsOf(String number) {
         int sum = 0;
+
         for (int i=0; i<number.length(); i++) {
-            sum += number.charAt(i) - 48; // ASCII table
+            if (number.charAt(i) != '-') {
+                sum += number.charAt(i) - 48; // ASCII table
+            }
         }
+
         return sum;
     }
+
     @SuppressWarnings("unchecked")
     private static <T> T setValue(T min, T max) {
         String type = getType(max);
@@ -132,7 +131,7 @@ public class FromLeftToTheRight {
     static int stringCount = 0;
     private static String setValue() {
         String value = scanner.nextLine();
-        if (!hasValidChars(value))
+        if (!hasValidChars(value) || !doesFollowTemplate(value))
             return setValue();
         return value;
     }
