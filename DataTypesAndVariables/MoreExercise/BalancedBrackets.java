@@ -46,52 +46,53 @@ import java.util.List;
 
 public class BalancedBrackets {
     static Scanner scanner = new Scanner(in);
+
     public static void main(String[] args) {
         int linesCount = setValue(1, 20);
         boolean isBalanced = true;
         boolean openingBracket = false;
         boolean closingBracket = false;
 
-        outer: for (int i=1; i<=linesCount; i++) {
+        for (int i = 1; i <= linesCount; i++) {
             String input = scanner.nextLine();
+            char currentChar = input.charAt(0);
 
-            for (int j=0; j<input.length(); j++) {
-                char currentChar = input.charAt(j);
-                boolean consecutiveOpeningBrackets = (currentChar == '(' && openingBracket);
-                boolean consecutiveClosingBrackets = (currentChar == ')' && closingBracket);
-                boolean pairedBrackets = openingBracket && closingBracket;
-                boolean startedWithClosingBracket = !openingBracket && closingBracket;
+            boolean consecutiveOpeningBrackets = (currentChar == '(' && openingBracket);
+            boolean consecutiveClosingBrackets = (currentChar == ')' && closingBracket);
 
-                if (consecutiveOpeningBrackets || consecutiveClosingBrackets) {
-                    isBalanced = false;
-                    break outer;
-                }
+            if (consecutiveOpeningBrackets || consecutiveClosingBrackets)
+                isBalanced = false;
 
-                if (currentChar == '(')
-                    openingBracket = true;
-
-                if (currentChar == ')')
-                    closingBracket = true;
-
-                if (pairedBrackets) {
-                    openingBracket = false;
-                    closingBracket = false;
-                }
-
-                if (startedWithClosingBracket) {
-                    isBalanced = false;
-                    break outer;
-                }
+            if (currentChar == '(') {
+                openingBracket = true;
+            } else if (currentChar == ')') {
+                closingBracket = true;
             }
+
+            boolean pairedBrackets = openingBracket && closingBracket;
+
+            if (pairedBrackets) {
+                openingBracket = false;
+                closingBracket = false;
+            }
+
+            boolean startedWithClosingBracket = !openingBracket && closingBracket;
+
+            if (startedWithClosingBracket)
+                isBalanced = false;
         }
+        if (openingBracket)
+            isBalanced = false;
+
         displayResult(isBalanced);
     }
 
     private static void displayResult(boolean isBalanced) {
-        if (isBalanced)
+        if (isBalanced) {
             out.println("BALANCED");
-        else
+        } else {
             out.println("UNBALANCED");
+        }
     }
 
     @SuppressWarnings("unchecked")
