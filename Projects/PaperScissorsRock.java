@@ -27,7 +27,7 @@ public class PaperScissorsRock {
     }
 
     private static void playGame() {
-        out.print("Choose [p]aper, [s]cissors, [r]ock: ");
+        out.print("\nChoose [p]aper, [s]cissors, [r]ock: ");
         String userInput = setValue();
         String computersChoice = randomComputerChoice();
         out.printf("The computer chose %s.\n", computersChoice);
@@ -42,7 +42,7 @@ public class PaperScissorsRock {
         if (userInput.equals("yes") || userInput.equals("y"))
             playGame();
         else
-            out.printf("Game Over!\nYour score: %d | Computer's score: %d\n", playerScore, computerScore);
+            out.printf("\nGame Over!\nYour score: %d | Computer's score: %d\n", playerScore, computerScore);
     }
 
     private static void displayGameWonOrLost(String userInput, String computersChoice) {
