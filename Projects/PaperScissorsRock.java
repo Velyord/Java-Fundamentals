@@ -37,7 +37,7 @@ public class PaperScissorsRock {
     }
 
     private static void playAgain() {
-        out.println("Do you want to play again? [y]es/[n]o?");
+        out.println("\nDo you want to play again? [y]es/[n]o?");
         String userInput = setValue();
         if (userInput.equals("yes") || userInput.equals("y"))
             playGame();
