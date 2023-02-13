@@ -29,40 +29,31 @@ Examples:
 */
 package DataTypesAndVariables.MoreExercise;
 
-import static java.lang.System.out;
 import static java.lang.System.in;
 
 import java.util.Scanner;
 
 public class DataTypeFinder {
-    static Scanner scanner = new Scanner(in);
     public static void main(String[] args) {
-        while (true) {
-            String variable = scanner.nextLine();
-            try {
-                int testVariable = Integer.parseInt(variable);
-            } catch (Exception e) {
-                try {
-                    double testVariable = Double.parseDouble(variable);
-                } catch (Exception e2) {
-                    String testVariable = variable;
-                    if (testVariable.equals("END"))
-                        break;
-                    if (testVariable.equals("true") || testVariable.equals("false")) {
-                        out.println(variable + " is boolean type");
-                        continue;
-                    }
-                    if (testVariable.length() == 1) {
-                        out.println(variable + " is character type");
-                        continue;
-                    }
-                    out.println(variable + " is string type");
-                    continue;
-                }
-                out.println(variable + " is floating point type");
-                continue;
+        Scanner scanner = new Scanner(in);
+        String input = scanner.nextLine();
+
+        while (!input.equals("END")){
+            Scanner type = new Scanner(input);
+
+            if (type.hasNextBoolean()) {
+                System.out.println(input + " is boolean type");
+            } else if (type.hasNextInt()) {
+                System.out.println(input + " is integer type");
+            } else if (type.hasNextDouble()) {
+                System.out.println(input + " is floating point type");
+            } else if (input.length() == 1) {
+                System.out.println(input + " is character type");
+            } else if (type.hasNextLine()) {
+                System.out.println(input + " is string type");
             }
-            out.println(variable + " is integer type");
+
+            input = scanner.nextLine();
         }
     }
 }
