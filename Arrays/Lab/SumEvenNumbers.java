@@ -38,9 +38,9 @@ public class SumEvenNumbers {
     private static void displaySumOfEvenNumbers(int[] numbers) {
         int sum = 0;
 
-        for(int i = 0; i < numbers.length; i++) {
-            if (numbers[i] % 2 == 0) {
-                sum += numbers[i];
+        for (int item : numbers) {
+            if (item % 2 == 0) {
+                sum += item;
             }
         }
 
