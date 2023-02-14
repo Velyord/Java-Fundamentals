@@ -1,7 +1,6 @@
 package Projects.GuessTheNumber;
 
 import static Projects.GuessTheNumber.GuessTheNumber.scanner;
-
 import static java.lang.System.out;
 
 public class NumberValidator {
