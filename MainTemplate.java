@@ -4,11 +4,10 @@
 */
 // package PackageName;
 
-import static java.lang.System.out;
-import static java.lang.System.in;
-
 import java.util.Scanner;
 import java.util.List;
+
+import static java.lang.System.*;
 
 public class MainTemplate {
     static Scanner scanner = new Scanner(in);
@@ -32,15 +31,17 @@ public class MainTemplate {
     }
 
     // метод за намиране на типа на число
-    private static <T> String getType(T max) {
-        if (max instanceof Double) {
+    private static <T> String getType(T variable) {
+        if (variable instanceof Double) {
             return "double";
-        } else if (max instanceof Float) {
+        } else if (variable instanceof Float) {
             return "float";
-        } else if (max instanceof Long) {
+        } else if (variable instanceof Long) {
             return "long";
-        } else {
+        } else if (variable instanceof Integer) {
             return "int";
+        } else {
+            return "String";
         }
     }
 
@@ -181,18 +182,51 @@ public class MainTemplate {
     }
 
     // добавяне на елемент към масив
-    public static int[] addIntToArray(int toBeAdded, int[] array) {
-        // създаване на нов масив с 1 индекс повече от дадения масив.
-        int[] newArray = new int[array.length + 1];
+    @SuppressWarnings("unchecked")
+    private static <T> T addToArray(T toBeAdded, T array) {
+        String type = getType(toBeAdded);
 
-        // копиране на данните от данения масив в новия масив
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[i];
+        if (type.equals("int")) {
+            int[] newArray = addIntToArray((int) toBeAdded, (int[]) array);
+            return (T) newArray;
+        } else if (type.equals("double")) {
+            double[] newArray = addDoubleToArray((double) toBeAdded, (double[]) array);
+            return (T) newArray;
+        } else {
+            String[] newArray = addStringToArray((String) toBeAdded, (String[]) array);
+            return (T) newArray;
         }
+    }
 
-        // добавяне на новия елемент на последната позиция на новия масив
+    private static int[] addIntToArray(int toBeAdded, int[] array) {
+        int[] newArray = new int[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
+
+        System.arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
+
         int lastPosition = newArray.length - 1;
-        newArray[lastPosition] = toBeAdded;
+        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
+
+        return newArray;
+    }
+
+    private static double[] addDoubleToArray(double toBeAdded, double[] array) {
+        double[] newArray = new double[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
+
+        System.arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
+
+        int lastPosition = newArray.length - 1;
+        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
+
+        return newArray;
+    }
+
+    private static String[] addStringToArray(String toBeAdded, String[] array) {
+        String[] newArray = new String[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
+
+        arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
+
+        int lastPosition = newArray.length - 1;
+        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
 
         return newArray;
     }
