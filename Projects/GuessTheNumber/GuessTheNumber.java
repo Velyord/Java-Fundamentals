@@ -6,7 +6,7 @@
     the computer will give you a hint of whether the number is greater or less than the number you selected
     until you guess the correct number
 */
-package Projects;
+package Projects.GuessTheNumber;
 
 import static java.lang.System.out;
 import static java.lang.System.in;
