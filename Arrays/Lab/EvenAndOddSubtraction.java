@@ -34,6 +34,26 @@ public class EvenAndOddSubtraction {
                 .stream(setValue().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
+
+        differenceBetweenEvenAndOddNumbersFrom(array);
+
+    }
+
+    private static void differenceBetweenEvenAndOddNumbersFrom(int[] array) {
+        int evenSum = 0;
+        int oddSum = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] % 2 == 0) {
+                evenSum += array[i];
+            } else {
+                oddSum += array[i];
+            }
+        }
+
+        int difference = evenSum - oddSum;
+
+        out.println(difference);
     }
 
     // метод за въвеждане на число в дадени граници
@@ -136,7 +156,7 @@ public class EvenAndOddSubtraction {
 
     // хващане на специални/забранени символи
     private static <T> boolean hasValidChars(T value) {
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
@@ -166,7 +186,7 @@ public class EvenAndOddSubtraction {
 
         // тук се нагласят шаблоните на низовете, ако имат такива.
         if (stringCount == 1) {
-            requiredStrings = new String[]{"yes", "no", "maybe"}; // на първия низ. Празно ако няма такъв.
+            requiredStrings = new String[]{}; // на първия низ. Празно ако няма такъв.
         } else if (stringCount == 2) {
             requiredStrings = new String[]{}; // на втория низ. Празно ако няма такъв.
         } else { // могат да се добавят и още шаблони преди else. Последния шаблон стои празен.
