@@ -151,7 +151,7 @@ public class MainTemplate {
 
         // тук се нагласят шаблоните на низовете, ако имат такива.
         if (stringCount == 1) {
-            requiredStrings = new String[]{}; // на първия низ. Празно ако няма такъв.
+            requiredStrings = new String[]{"yes", "no", "maybe"}; // на първия низ. Празно ако няма такъв.
         } else if (stringCount == 2) {
             requiredStrings = new String[]{}; // на втория низ. Празно ако няма такъв.
         } else { // могат да се добавят и още шаблони преди else. Последния шаблон стои празен.
@@ -163,12 +163,10 @@ public class MainTemplate {
             List<String> requiredList = List.of(requiredStrings); // създава се списък със задължителни входни данни
 
             if (!requiredList.contains(value.toString())) { // ако се въведе нещо, различно от зададеното в шаблона
-                out.print("Моля въведете един от следните избори: \n| ");
+                out.println("Моля въведете един от следните избори:");
 
                 // завърта се цикъл, който да покаже на потребителя, кои са възможните опции
-                for (String requiredString : requiredStrings) {
-                    out.print(requiredString + " | "); // разделител
-                } out.println(); // нов ред
+                out.println(String.join(" | ", requiredStrings)); // разделител
 
                 stringCount--; // не се брои сгрешения низ.
 
