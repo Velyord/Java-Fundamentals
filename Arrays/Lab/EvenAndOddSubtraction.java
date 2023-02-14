@@ -1,20 +1,39 @@
 /*
 Условие:
+    Write a program that calculates the difference between
+    the sum of the even and the sum of the odd numbers in an array.
+Examples:
+    1 2 3 4 5 6
+    ->
+    3
+        2 + 4 + 6 = 12
+        1 + 3 + 5 = 9
+        12 – 9 = 3
+    3 5 7 9
+    ->
+    -24
 
+    2 4 6 8 10
+    ->
+    30
 */
-// package PackageName;
+package Arrays.Lab;
 
 import static java.lang.System.out;
 import static java.lang.System.in;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 
-public class MainTemplate {
+public class EvenAndOddSubtraction {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-
+        int[] array = Arrays
+                .stream(setValue().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 
     // метод за въвеждане на число в дадени граници
@@ -117,7 +136,7 @@ public class MainTemplate {
 
     // хващане на специални/забранени символи
     private static <T> boolean hasValidChars(T value) {
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}0123456789"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
@@ -132,11 +151,7 @@ public class MainTemplate {
 
         // При грешка се показва на потребителя, кой от въведените му символи е забранен
         if (isSpecialChar) {
-            if (specialChar == ' ') {
-                out.println("Разтоянията не са позволени. Пробвайте пак!");
-            } else {
-                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
-            }
+            out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
 
             return false;
         }
@@ -151,7 +166,7 @@ public class MainTemplate {
 
         // тук се нагласят шаблоните на низовете, ако имат такива.
         if (stringCount == 1) {
-            requiredStrings = new String[]{}; // на първия низ. Празно ако няма такъв.
+            requiredStrings = new String[]{"yes", "no", "maybe"}; // на първия низ. Празно ако няма такъв.
         } else if (stringCount == 2) {
             requiredStrings = new String[]{}; // на втория низ. Празно ако няма такъв.
         } else { // могат да се добавят и още шаблони преди else. Последния шаблон стои празен.
