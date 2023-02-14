@@ -1,20 +1,71 @@
 /*
 Условие:
-
+    Read two arrays and print on the console whether they are identical or not.
+    Arrays are identical if their elements are equal.
+    If the arrays are identical,
+    find the sum of the first one and print on the console the following message:
+    "Arrays are identical. Sum: {sum}",
+    otherwise find the first index where the arrays differ and print on the console following message:
+    "Arrays are not identical. Found difference at {index} index."
+Examples:
+    10 20 30
+    10 20 30
+    ->
+    Arrays are identical. Sum: 60
+    1 2 3 4 5
+    1 2 4 3 5
+    ->
+    Arrays are not identical. Found difference at 2 index.
+    1
+    10
+    ->
+    Arrays are not identical. Found difference at 0 index.
 */
-// package PackageName;
+package Arrays.Lab;
 
 import static java.lang.System.out;
 import static java.lang.System.in;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.List;
 
-public class MainTemplate {
+public class EqualArrays {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
+        int[] firstArray = Arrays
+                .stream(setValue().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        int[] secondArray = Arrays
+                .stream(setValue().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
 
+        checkIfArraysAreEqual(firstArray, secondArray);
+    }
+
+    private static void checkIfArraysAreEqual(int[] firstArray, int[] secondArray) {
+        boolean areIdentical = true;
+        int sum = 0;
+        int falseIndex = 0;
+
+        for (int i = 0; i < firstArray.length; i++) {
+            if (firstArray[i] != secondArray[i]) {
+                areIdentical = false;
+                falseIndex = i;
+                break;
+            } else {
+                sum += firstArray[i];
+            }
+        }
+
+        if (areIdentical) {
+            out.println("Arrays are identical. Sum: " + sum);
+        } else {
+            out.printf("Arrays are not identical. Found difference at %d index.", falseIndex);
+        }
     }
 
     // метод за въвеждане на число в дадени граници
@@ -117,10 +168,7 @@ public class MainTemplate {
 
     // хващане на специални/забранени символи
     private static <T> boolean hasValidChars(T value) {
-        // !#$%&'()*+,./:;<=>?@[]^_`{|}
-        // 0123456789
-        // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
@@ -135,11 +183,7 @@ public class MainTemplate {
 
         // При грешка се показва на потребителя, кой от въведените му символи е забранен
         if (isSpecialChar) {
-            if (specialChar == ' ') {
-                out.println("Разтоянията не са позволени. Пробвайте пак!");
-            } else {
-                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
-            }
+            out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
 
             return false;
         }
