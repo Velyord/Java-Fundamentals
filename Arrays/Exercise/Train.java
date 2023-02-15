@@ -29,7 +29,7 @@ Examples:
     100
     100
 */
-package Arrays.Lab;
+package Arrays.Exercise;
 
 import static java.lang.System.out;
 import static java.lang.System.in;

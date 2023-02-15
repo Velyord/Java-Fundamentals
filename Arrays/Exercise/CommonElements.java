@@ -18,7 +18,7 @@ Examples:
     ->
     code i love to
 */
-package Arrays.Lab;
+package Arrays.Exercise;
 
 import java.util.Scanner;
 import java.util.List;
