@@ -189,4 +189,11 @@ public class MainTemplate {
         newArray[newArray.length - 1] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
         return newArray;
     }
+
+    // принтиране на масив
+    private static void printArray(Object[] firstOutput) {
+        for (Object item : firstOutput) {
+            out.print(item + " ");
+        }
+    }
 }
