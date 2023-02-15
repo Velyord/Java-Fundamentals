@@ -181,4 +181,11 @@ public class MainTemplate {
 
         return true;
     }
+
+    // prints the content of a list
+    private static void printList(List<Integer> list) {
+        for (int item : list) {
+            out.print(item + " ");
+        }
+    }
 }
