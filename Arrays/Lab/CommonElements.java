@@ -41,7 +41,7 @@ public class CommonElements {
             }
         }
         for (Object item : commonArray) {
-            out.println(item + " ");
+            out.print(item + " ");
         }
     }
     @SuppressWarnings("unchecked")

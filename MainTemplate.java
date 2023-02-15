@@ -183,51 +183,10 @@ public class MainTemplate {
 
     // добавяне на елемент към масив
     @SuppressWarnings("unchecked")
-    private static <T> T addToArray(T toBeAdded, T array) {
-        String type = getType(toBeAdded);
-
-        if (type.equals("int")) {
-            int[] newArray = addIntToArray((int) toBeAdded, (int[]) array);
-            return (T) newArray;
-        } else if (type.equals("double")) {
-            double[] newArray = addDoubleToArray((double) toBeAdded, (double[]) array);
-            return (T) newArray;
-        } else {
-            String[] newArray = addStringToArray((String) toBeAdded, (String[]) array);
-            return (T) newArray;
-        }
-    }
-
-    private static int[] addIntToArray(int toBeAdded, int[] array) {
-        int[] newArray = new int[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
-
+    private static <T> T[] addToArray(T toBeAdded, T[] array) {
+        T[] newArray = (T[]) new Object[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
         System.arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
-
-        int lastPosition = newArray.length - 1;
-        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
-
-        return newArray;
-    }
-
-    private static double[] addDoubleToArray(double toBeAdded, double[] array) {
-        double[] newArray = new double[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
-
-        System.arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
-
-        int lastPosition = newArray.length - 1;
-        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
-
-        return newArray;
-    }
-
-    private static String[] addStringToArray(String toBeAdded, String[] array) {
-        String[] newArray = new String[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
-
-        arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
-
-        int lastPosition = newArray.length - 1;
-        newArray[lastPosition] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
-
+        newArray[newArray.length - 1] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
         return newArray;
     }
 }
