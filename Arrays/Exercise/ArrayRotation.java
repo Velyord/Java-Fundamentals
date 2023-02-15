@@ -1,19 +1,58 @@
 /*
 Условие:
+    Write a program that receives an array
+    and the number of rotations you have to perform (the first element goes at the end).
+    Print the resulting array.
+Examples:
+    51 47 32 61 21
+    2
+    ->
+    32 61 21 51 47
 
+    32 21 61 1
+    4
+    ->
+    32 21 61 1
+
+    2 4 15 31
+    5
+    ->
+    4 15 31 2
 */
-// package PackageName;
+package Arrays.Exercise;
 
-import java.util.Scanner;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.*;
 
-public class MainTemplate {
+public class ArrayRotation {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
+        List<Integer> listOfNumbers = Arrays
+                .stream(setValue().split(" "))
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .collect(Collectors.toList());
 
+        int rotations = setValue(0, Integer.MAX_VALUE);
+
+        rotateList(listOfNumbers, rotations);
+        printList(listOfNumbers);
+    }
+
+    private static void printList(List<Integer> listOfNumbers) {
+        for (int item : listOfNumbers) {
+            out.print(item + " ");
+        }
+    }
+
+    private static void rotateList(List<Integer> listOfNumbers, int rotations) {
+        for (int i = 1; i <= rotations; i++) {
+            listOfNumbers.add(listOfNumbers.get(0));
+            listOfNumbers.remove(0);
+        }
     }
 
     // метод за въвеждане на число в дадени граници
@@ -121,7 +160,7 @@ public class MainTemplate {
         // !#$%&'()*+,./:;<=>?@[]^_`{|}
         // 0123456789
         // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
@@ -179,5 +218,21 @@ public class MainTemplate {
         }
 
         return true;
+    }
+
+    // добавяне на елемент към масив
+    @SuppressWarnings("unchecked")
+    private static <T> T[] addToArray(T toBeAdded, T[] array) {
+        T[] newArray = (T[]) new Object[array.length + 1]; // създаване на нов масив с 1 индекс повече от дадения масив.
+        System.arraycopy(array, 0, newArray, 0, array.length); // копиране на данните от данения масив в новия масив
+        newArray[newArray.length - 1] = toBeAdded; // добавяне на новия елемент на последната позиция на новия масив
+        return newArray;
+    }
+
+    // принтиране на масив
+    private static void printArray(Object[] firstOutput) {
+        for (Object item : firstOutput) {
+            out.print(item + " ");
+        }
     }
 }
