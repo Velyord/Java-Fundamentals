@@ -33,6 +33,15 @@ public class CommonElements {
         String[] secondArray = scanner.nextLine().split(" ");
         Object[] commonArray = {};
 
+        commonArray = addCommonItemsFromArrays(firstArray, secondArray, commonArray);
+        printArray(commonArray);
+    }
+
+    private static Object[] addCommonItemsFromArrays(
+            String[] firstArray,
+            String[] secondArray,
+            Object[] commonArray
+    ) {
         for (String secondArrayItem : secondArray) {
             for (String firstArrayItem : firstArray) {
                 if (secondArrayItem.equals(firstArrayItem)) {
@@ -40,10 +49,16 @@ public class CommonElements {
                 }
             }
         }
-        for (Object item : commonArray) {
+
+        return commonArray;
+    }
+
+    private static void printArray(Object[] array) {
+        for (Object item : array) {
             out.print(item + " ");
         }
     }
+
     @SuppressWarnings("unchecked")
     private static <T> T[] addToArray(T toBeAdded, T[] array) {
         T[] newArray = (T[]) new Object[array.length + 1];
