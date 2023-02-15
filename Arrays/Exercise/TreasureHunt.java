@@ -103,15 +103,20 @@ public class TreasureHunt {
         int count = Integer.parseInt(input.substring(6));
         List<String> stolenItems = new ArrayList<>();
 
-        for (int i=1; i <= count; i++) {
-            stolenItems.add(chestItems.get(chestItems.size() - 1));
-            chestItems.remove(chestItems.size() - 1);
+        if (chestItems.size() <= count) {
+            stolenItems = chestItems;
+            chestItems.removeAll(chestItems);
+        } else {
+            for (int i=1; i <= count; i++) {
+                stolenItems.add(chestItems.get(chestItems.size() - 1));
+                chestItems.remove(chestItems.size() - 1);
+            }
         }
 
         String output = "";
 
         for (int i = stolenItems.size() - 1; i >= 0; i--) {
-            output = stolenItems.get(i) + " | ";
+            output += stolenItems.get(i) + " | ";
         }
         out.println(output.substring(0, output.length() - 3));
     }
