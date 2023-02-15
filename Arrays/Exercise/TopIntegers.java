@@ -34,22 +34,24 @@ public class TopIntegers {
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
-        for (int i = 0; i < numbers.length; i++) {
-            boolean isBiggestInSection = false;
-            int lastIndex = numbers.length - 1;
-            int topInt = numbers[lastIndex];
+        int max = Integer.MIN_VALUE;
 
-            for (int j = i; j < numbers.length - 1; j++) {
-                if (numbers[i] > numbers[j + 1]) {
-                    isBiggestInSection = true;
-                    topInt = numbers[i];
-                } else {
-                    isBiggestInSection = false;
+        for (int i = 0; i < numbers.length; i++) {
+            int currentNumber = numbers[i];
+
+            for (int j = i + 1; j < numbers.length; j++) {
+                if (max < numbers[j]) {
+                    max = numbers[j];
                 }
             }
-            if (isBiggestInSection || i == lastIndex) {
-                out.print(topInt + " ");
+
+            int lastIndex = numbers.length - 1;
+
+            if (currentNumber > max || i == lastIndex) {
+                out.print(currentNumber + " ");
             }
+
+            max = Integer.MIN_VALUE;
         }
     }
 
