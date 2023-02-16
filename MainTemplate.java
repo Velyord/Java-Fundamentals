@@ -6,6 +6,7 @@
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static java.lang.System.in;
 import static java.lang.System.out;
@@ -183,10 +184,12 @@ public class MainTemplate {
     }
 
     // принтира съдържанието на лист
-    private static void printList(List<Integer> list) {
-        for (int item : list) {
-            out.print(item + " ");
-        }
+    private static <T> void printList(List<T> targets) {
+        System.out.println(
+                targets.stream()
+                        .map(String::valueOf)
+                        .collect(Collectors.joining("|"))
+        );
     }
 
     public static <T> void reverseList(List<T> list) {
