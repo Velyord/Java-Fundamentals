@@ -188,4 +188,12 @@ public class MainTemplate {
             out.print(item + " ");
         }
     }
+
+    public static <T> void reverseList(List<T> list) {
+        if (list.size() <= 1 || list == null)
+            return;
+        T value = list.remove(0);
+        reverseList(list);
+        list.add(value);
+    }
 }
