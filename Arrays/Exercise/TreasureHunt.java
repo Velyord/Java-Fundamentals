@@ -66,8 +66,6 @@ Examples:
 */
 package Arrays.Exercise;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.System.in;
@@ -77,236 +75,116 @@ public class TreasureHunt {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
-        String[] initialLoot = setValue().split("\\|");
-        List<String> chestItems = new ArrayList<>(List.of(initialLoot));
+        String[] treasureChest = scanner.nextLine().split("\\|");
+        String command = scanner.nextLine();
 
-        String input = setValue();
+        while (!command.equals("Yohoho!")) {
+            String[] commandParts = command.split(" ");
 
-        while (!input.equals("Yohoho!")) {
-            if (input.startsWith("Loot")) {
-                loot(input, chestItems);
-            } else if (input.startsWith("Drop")) {
-                drop(input, chestItems);
-            } else if (input.startsWith("Steal")) {
-                steal(input, chestItems);
-            } else {
-                out.println("ERROR!");
+            switch (commandParts[0]) {
+                case "Loot":
+                    treasureChest = loot(commandParts, treasureChest);
+                    break;
+                case "Drop":
+                    drop(commandParts, treasureChest);
+                    break;
+                case "Steal":
+                    treasureChest = steal(commandParts, treasureChest);
+                    break;
             }
 
-            input = setValue();
+            command = scanner.nextLine();
         }
 
-        out.println(chestItems);
+        double averageTreasure = calculateAverageTreasureGain(treasureChest);
+        displayTreasureGain(averageTreasure);
     }
 
-    private static void steal(String input, List<String> chestItems) {
-        int count = Integer.parseInt(input.substring(6));
-        List<String> stolenItems = new ArrayList<>();
-
-        if (chestItems.size() <= count) {
-            stolenItems = chestItems;
-            chestItems.removeAll(chestItems);
+    private static void displayTreasureGain(double averageTreasureGain) {
+        if (Double.isNaN(averageTreasureGain)) {
+            out.println("Failed treasure hunt.");
         } else {
-            for (int i=1; i <= count; i++) {
-                stolenItems.add(chestItems.get(chestItems.size() - 1));
-                chestItems.remove(chestItems.size() - 1);
+            out.printf("Average treasure gain: %.2f pirate credits.", averageTreasureGain);
+        }
+    }
+
+    private static double calculateAverageTreasureGain(String[] treasureChest) {
+        int sum = 0;
+
+        for (String item : treasureChest) {
+            sum += item.length();
+        }
+
+        return (double) sum / treasureChest.length;
+    }
+
+    private static String[] steal(String[] commandParts, String[] treasureChest) {
+        int numberOfStealingItems = Integer.parseInt(commandParts[1]);
+
+        if (numberOfStealingItems < treasureChest.length) {
+            for (int i = 0; i < numberOfStealingItems; i++) {
+                int indexStartedStealing = treasureChest.length - numberOfStealingItems + i;
+                System.out.print(treasureChest[indexStartedStealing]);
+
+                if (i != numberOfStealingItems - 1) {
+                    System.out.print(", ");
+                }
             }
-        }
 
-        String output = "";
+            int countOfLeftItems = treasureChest.length - numberOfStealingItems;
+            String[] tempChest = new String[countOfLeftItems];
 
-        for (int i = stolenItems.size() - 1; i >= 0; i--) {
-            output += stolenItems.get(i) + " | ";
-        }
-        out.println(output.substring(0, output.length() - 3));
-    }
+            System.arraycopy(treasureChest, 0, tempChest, 0, tempChest.length);
 
-    private static void drop(String input, List<String> chestItems) {
-        int index = Integer.parseInt(input.substring(5));
-        String toBeAdded = chestItems.get(index);
-        chestItems.remove(index);
-        chestItems.add(toBeAdded);
-    }
-
-    private static void loot(String input, List<String> chestItems) {
-        String[] loot = input.split(" ");
-
-        for (String item : loot) {
-            if (!item.equals("Loot") && !chestItems.contains(item)) {
-                chestItems.add(0, item);
-            }
-        }
-    }
-
-    // метод за въвеждане на число в дадени граници
-    @SuppressWarnings("unchecked")
-    private static <T> T setValue(T min, T max) {
-        String type = getType(max); // намиране на типа му според зададената му максимална граница
-        Object value = setAndCheckInputFor(type); // задаване на числото според неговия тип и проверка за изключения
-
-        // ако не е в дадената граница се повтаря метода
-        if (!isValueBetweenMinAndMax(value, min, max, type)) {
-            return setValue(min, max);
+            treasureChest = tempChest;
         } else {
-            return (T) value;
-        }
-    }
+            for (int i = 0; i < treasureChest.length; i++) {
+                System.out.print(treasureChest[i]);
 
-    // метод за намиране на типа на число
-    private static <T> String getType(T variable) {
-        if (variable instanceof Double) {
-            return "double";
-        } else if (variable instanceof Float) {
-            return "float";
-        } else if (variable instanceof Long) {
-            return "long";
-        } else if (variable instanceof Integer) {
-            return "int";
-        } else {
-            return "String";
-        }
-    }
-
-    // задава се число според прихванатия му тип, ако се хване изключение, трябва да се въведе ново число
-    @SuppressWarnings("unchecked")
-    private static <T> T setAndCheckInputFor(String type) {
-        Object value;
-
-        try {
-            switch (type) {
-                case "double": value = Double.parseDouble(scanner.nextLine()); break;
-                case "float":  value = Float.parseFloat(scanner.nextLine());   break;
-                case "long":   value = Long.parseLong(scanner.nextLine());     break;
-                case "int":    value = Integer.parseInt(scanner.nextLine());   break;
-                default:       value = null;                                   break;
+                if (i != treasureChest.length - 1) {
+                    System.out.print(", ");
+                }
             }
-        } catch (Exception e) {
-            out.println("Невалидно число. Пробвайте пак!");
-            return setAndCheckInputFor(type);
+
+            treasureChest = new String[0];
         }
 
-        return (T) value;
+        System.out.println();
+
+        return treasureChest;
     }
 
-    // метод за проверка на входното число, дали е в зададените граници според неговия тип
-    private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
-        // променливите са за постигане на максимално негативно число при числата с плаваща запетая.
-        double minDouble;
-        float minFloat;
+    private static void drop(String[] commandParts, String[] treasureChest) {
+        int position = Integer.parseInt(commandParts[1]);
 
-        // проверка дали входното число е правилно избрано според зададените граници
-        switch (type) {
-            case "double":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
-                if ((double) value >= minDouble && (double) value <= (double) max) {
-                    return true;
-                } break;
-            case "float":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
-                if ((float) value >= minFloat && (float) value <= (float) max) {
-                    return true;
-                } break;
-            case "long":
-                if ((long) value >= (long) min && (long) value <= (long) max) {
-                    return true;
-                } break;
-            case "int":
-                if ((int) value >= (int) min && (int) value <= (int) max) {
-                    return true;
-                } break;
-        }
+        if (position <= treasureChest.length - 1 && position >= 0) {
+            String droppedItem = treasureChest[position];
 
-        // при грешка трябва да се въведе ново число
-        out.printf("Моля въведете число между %s и %s:\n", min, max);
-        return false;
-    }
+            for (int i = position; i < treasureChest.length - 1; i++) {
+                treasureChest[i] = treasureChest[i + 1];
+            }
 
-    static int stringCount = 0; // при въвеждане на низ, броячът нараства
-
-    // метод за откриване на грешни в низ от потребителя
-    private static String setValue() {
-        String value = scanner.nextLine();
-
-        /* ако има забранени символи или не следва задените шаблони,
-        низът на потребителя не се приема и трябва да се въведе нов */
-        if (!hasValidChars(value) || !doesFollowTemplate(value)) {
-            return setValue();
-        } else {
-            return value;
+            treasureChest[treasureChest.length - 1] = droppedItem;
         }
     }
 
-    // хващане на специални/забранени символи
-    private static <T> boolean hasValidChars(T value) {
-        // !#$%&'()*+,./:;<=>?@[]^_`{|}
-        // 0123456789
-        // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "#$%&'()*+,./:;<=>?@[]^_`{}"; // може да се променят забранените символи
-        boolean isSpecialChar = false;
-        char specialChar = ' ';
+    private static String[] loot(String[] commandParts, String[] treasureChest) {
+        for (int i = 1; i < commandParts.length; i++) {
+            boolean alreadyContained = false;
 
-        // Търсене на забранен символ чрез сравняване на входните данни с низът със забранени символи
-        for (int i = 0; i < ((String) value).length(); i++) {
-            if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
-                isSpecialChar = true;
-                specialChar = value.toString().charAt(i); // открит забранен символ
-                break;
+            for (String item : treasureChest) {
+                if (commandParts[i].equals(item)) {
+                    alreadyContained = true;
+                    break;
+                }
+            }
+
+            if (!alreadyContained) {
+                String newChest = commandParts[i] + " " + String.join(" ", treasureChest);
+                treasureChest = newChest.split(" ");
             }
         }
 
-        // При грешка се показва на потребителя, кой от въведените му символи е забранен
-        if (isSpecialChar) {
-            if (specialChar == ' ') {
-                out.println("Разтоянията не са позволени. Пробвайте пак!");
-            } else {
-                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    // подтикване на потребителя да въвежда предварително зададени низове.
-    private static <T> boolean doesFollowTemplate(T value) {
-        stringCount++;
-        String[] requiredStrings = {};
-
-        // тук се нагласят шаблоните на низовете, ако имат такива.
-        if (stringCount == 1) {
-            requiredStrings = new String[]{}; // на първия низ. Празно ако няма такъв.
-        } else if (stringCount == 2) {
-            requiredStrings = new String[]{}; // на втория низ. Празно ако няма такъв.
-        } else { // могат да се добавят и още шаблони преди else. Последния шаблон стои празен.
-            requiredStrings = new String[]{};
-        }
-
-        // ако е зададен шаблон се изпълнява следния код.
-        if (requiredStrings.length != 0) {
-            List<String> requiredList = List.of(requiredStrings); // създава се списък със задължителни входни данни
-
-            if (!requiredList.contains(value.toString())) { // ако се въведе нещо, различно от зададеното в шаблона
-                out.println("Моля въведете един от следните избори:");
-
-                // завърта се цикъл, който да покаже на потребителя, кои са възможните опции
-                out.println(String.join(" | ", requiredStrings)); // разделител
-
-                stringCount--; // не се брои сгрешения низ.
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // принтира съдържанието на лист
-    private static void printList(List<Integer> list) {
-        for (int item : list) {
-            out.print(item + " ");
-        }
+        return treasureChest;
     }
 }
