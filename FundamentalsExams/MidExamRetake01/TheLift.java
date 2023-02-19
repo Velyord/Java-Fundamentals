@@ -37,12 +37,11 @@ Examples:
         Second state – 4 4 0  -> 14 people left
         Third state – 4 4 4 -> 10 people left, but there are no more wagons.
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake01;
+package FundamentalsExams.MidExamRetake01;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static java.lang.System.in;
 import static java.lang.System.out;

@@ -67,11 +67,10 @@ Examples:
     ->
     Invalid order!
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake01;
+package FundamentalsExams.MidExamRetake01;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static java.lang.System.*;
 

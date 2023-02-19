@@ -88,7 +88,7 @@ Examples:
     Sorry you lose :(
     a 2 4 a 2 4
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake01;
+package FundamentalsExams.MidExamRetake01;
 
 import java.util.ArrayList;
 import java.util.Arrays;

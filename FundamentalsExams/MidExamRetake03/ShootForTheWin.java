@@ -53,7 +53,7 @@ Examples:
     ->
     Shot targets: 4 -> -1 120 -1 66 -1 -1
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake03;
+package FundamentalsExams.MidExamRetake03;
 
 import java.util.Arrays;
 import java.util.List;

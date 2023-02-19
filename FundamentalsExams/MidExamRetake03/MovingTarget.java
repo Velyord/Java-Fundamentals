@@ -60,7 +60,7 @@ Examples:
     Strike missed!
     1|2|3|4|5
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake03;
+package FundamentalsExams.MidExamRetake03;
 
 import java.util.Arrays;
 import java.util.List;

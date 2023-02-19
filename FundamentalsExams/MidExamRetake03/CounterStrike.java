@@ -45,7 +45,7 @@ End of battle
 ->
 Won battles: 4. Energy left: 94
 */
-package FundamentalsExams.ProgramingFundamentalsMidExamRetake03;
+package FundamentalsExams.MidExamRetake03;
 
 import java.util.List;
 import java.util.Scanner;
