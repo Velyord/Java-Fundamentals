@@ -104,32 +104,72 @@ public class LadyBugs {
             String direction = commandParts[1];
             int bugOnPosition = Integer.parseInt(commandParts[0]);
             int movement = Integer.parseInt(commandParts[2]);
+            boolean hasMoved = false;
 
             if (ladyBugs[bugOnPosition] == 1) {
                 switch (direction) {
                     case "left":
-                        moveLeft(bugOnPosition, movement, ladyBugs);
+                        moveLeft(bugOnPosition, movement, ladyBugs, hasMoved);
                         break;
                     case "right":
+                        moveRight(bugOnPosition, movement, ladyBugs, hasMoved);
                         break;
                 }
             }
+
             command = setValue();
         }
 
-        out.println(Arrays.toString(ladyBugs));
+        String output = "";
+
+        for (int item : ladyBugs) {
+            output += item + " ";
+        }
+
+        out.println(output);
     }
 
-    private static int[] moveLeft(int bugOnPosition, int movement, int[] ladyBugs) {
+    private static int[] moveLeft(int bugOnPosition, int movement, int[] ladyBugs, boolean hasMoved) {
         if (bugOnPosition - movement >= 0) {
             if (ladyBugs[bugOnPosition - movement] == 0) {
-                ladyBugs[bugOnPosition] = 0;
+                if (!hasMoved) {
+                    ladyBugs[bugOnPosition] = 0;
+                }
                 ladyBugs[bugOnPosition - movement] = 1;
             } else {
-                moveLeft(bugOnPosition - movement, movement, ladyBugs);
+                if (!hasMoved) {
+                    ladyBugs[bugOnPosition] = 0;
+                }
+                hasMoved = true;
+                moveLeft(bugOnPosition - movement, movement, ladyBugs, hasMoved);
             }
         } else {
-            ladyBugs[bugOnPosition] = 0;
+            if (!hasMoved) {
+                ladyBugs[bugOnPosition] = 0;
+            }
+        }
+
+        return ladyBugs;
+    }
+
+    private static int[] moveRight(int bugOnPosition, int movement, int[] ladyBugs, boolean hasMoved) {
+        if (bugOnPosition + movement < ladyBugs.length) {
+            if (ladyBugs[bugOnPosition + movement] == 0) {
+                if (!hasMoved) {
+                    ladyBugs[bugOnPosition] = 0;
+                }
+                ladyBugs[bugOnPosition + movement] = 1;
+            } else {
+                if (!hasMoved) {
+                    ladyBugs[bugOnPosition] = 0;
+                }
+                hasMoved = true;
+                moveRight(bugOnPosition + movement, movement, ladyBugs, hasMoved);
+            }
+        } else {
+            if (!hasMoved) {
+                ladyBugs[bugOnPosition] = 0;
+            }
         }
 
         return ladyBugs;
