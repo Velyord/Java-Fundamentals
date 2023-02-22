@@ -85,13 +85,54 @@ public class LadyBugs {
                 .boxed()
                 .collect(Collectors.toList());
 
+        while (indexesOfLadybugs.size() < fieldSize) {
+            indexesOfLadybugs.add(-1);
+        }
+
+        int[] ladyBugs = new int[fieldSize];
+
+        for (int i = 0; i < fieldSize; i++) {
+            if (indexesOfLadybugs.get(i) >= 0 && indexesOfLadybugs.get(i) < fieldSize) {
+                ladyBugs[indexesOfLadybugs.get(i)] = 1;
+            }
+        }
+
         String command = setValue();
 
         while (!command.equals("end")) {
+            String[] commandParts = command.split(" ");
+            String direction = commandParts[1];
+            int bugOnPosition = Integer.parseInt(commandParts[0]);
+            int movement = Integer.parseInt(commandParts[2]);
 
-
+            if (ladyBugs[bugOnPosition] == 1) {
+                switch (direction) {
+                    case "left":
+                        moveLeft(bugOnPosition, movement, ladyBugs);
+                        break;
+                    case "right":
+                        break;
+                }
+            }
             command = setValue();
         }
+
+        out.println(Arrays.toString(ladyBugs));
+    }
+
+    private static int[] moveLeft(int bugOnPosition, int movement, int[] ladyBugs) {
+        if (bugOnPosition - movement >= 0) {
+            if (ladyBugs[bugOnPosition - movement] == 0) {
+                ladyBugs[bugOnPosition] = 0;
+                ladyBugs[bugOnPosition - movement] = 1;
+            } else {
+                moveLeft(bugOnPosition - movement, movement, ladyBugs);
+            }
+        } else {
+            ladyBugs[bugOnPosition] = 0;
+        }
+
+        return ladyBugs;
     }
 
     // метод за въвеждане на число в дадени граници
