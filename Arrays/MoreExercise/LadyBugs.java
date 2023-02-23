@@ -70,6 +70,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.abs;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
@@ -91,9 +92,9 @@ public class LadyBugs {
 
         int[] ladyBugs = new int[fieldSize];
 
-        for (int i = 0; i < fieldSize; i++) {
-            if (indexesOfLadybugs.get(i) >= 0 && indexesOfLadybugs.get(i) < fieldSize) {
-                ladyBugs[indexesOfLadybugs.get(i)] = 1;
+        for (Integer indexOfLadybug : indexesOfLadybugs) {
+            if (indexOfLadybug >= 0 && indexOfLadybug < fieldSize) {
+                ladyBugs[indexOfLadybug] = 1;
             }
         }
 
@@ -106,14 +107,16 @@ public class LadyBugs {
             int movement = Integer.parseInt(commandParts[2]);
             boolean hasMoved = false;
 
-            if (ladyBugs[bugOnPosition] == 1) {
-                switch (direction) {
-                    case "left":
-                        moveLeft(bugOnPosition, movement, ladyBugs, hasMoved);
-                        break;
-                    case "right":
-                        moveRight(bugOnPosition, movement, ladyBugs, hasMoved);
-                        break;
+            if (bugOnPosition >= 0 && bugOnPosition < fieldSize) {
+                if (ladyBugs[bugOnPosition] == 1) {
+                    switch (direction) {
+                        case "left":
+                            moveLeft(bugOnPosition, movement, ladyBugs, hasMoved);
+                            break;
+                        case "right":
+                            moveRight(bugOnPosition, movement, ladyBugs, hasMoved);
+                            break;
+                    }
                 }
             }
 
@@ -130,6 +133,14 @@ public class LadyBugs {
     }
 
     private static int[] moveLeft(int bugOnPosition, int movement, int[] ladyBugs, boolean hasMoved) {
+        if (abs(movement) >= ladyBugs.length) {
+            ladyBugs[bugOnPosition] = 0;
+            return ladyBugs;
+        }
+        if (movement < 0) {
+            moveRight(bugOnPosition, abs(movement), ladyBugs, hasMoved);
+            return ladyBugs;
+        }
         if (bugOnPosition - movement >= 0) {
             if (ladyBugs[bugOnPosition - movement] == 0) {
                 if (!hasMoved) {
@@ -153,6 +164,14 @@ public class LadyBugs {
     }
 
     private static int[] moveRight(int bugOnPosition, int movement, int[] ladyBugs, boolean hasMoved) {
+        if (abs(movement) >= ladyBugs.length) {
+            ladyBugs[bugOnPosition] = 0;
+            return ladyBugs;
+        }
+        if (movement < 0) {
+            moveLeft(bugOnPosition, abs(movement), ladyBugs, hasMoved);
+            return ladyBugs;
+        }
         if (bugOnPosition + movement < ladyBugs.length) {
             if (ladyBugs[bugOnPosition + movement] == 0) {
                 if (!hasMoved) {
@@ -338,22 +357,5 @@ public class LadyBugs {
         }
 
         return true;
-    }
-
-    // принтира съдържанието на лист
-    private static <T> void printList(List<T> targets) {
-        System.out.println(
-                targets.stream()
-                        .map(String::valueOf)
-                        .collect(Collectors.joining("|"))
-        );
-    }
-
-    public static <T> void reverseList(List<T> list) {
-        if (list.size() <= 1 || list == null)
-            return;
-        T value = list.remove(0);
-        reverseList(list);
-        list.add(value);
     }
 }
