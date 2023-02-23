@@ -23,13 +23,17 @@ public class SignOfInteger {
     }
 
     private static void printIntegerSign(int integer) {
+        String sign;
+
         if (integer > 0) {
-            out.printf("The number %d is positive.", integer);
+            sign = "positive";
         } else if (integer < 0) {
-            out.printf("The number %d is negative.", integer);
+            sign = "negative";
         } else {
-            out.printf("The number %d is zero.", integer);
+            sign = "zero";
         }
+
+        out.printf("The number %d is %s.", integer, sign);
     }
 
     // метод за въвеждане на число в дадени граници
