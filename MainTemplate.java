@@ -1,5 +1,5 @@
 /*
-Условие:
+Task:
 
 */
 // package PackageName;
