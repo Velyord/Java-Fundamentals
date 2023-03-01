@@ -46,28 +46,27 @@ import static java.lang.System.out;
 public class Songs {
     static Scanner scanner = new Scanner(in);
 
-    public static void main(String[] args) {
-        class Song {
-            private final String name;
-            private final String typeList;
+    static class Song {
+        private final String name;
+        private final String typeList;
 
-            public Song (String typeList, String name, String time) {
-                this.typeList = typeList;
-                this.name = name;
-            }
-
-            public String getType() {
-                return this.typeList;
-            }
-
-            public String getName() {
-                return this.name;
-            }
+        public Song (String typeList, String name, String time) {
+            this.typeList = typeList;
+            this.name = name;
         }
 
+        public String getType() {
+            return this.typeList;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
+
+    public static void main(String[] args) {
         int numberOfSongs = setValue(0, Integer.MAX_VALUE);
-        List<String> typeList = new ArrayList<>();
-        List<String> all = new ArrayList<>();
+        List<Song> songList = new ArrayList<>();
 
         for (int i = 1; i <= numberOfSongs; i++) {
             String[] input = setValue().split("_");
@@ -76,19 +75,14 @@ public class Songs {
             String songTime = input[2];
             Song song = new Song(songType, songName, songTime);
 
-            all.add(song.getName());
-            typeList.add(song.getType() + "_" + song.getName());
+            songList.add(song);
         }
 
         String showType = setValue();
 
-        if (showType.equals("all")) {
-            all.forEach(out::println);
-        } else {
-            for (String item : typeList) {
-                if (item.startsWith(showType)) {
-                    out.println(item.substring(item.indexOf("_") + 1));
-                }
+        for (Song song : songList) {
+            if (showType.equals(song.getType()) || showType.equals("all")) {
+                out.println(song.getName());
             }
         }
     }
