@@ -184,11 +184,11 @@ public class MainTemplate {
     }
 
     // принтира съдържанието на лист
-    private static <T> void printList(List<T> targets) {
+    private static <T> void printList(List<T> targets, String delimiter) {
         System.out.println(
                 targets.stream()
                         .map(String::valueOf)
-                        .collect(Collectors.joining("|"))
+                        .collect(Collectors.joining(delimiter))
         );
     }
 
