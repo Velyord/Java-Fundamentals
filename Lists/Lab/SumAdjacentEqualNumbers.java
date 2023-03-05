@@ -8,22 +8,24 @@ Task:
     	Always sum the leftmost two equal neighbors (if
     several couples of equal neighbors are available).
 Examples:
-3 3 6 1
-->
-12 1
-    3 3 6 1  6 6 1  12 1
-8 2 2 4 8 16
--> 16 8 16
-    8 2 2 4 8 16  8 4 4 8 16  8 8 8 16  16 8 16
-5 4 2 1 1 4
--> 5 8 4
-    5 4 2 1 1 4  5 4 2 2 4  5 4 4 4  5 8 4
-0.1 0.1 5 -5
--> 0.2 5 -5
-    0.1 0.1 5 -5  0.2 5 -5
+    3 3 6 1
+    ->
+    12 1
+        3 3 6 1  6 6 1  12 1
+    8 2 2 4 8 16
+    -> 16 8 16
+        8 2 2 4 8 16  8 4 4 8 16  8 8 8 16  16 8 16
+    5 4 2 1 1 4
+    -> 5 8 4
+        5 4 2 1 1 4  5 4 2 2 4  5 4 4 4  5 8 4
+    0.1 0.1 5 -5
+    -> 0.2 5 -5
+        0.1 0.1 5 -5  0.2 5 -5
 */
 package Lists.Lab;
 
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -35,92 +37,28 @@ public class SumAdjacentEqualNumbers {
     static Scanner scanner = new Scanner(in);
 
     public static void main(String[] args) {
+        List<Double> numberList = Arrays
+                .stream(setValue()
+                .split(" "))
+                .map(Double::parseDouble)
+                .collect(Collectors.toList());
 
-    }
+        sumAdjacentEqualNumbers(numberList);
 
-    // метод за въвеждане на число в дадени граници
-    @SuppressWarnings("unchecked")
-    private static <T> T setValue(T min, T max) {
-        String type = getType(max); // намиране на типа му според зададената му максимална граница
-        Object value = setAndCheckInputFor(type); // задаване на числото според неговия тип и проверка за изключения
-
-        // ако не е в дадената граница се повтаря метода
-        if (!isValueBetweenMinAndMax(value, min, max, type)) {
-            return setValue(min, max);
-        } else {
-            return (T) value;
+        for (double number : numberList) {
+            DecimalFormat df = new DecimalFormat("0.#");
+            out.print(df.format(number) + " ");
         }
     }
 
-    // метод за намиране на типа на число
-    private static <T> String getType(T variable) {
-        if (variable instanceof Double) {
-            return "double";
-        } else if (variable instanceof Float) {
-            return "float";
-        } else if (variable instanceof Long) {
-            return "long";
-        } else if (variable instanceof Integer) {
-            return "int";
-        } else {
-            return "String";
-        }
-    }
-
-    // задава се число според прихванатия му тип, ако се хване изключение, трябва да се въведе ново число
-    @SuppressWarnings("unchecked")
-    private static <T> T setAndCheckInputFor(String type) {
-        Object value;
-
-        try {
-            switch (type) {
-                case "double": value = Double.parseDouble(scanner.nextLine()); break;
-                case "float":  value = Float.parseFloat(scanner.nextLine());   break;
-                case "long":   value = Long.parseLong(scanner.nextLine());     break;
-                case "int":    value = Integer.parseInt(scanner.nextLine());   break;
-                default:       value = null;                                   break;
+    private static void sumAdjacentEqualNumbers(List<Double> numberList) {
+        for (int i = 0; i < numberList.size() - 1; i++) {
+            if (numberList.get(i).equals(numberList.get(i + 1))) {
+                numberList.set(i, numberList.get(i) * 2);
+                numberList.remove(i + 1);
+                i = -1;
             }
-        } catch (Exception e) {
-            out.println("Невалидно число. Пробвайте пак!");
-            return setAndCheckInputFor(type);
         }
-
-        return (T) value;
-    }
-
-    // метод за проверка на входното число, дали е в зададените граници според неговия тип
-    private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
-        // променливите са за постигане на максимално негативно число при числата с плаваща запетая.
-        double minDouble;
-        float minFloat;
-
-        // проверка дали входното число е правилно избрано според зададените граници
-        switch (type) {
-            case "double":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
-                if ((double) value >= minDouble && (double) value <= (double) max) {
-                    return true;
-                } break;
-            case "float":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
-                if ((float) value >= minFloat && (float) value <= (float) max) {
-                    return true;
-                } break;
-            case "long":
-                if ((long) value >= (long) min && (long) value <= (long) max) {
-                    return true;
-                } break;
-            case "int":
-                if ((int) value >= (int) min && (int) value <= (int) max) {
-                    return true;
-                } break;
-        }
-
-        // при грешка трябва да се въведе ново число
-        out.printf("Моля въведете число между %s и %s:\n", min, max);
-        return false;
     }
 
     static int stringCount = 0; // при въвеждане на низ, броячът нараства
@@ -143,7 +81,7 @@ public class SumAdjacentEqualNumbers {
         // !#$%&'()*+,./:;<=>?@[]^_`{|}
         // 0123456789
         // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,/:;<=>?@[]^_`{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
@@ -201,22 +139,5 @@ public class SumAdjacentEqualNumbers {
         }
 
         return true;
-    }
-
-    // принтира съдържанието на лист
-    private static <T> void printList(List<T> targets) {
-        System.out.println(
-                targets.stream()
-                        .map(String::valueOf)
-                        .collect(Collectors.joining("|"))
-        );
-    }
-
-    public static <T> void reverseList(List<T> list) {
-        if (list.size() <= 1 || list == null)
-            return;
-        T value = list.remove(0);
-        reverseList(list);
-        list.add(value);
     }
 }
