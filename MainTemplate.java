@@ -181,4 +181,15 @@ public class MainTemplate {
 
         return true;
     }
+
+    private static void printList(List<Integer> numberList, String delimiter) {
+        out.println(
+                numberList
+                        .toString()
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace(",", "")
+                        .replace(" ", delimiter)
+        );
+    }
 }
