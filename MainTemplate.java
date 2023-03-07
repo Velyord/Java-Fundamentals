@@ -182,7 +182,7 @@ public class MainTemplate {
         return true;
     }
 
-    private static void printList(List<Integer> numberList, String delimiter) {
+    private static <T> void printList(List<T> numberList, String delimiter) {
         out.println(
                 numberList
                         .toString()
