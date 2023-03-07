@@ -182,21 +182,4 @@ public class MainTemplate {
 
         return true;
     }
-
-    // принтира съдържанието на лист
-    private static <T> void printList(List<T> targets, String delimiter) {
-        System.out.println(
-                targets.stream()
-                        .map(String::valueOf)
-                        .collect(Collectors.joining(delimiter))
-        );
-    }
-
-    public static <T> void reverseList(List<T> list) {
-        if (list.size() <= 1 || list == null)
-            return;
-        T value = list.remove(0);
-        reverseList(list);
-        list.add(value);
-    }
 }
