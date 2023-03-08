@@ -55,10 +55,7 @@ public class WordSynonyms {
             out.printf(
                     "%s - %s\n",
                     entry.getKey(),
-                    entry.getValue()
-                         .toString()
-                         .replace("[", "")
-                         .replace("]", "")
+                    String.join(", ", entry.getValue())
             );
         }
     }
@@ -234,16 +231,5 @@ public class WordSynonyms {
         }
 
         return true;
-    }
-
-    private static void printList(List<String> numberList, String delimiter) {
-        out.println(
-                numberList
-                        .toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .replace(",", "")
-                        .replace(" ", delimiter)
-        );
     }
 }
