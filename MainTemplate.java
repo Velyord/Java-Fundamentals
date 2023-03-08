@@ -183,13 +183,6 @@ public class MainTemplate {
     }
 
     private static <T> void printList(List<T> numberList, String delimiter) {
-        out.println(
-                numberList
-                        .toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .replace(",", "")
-                        .replace(" ", delimiter)
-        );
+        out.println(String.join(delimiter, numberList.toString()));
     }
 }
