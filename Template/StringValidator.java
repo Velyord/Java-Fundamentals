@@ -7,30 +7,32 @@ import static java.lang.System.out;
 public class StringValidator {
     private static String specialChars = "!#$%&'()*+./;<=>?@[]^_`{|}"; // 0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ -
 
+    private static int stringCount = 0; // при въвеждане на низ, броячът нараства
+
+    private static String value;
+
     public static void setSpecialChars(String specialChars) {
         StringValidator.specialChars = specialChars;
     }
 
-    static int stringCount = 0; // при въвеждане на низ, броячът нараства
-
     public static String setText() { // метод за откриване на грешни в низ от потребителя
-        String value = scan();
+        value = scan();
 
-        if (!hasValidChars(value) || !doesFollowTemplate(value)) { // ако има забранени символи или не следва задените шаблони, низът на потребителя не се приема и трябва да се въведе нов
+        if (!hasValidChars() || !doesFollowTemplate()) { // ако има забранени символи или не следва задените шаблони, низът на потребителя не се приема и трябва да се въведе нов
             return setText();
         } else {
             return value;
         }
     }
 
-    private static <T> boolean hasValidChars(T value) { // хващане на специални/забранени символи
+    private static boolean hasValidChars() { // хващане на специални/забранени символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
-        for (int i = 0; i < ((String) value).length(); i++) { // Търсене на забранен символ чрез сравняване на входните данни с низът със забранени символи
-            if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
+        for (int i = 0; i < (value).length(); i++) { // Търсене на забранен символ чрез сравняване на входните данни с низът със забранени символи
+            if (specialChars.contains(Character.toString(value.charAt(i)))) {
                 isSpecialChar = true;
-                specialChar = value.toString().charAt(i); // открит забранен символ
+                specialChar = value.charAt(i); // открит забранен символ
                 break;
             }
         }
@@ -48,7 +50,7 @@ public class StringValidator {
         return true;
     }
 
-    private static <T> boolean doesFollowTemplate(T value) { // подтикване на потребителя да въвежда предварително зададени низове.
+    private static boolean doesFollowTemplate() { // подтикване на потребителя да въвежда предварително зададени низове.
         stringCount++;
         String[] requiredStrings;
 
@@ -64,7 +66,7 @@ public class StringValidator {
         if (requiredStrings.length != 0) { // ако е зададен шаблон се изпълнява следния код.
             List<String> requiredList = List.of(requiredStrings); // създава се списък със задължителни входни данни
 
-            if (!requiredList.contains(value.toString())) { // ако се въведе нещо, различно от зададеното в шаблона
+            if (!requiredList.contains(value)) { // ако се въведе нещо, различно от зададеното в шаблона
                 out.println("Моля въведете един от следните избори:");
                 out.println(String.join(" | ", requiredStrings)); // показване на потребителя, кои са възможните опции
 
