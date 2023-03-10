@@ -16,7 +16,7 @@ public class StringValidator {
     }
 
     public static String setText() { // метод за откриване на грешни в низ от потребителя
-        value = scan();
+        value = userInput();
 
         if (!hasValidChars() || !doesFollowTemplate()) { // ако има забранени символи или не следва задените шаблони, низът на потребителя не се приема и трябва да се въведе нов
             return setText();

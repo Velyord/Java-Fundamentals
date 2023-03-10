@@ -11,7 +11,7 @@ public class PersonalUtils {
         out.println(String.join(delimiter, numberList.toString()));
     }
 
-    public static String scan() {
+    public static String userInput() {
         return scanner.nextLine();
     }
 }

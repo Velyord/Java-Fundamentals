@@ -48,10 +48,10 @@ public class NumberValidator {
 
         try {
             switch (valueType) {
-                case "double": value = Double.parseDouble(scan()); break;
-                case "float":  value = Float.parseFloat(scan());   break;
-                case "long":   value = Long.parseLong(scan());     break;
-                case "int":    value = Integer.parseInt(scan());   break;
+                case "double": value = Double.parseDouble(userInput()); break;
+                case "float":  value = Float.parseFloat(userInput());   break;
+                case "long":   value = Long.parseLong(userInput());     break;
+                case "int":    value = Integer.parseInt(userInput());   break;
                 default:       value = null;                       break;
             }
         } catch (Exception e) {
