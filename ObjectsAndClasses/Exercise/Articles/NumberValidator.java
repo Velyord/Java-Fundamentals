@@ -1,95 +1,147 @@
 package ObjectsAndClasses.Exercise.Articles;
 
-import java.util.Scanner;
-
-import static java.lang.System.in;
+import static ObjectsAndClasses.Exercise.Articles.PersonalUtils.*;
 import static java.lang.System.out;
 
 public class NumberValidator {
-    static Scanner scanner = new Scanner(in);
+    private static Object value;
+    private static Object minValue = 0;
+    private static Object maxValue = Integer.MAX_VALUE;
+    private static final String valueType = getType();
 
-    // метод за въвеждане на число в дадени граници
+    public static void setMinValue(Object minValue) {
+        NumberValidator.minValue = minValue;
+    }
+
+    public static void setMaxValue(Object maxValue) {
+        NumberValidator.maxValue = maxValue;
+    }
+
     @SuppressWarnings("unchecked")
-    public static <T> T setValue(T min, T max) {
-        String type = getType(max); // намиране на типа му според зададената му максимална граница
-        Object value = setAndCheckInputFor(type); // задаване на числото според неговия тип и проверка за изключения
+    public static <T> T setNumber() { // метод за въвеждане на правилно число в дадени граници
+        value = init();
 
-        // ако не е в дадената граница се повтаря метода
-        if (!isValueBetweenMinAndMax(value, min, max, type)) {
-            return setValue(min, max);
+        if (!isInScope()) { // ако не е в дадената граница се повтаря метода
+            return setNumber();
         } else {
             return (T) value;
         }
     }
 
-    // метод за намиране на типа на число
-    private static <T> String getType(T variable) {
-        if (variable instanceof Double) {
+    private static <T> String getType() { // метод за намиране на типа на число
+        if (maxValue instanceof Double) {
             return "double";
-        } else if (variable instanceof Float) {
+        } else if (maxValue instanceof Float) {
             return "float";
-        } else if (variable instanceof Long) {
+        } else if (maxValue instanceof Long) {
             return "long";
-        } else if (variable instanceof Integer) {
+        } else if (maxValue instanceof Integer) {
             return "int";
         } else {
             return "String";
         }
     }
 
-    // задава се число според прихванатия му тип, ако се хване изключение, трябва да се въведе ново число
     @SuppressWarnings("unchecked")
-    private static <T> T setAndCheckInputFor(String type) {
+    private static <T> T init() { // задава се число според прихванатия му тип, ако се хване изключение, трябва да се въведе ново число
         Object value;
 
         try {
-            switch (type) {
-                case "double": value = Double.parseDouble(scanner.nextLine()); break;
-                case "float":  value = Float.parseFloat(scanner.nextLine());   break;
-                case "long":   value = Long.parseLong(scanner.nextLine());     break;
-                case "int":    value = Integer.parseInt(scanner.nextLine());   break;
-                default:       value = null;                                   break;
+            switch (valueType) {
+                case "double": value = Double.parseDouble(scan()); break;
+                case "float":  value = Float.parseFloat(scan());   break;
+                case "long":   value = Long.parseLong(scan());     break;
+                case "int":    value = Integer.parseInt(scan());   break;
+                default:       value = null;                       break;
             }
         } catch (Exception e) {
             out.println("Невалидно число. Пробвайте пак!");
-            return setAndCheckInputFor(type);
+
+            return init();
         }
 
         return (T) value;
     }
 
-    // метод за проверка на входното число, дали е в зададените граници според неговия тип
-    private static <T> boolean isValueBetweenMinAndMax(T value, T min, T max, String type) {
-        // променливите са за постигане на максимално негативно число при числата с плаваща запетая.
-        double minDouble;
-        float minFloat;
-
-        // проверка дали входното число е правилно избрано според зададените граници
-        switch (type) {
-            case "double":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minDouble = (double) min == Double.MIN_VALUE ? -1 * Double.MAX_VALUE : (double) min;
-                if ((double) value >= minDouble && (double) value <= (double) max) {
-                    return true;
-                } break;
-            case "float":
-                // ако е зададено най-малкото число, го замести с най-голямото умножено по -1
-                minFloat = (float) min == Float.MIN_VALUE ? -1 * Float.MAX_VALUE : (float) min;
-                if ((float) value >= minFloat && (float) value <= (float) max) {
-                    return true;
-                } break;
-            case "long":
-                if ((long) value >= (long) min && (long) value <= (long) max) {
-                    return true;
-                } break;
-            case "int":
-                if ((int) value >= (int) min && (int) value <= (int) max) {
-                    return true;
-                } break;
+    private static boolean isInScope() { // метод за проверка на входното число, дали е в зададените граници според неговия тип
+        switch (valueType) { // проверка дали входното число е правилно избрано според зададените граници
+            case "double": return isInDoubleScope();
+            case "float":  return isInFloatScope();
+            case "long":   return isInLongScope();
+            case "int":    return isInIntScope();
+            default:       return false;
         }
+    }
 
-        // при грешка трябва да се въведе ново число
-        out.printf("Моля въведете число между %s и %s:\n", min, max);
-        return false;
+    private static boolean isInDoubleScope() {
+        double input = (double) value;
+        double min = (double) minValue == Double.MIN_VALUE ? -Double.MAX_VALUE : (double) minValue; // постигане на максимално негативно число
+        double max = (double) maxValue;
+
+        if (input >= min && input <= max) {
+            return true;
+        } else { // при грешка трябва да се въведе ново число
+            if (min == 0 && max == Double.MAX_VALUE) {
+                out.println("Моля въведете положително число:");
+            } else {
+                out.printf("Моля въведете число между %s и %s:\n", min, max);
+            }
+
+            return false;
+        }
+    }
+
+    private static boolean isInFloatScope() {
+        float input = (float) value;
+        float min = (float) minValue == Float.MIN_VALUE ? -Float.MAX_VALUE : (float) minValue; // постигане на максимално негативно число
+        float max = (float) maxValue;
+
+        if (input >= min && input <= max) {
+            return true;
+        } else { // при грешка трябва да се въведе ново число
+            if (min == 0 && max == Float.MAX_VALUE) {
+                out.println("Моля въведете положително число:");
+            } else {
+                out.printf("Моля въведете число между %s и %s:\n", min, max);
+            }
+
+            return false;
+        }
+    }
+
+    private static boolean isInLongScope() {
+        long input = (long) value;
+        long min = (long) minValue;
+        long max = (long) maxValue;
+
+        if (input >= min && input <= max) {
+            return true;
+        } else { // при грешка трябва да се въведе ново число
+            if (min == 0 && max == Long.MAX_VALUE) {
+                out.println("Моля въведете положително число:");
+            } else {
+                out.printf("Моля въведете число между %s и %s:\n", min, max);
+            }
+
+            return false;
+        }
+    }
+
+    private static boolean isInIntScope() {
+        int input = (int) value;
+        int min = (int) minValue;
+        int max = (int) maxValue;
+
+        if (input >= min && input <= max) {
+            return true;
+        } else { // при грешка трябва да се въведе ново число
+            if (min == 0 && max == Integer.MAX_VALUE) {
+                out.println("Моля въведете положително число:");
+            } else {
+                out.printf("Моля въведете число между %s и %s:\n", min, max);
+            }
+
+            return false;
+        }
     }
 }

@@ -34,18 +34,19 @@ Examples:
  */
 package ObjectsAndClasses.Exercise.Articles;
 
-import static ObjectsAndClasses.Exercise.Articles.NumberValidator.setValue;
-import static ObjectsAndClasses.Exercise.Articles.StringValidator.setValue;
+import static ObjectsAndClasses.Exercise.Articles.NumberValidator.setNumber;
+import static ObjectsAndClasses.Exercise.Articles.PersonalUtils.scan;
+import static ObjectsAndClasses.Exercise.Articles.StringValidator.setText;
 import static java.lang.System.out;
 
 public class Main {
     public static void main(String[] args) {
-        String[] input = setValue().split(", ");
+        String[] input = setText().split(", ");
         String title = input[0];
         String content = input[1];
         String author = input[2];
         Article article = new Article(title, content, author);
-        int editionsCount = setValue(0, Integer.MAX_VALUE);
+        int editionsCount = setNumber();
 
         editArticle(article, editionsCount);
         printArticle(article);
@@ -53,22 +54,28 @@ public class Main {
 
     private static void printArticle(Article article) {
         out.printf(
-                "%s-%s:%s",
+                "%s - %s: %s",
                 article.getTitle(), article.getContent(), article.getAuthor()
         );
     }
 
     private static void editArticle(Article article, int editionsCount) {
         for (int i = 1; i <= editionsCount; i++) {
-            String[] editionInput = setValue().split("\\s+");
-            String editionType = editionInput[0];
+            String command = scan();
+            String[] commandSplit = command.split(": ");
+            String edition = commandSplit[1];
 
-            switch (editionType) {
-                case "Edit:":         article.Edit(edition);         break;
-                case "ChangeAuthor:": article.ChangeAuthor(edition); break;
-                case "Rename:":       article.Rename(edition);       break;
-                default: /* do nothing */ break;
-            }
+            runCommandOnArticleWithEdition(command, article, edition);
+        }
+    }
+
+    private static void runCommandOnArticleWithEdition(String command, Article article, String edition) {
+        if (command.contains("Rename")) {
+            article.rename(edition);
+        } else if (command.contains("Edit")) {
+            article.edit(edition);
+        } else if (command.contains("ChangeAuthor")) {
+            article.changeAuthor(edition);
         }
     }
 }

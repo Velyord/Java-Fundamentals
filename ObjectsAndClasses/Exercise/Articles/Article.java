@@ -11,15 +11,15 @@ public class Article {
         this.author = author;
     }
 
-    public void Edit(String newContent) {
+    public void edit(String newContent) {
         setContent(newContent);
     }
 
-    public void ChangeAuthor(String newAuthor) {
+    public void changeAuthor(String newAuthor) {
         setAuthor(newAuthor);
     }
 
-    public void Rename(String newTitle) {
+    public void rename(String newTitle) {
         setTitle(newTitle);
     }
 
