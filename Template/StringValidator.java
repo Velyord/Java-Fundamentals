@@ -5,7 +5,11 @@ import static Template.PersonalUtils.*;
 import static java.lang.System.out;
 
 public class StringValidator {
-    private static final String specialChars = "!#$%&'()*+./;<=>?@[]^_`{|}"; // 0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ -
+    private static String specialChars = "!#$%&'()*+./;<=>?@[]^_`{|}"; // 0123456789 abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ -
+
+    public static void setSpecialChars(String specialChars) {
+        StringValidator.specialChars = specialChars;
+    }
 
     static int stringCount = 0; // при въвеждане на низ, броячът нараства
 
