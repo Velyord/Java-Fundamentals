@@ -1,7 +1,8 @@
-package Template;
+package ObjectsAndClasses.Exercise.OpinionPoll;
 
 import java.util.List;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 
 public class PersonalUtils {
