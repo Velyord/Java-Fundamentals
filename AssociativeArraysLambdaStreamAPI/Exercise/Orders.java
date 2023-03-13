@@ -8,33 +8,43 @@ import java.util.Scanner;
 import static java.lang.System.out;
 
 public class Orders {
-    static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Map<String, Integer> productsQuantityMap = new LinkedHashMap<>();
+    private static final Map<String, Double> productsPriceMap = new LinkedHashMap<>();
+
     public static void main(String[] args) {
-        Map<String, Map<Double, Integer>> productsMap = new LinkedHashMap<>();
-        fillMap(productsMap);
-        productsMap.forEach((key, value) -> out.printf("%s -> %.2f\n", key, value));
+        fillMap();
+        displayTotalPriceForProducts();
     }
 
-    private static void fillMap(Map<String, Map<Double, Integer>> productsMap) {
+    private static void displayTotalPriceForProducts() {
+        for (Map.Entry<String, Integer> entryQuantity : productsQuantityMap.entrySet()) {
+            String productName = entryQuantity.getKey();
+            double productPrice = productsPriceMap.get(productName);
+            int productQuantity = productsQuantityMap.get(productName);
+
+            double totalPrice = productPrice * productQuantity;
+
+            out.printf("%s -> %.2f\n", entryQuantity.getKey(), totalPrice);
+        }
+    }
+
+    private static void fillMap() {
         String input = setText();
 
         while (!input.equals("buy")) {
             String[] productInfo = input.split(" ");
             String productName = productInfo[0];
-            double price = Double.parseDouble(productInfo[1]);
-            int quantity = Integer.parseInt(productInfo[2]);
+            double newPrice = Double.parseDouble(productInfo[1]);
+            int newQuantity = Integer.parseInt(productInfo[2]);
 
-            if (productsMap.containsKey(productName)) {
-                Map<Double, Integer> innerMap = productsMap.get(productName);
-                Integer currentQuantity = innerMap.get(price);
-                int updatedQuantity = currentQuantity + quantity;
-                innerMap.put(price, updatedQuantity);
-                productsMap.put(productName, innerMap);
+            if (productsQuantityMap.containsKey(productName)) {
+                int currentQuantity = productsQuantityMap.get(productName);
+                productsQuantityMap.put(productName, currentQuantity + newQuantity);
             } else {
-                Map<Double, Integer> innerMap = new LinkedHashMap<>();
-                innerMap.put(price, quantity);
-                productsMap.put(productName, innerMap);
+                productsQuantityMap.put(productName, newQuantity);
             }
+            productsPriceMap.put(productName, newPrice);
 
             input = setText();
         }
