@@ -20,29 +20,24 @@ import static java.lang.System.out;
 
 public class CountCharsInAString {
     static Scanner scanner = new Scanner(System.in);
-    static Map<String, Integer> textLinkedMap = new LinkedHashMap<>();
+    static Map<Character, Integer> textLinkedMap = new LinkedHashMap<>();
 
     public static void main(String[] args) {
-        String[] textArray = scanner.nextLine().split("");
+        String text = scanner.nextLine();
+        char[] charArray = text.toCharArray();
 
-        fillLinkedMap(textArray);
-        printLinkedMap();
+        fillLinkedMap(charArray);
+        textLinkedMap.forEach((key, value) -> out.println(key + " -> " + value));
     }
 
-    private static void fillLinkedMap(String[] textArray) {
-        for (String letter : textArray) {
+    private static void fillLinkedMap(char[] charArray) {
+        for (char letter : charArray) {
             if (textLinkedMap.containsKey(letter)) {
-                int value = textLinkedMap.get(letter);
-                textLinkedMap.put(letter, value + 1);
-            } else if (!letter.equals(" ")){
+                int timesFound = textLinkedMap.get(letter);
+                textLinkedMap.put(letter, timesFound + 1);
+            } else if (letter != ' ') {
                 textLinkedMap.put(letter, 1);
             }
-        }
-    }
-
-    private static void printLinkedMap() {
-        for (Map.Entry<String, Integer> letter : textLinkedMap.entrySet()) {
-            out.printf("%s -> %s%n", letter.getKey(), letter.getValue());
         }
     }
 }
