@@ -65,6 +65,7 @@ Examples:
 package AssociativeArraysLambdaStreamAPI.Exercise;
 
 import java.util.*;
+import static java.lang.System.out;
 
 public class ForceBook {
     static Scanner scanner = new Scanner(System.in);
@@ -75,11 +76,11 @@ public class ForceBook {
 
         while (!input.equals("Lumpawaroo")) {
             boolean userExists;
-            String[] data = input.split(" ");
+            String[] data = input.split(" -> | \\| ");
 
-            if (data[1].equals("|")) {
+            if (input.contains("|")) {
                 String forceSide = data[0];
-                String forceUser = data[2];
+                String forceUser = data[1];
 
                 userExists = doesUserExist(forceUser);
 
@@ -88,7 +89,7 @@ public class ForceBook {
                 }
             } else {
                 String forceUser = data[0];
-                String forceSide = data[2];
+                String forceSide = data[1];
 
                 userExists = doesUserExist(forceUser);
 
@@ -98,9 +99,21 @@ public class ForceBook {
                     removeUser(forceUser);
                     addUser(forceSide, forceUser);
                 }
+
+                out.printf("%s joins the %s side!\n", forceUser, forceSide);
             }
 
             input = scanner.nextLine();
+        }
+
+        for (Map.Entry<String, List<String>> entry : sideUserMap.entrySet()) {
+            if (entry.getValue().size() > 0) {
+                out.printf("Side: %s, Members: %d\n", entry.getKey(), entry.getValue().size());
+
+                for (String member : entry.getValue()) {
+                    out.printf("! %s\n", member);
+                }
+            }
         }
     }
 
