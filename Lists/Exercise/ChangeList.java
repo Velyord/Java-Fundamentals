@@ -43,16 +43,21 @@ public class ChangeList {
         String input = setValue();
 
         while(!input.equals("end")) {
-            int toBeManipulated = Integer.parseInt(input.substring(7));
+            String[] commandParts = input.split(" ");
 
-            if (input.startsWith("Delete ")) {
-                integerList.removeIf(element -> element == toBeManipulated);
+            if (commandParts[0].equals("Delete")) {
+                int toBeDeleted = Integer.parseInt(commandParts[1]);
+                integerList.removeIf(element -> element == toBeDeleted);
             } else if (input.startsWith("Insert ")) {
-                integerList.add() // need to fix indexing, has to be done with array commandParts
+                int toBeAdded = Integer.parseInt(commandParts[1]);
+                int position = Integer.parseInt(commandParts[2]);
+                integerList.add(position, toBeAdded);
             }
 
             input = setValue();
         }
+
+        integerList.forEach(number -> out.print(number + " "));
     }
 
     // метод за въвеждане на число в дадени граници
