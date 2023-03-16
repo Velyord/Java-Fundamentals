@@ -2,7 +2,8 @@
 Task:
 
 */
-package Template;
+// package PackageName;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
