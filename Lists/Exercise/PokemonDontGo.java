@@ -1,18 +1,130 @@
 /*
 Task:
-
+    Ely likes to play Pokémon Go a lot. But Pokémon Go went bankrupt…
+    So, the developers made Pokémon Don't Go out of depression. And so, Ely now plays Pokémon Don't Go.
+    In Pokémon Don't Go, when you walk to a certain Pokémon, those closest to you naturally get further,
+    and those further from you get closer.
+    You will receive a sequence of integers, separated by spaces - the distances to the Pokémons.
+    Then you will begin receiving integers corresponding to indexes in that sequence.
+    When you receive an index, you must remove the element at that index from the sequence
+    (as if you've captured the Pokémon).
+    • You must INCREASE the value of all elements in the sequence which are LESS or EQUAL to
+    the removed element with the value of the removed element.
+    • You must DECREASE the value of all elements in the sequence which are GREATER than
+    the removed element with the value of the removed element.
+    If the given index is LESS than 0, remove the first element of the sequence,
+    and COPY the last element to its place.
+    If the given index is GREATER than the last index of the sequence,
+    remove the last element from the sequence, and COPY the first element to its place.
+    The increasing and decreasing of elements should be done in these cases, also.
+    The element whose value you should use is the REMOVED element.
+    The program ends when the sequence has no elements (there are no Pokémons left for Ely to catch).
+Input:
+    • On the first line of input, you will receive a sequence of integers, separated by spaces.
+    • On the next several lines, you will receive integers – the indexes.
+Output:
+    • When the program ends, you must print the summed up value of all REMOVED elements on the console.
+Constraints:
+    • The input data will consist ONLY of valid integers in the range [-2.147.483.648, 2.147.483.647].
+Examples:
+    4 5 3
+    1
+    1
+    0
+    ->
+    14
+        The array is {4, 5, 3}. The index is 1.
+        We remove 5, and we increase all lower than it and decrease all higher than it.
+        In this case, there are no higher than 5.
+        The result is {9, 8}.
+        The index is 1. So we remove 8 and decrease all higher than it.
+        The result is {1}.
+        The index is 0. So we remove 1.
+        No elements are left, so we print the sum of all removed elements.
+        5 + 8 + 1 = 14.
+    5 10 6 3 5
+    2
+    4
+    1
+    1
+    3
+    0
+    0
+    ->
+    51
+        Step 1: {11, 4, 9, 11}
+        Step 2: {22, 15, 20, 22}
+        Step 3: {7, 5, 7}
+        Step 4: {2, 2}
+        Step 5: {4, 4}
+        Step 6: {8}
+        Step 7: {} (empty).
+        Result = 6 + 11 + 15 + 5 + 2 + 4 + 8 = 51.
 */
-// package PackageName;
+package Lists.Exercise;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-public class OldMainTemplate {
+public class PokemonDontGo {
     static Scanner scanner = new Scanner(in);
+    private static int removedElementsSum = 0;
 
     public static void main(String[] args) {
+        List<Integer> distancesToPokemonsList = Arrays
+                .stream(setValue().split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
 
+        while (!distancesToPokemonsList.isEmpty()) {
+            int index = setValue(Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            if (index >= 0 && index <= distancesToPokemonsList.size() - 1) {
+                capturePokemon(index, distancesToPokemonsList);
+            } else if (index < 0) {
+                distancesToPokemonsList.add(
+                        1,
+                        distancesToPokemonsList.get(distancesToPokemonsList.size() - 1)
+                );
+
+                capturePokemon(0, distancesToPokemonsList);
+            } else {
+                distancesToPokemonsList.add(
+                        distancesToPokemonsList.size() - 1,
+                        distancesToPokemonsList.get(0)
+                );
+
+                capturePokemon(
+                        distancesToPokemonsList.size() - 1,
+                        distancesToPokemonsList
+                );
+            }
+        }
+
+        out.println(removedElementsSum);
+    }
+
+    private static void capturePokemon(int indexOfCapturedPokemon, List<Integer> list) {
+        int valueOfCapturedPokemon = list.get(indexOfCapturedPokemon);
+
+        list.remove(indexOfCapturedPokemon);
+        removedElementsSum += valueOfCapturedPokemon;
+        changeDistances(valueOfCapturedPokemon, list);
+    }
+
+    private static void changeDistances(int valueOfCapturedPokemon, List<Integer> list) {
+        for (int i = 0; i < list.size(); i ++) {
+            int currentPokemon = list.get(i);
+
+            if (currentPokemon <= valueOfCapturedPokemon) {
+                list.set(i, currentPokemon + valueOfCapturedPokemon);
+            } else {
+                list.set(i, currentPokemon - valueOfCapturedPokemon);
+            }
+        }
     }
 
     // метод за въвеждане на число в дадени граници
@@ -120,7 +232,7 @@ public class OldMainTemplate {
         // !#$%&'()*+,./:;<=>?@[]^_`{|}
         // 0123456789
         // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}-0123456789"; // може да се променят забранените символи
+        String specialChars = "!#$%&'()*+,./:;<=>?@[]^_`{|}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // може да се променят забранените символи
         boolean isSpecialChar = false;
         char specialChar = ' ';
 
