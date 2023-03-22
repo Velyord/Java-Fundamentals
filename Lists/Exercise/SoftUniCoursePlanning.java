@@ -64,185 +64,95 @@ package Lists.Exercise;
 
 import java.util.*;
 import static java.lang.System.in;
-import static java.lang.System.out;
 
 public class SoftUniCoursePlanning {
     static Scanner scanner = new Scanner(in);
-    private static final List<String> schedule = new ArrayList<>(List.of(setValue().split(", ")));
 
     public static void main(String[] args) {
-        String commands = setValue();
+        List<String> courses = new ArrayList<>(List.of(scanner.nextLine().split(", ")));
 
-        while (!commands.contains("course start")) {
-            String[] commandParts = commands.split(":");
-            String action = commandParts[0];
-            String lessonTitle = commandParts[1];
+        String command = scanner.nextLine();
 
-            switch (action) {
+        while (!command.equals("course start")) {
+
+            String[] commandArr = command.split(":");
+            String currentCommand = commandArr[0];
+            String lessonTitle = commandArr[1];
+
+            switch (currentCommand) {
                 case "Add":
-                    if (!schedule.contains(lessonTitle)) {
-                        schedule.add(lessonTitle);
+                    if (!courses.contains(lessonTitle)) {
+                        courses.add(lessonTitle);
                     }
                     break;
                 case "Insert":
-                    int position = Integer.parseInt(commandParts[2]);
+                    int index = Integer.parseInt(commandArr[2]);
 
-                    if (!schedule.contains(lessonTitle)) {
-                        schedule.add(position, lessonTitle);
+                    if (!courses.contains(lessonTitle)) {
+                        courses.add(index, lessonTitle);
                     }
                     break;
                 case "Remove":
-                    schedule.removeIf(lesson -> lesson.equals(lessonTitle));
-                    schedule.removeIf(lesson -> lesson.equals(lessonTitle + "-Exercise"));
+                    if (courses.contains(lessonTitle)) {
+                        courses.removeAll(Collections.singleton((lessonTitle)));
+                    }
                     break;
                 case "Swap":
-                    String otherLessonTitle = commandParts[2];
-                    swapPlaces(lessonTitle, otherLessonTitle);
+                    String secondTitle = commandArr[2];
+
+                    swap(lessonTitle, secondTitle, courses);
                     break;
                 case "Exercise":
-                    addExercise(lessonTitle);
+                    addExercise(lessonTitle, courses);
+
                     break;
-                default:
-                    out.println("Такава команда несъщестува. Пробвайте пак!");
             }
 
-            commands = setValue();
+            command = scanner.nextLine();
         }
 
-        for (int i = 0; i < schedule.size(); i++) {
-            out.printf("%d.%s\n", i + 1, schedule.get(i));
+        printList(courses);
+    }
+
+    private static void printList(List<String> courses) {
+        for (int i = 1; i <= courses.size(); i++) {
+            System.out.printf("%d.%s%n", i, courses.get(i - 1));
         }
     }
 
-    private static void addExercise(String lessonTitle) {
-        String lessonExercise = lessonTitle + "-Exercise";
+    private static void addExercise(String lessonTitle, List<String> courses) {
+        if (!courses.contains(lessonTitle)) {
+            courses.add(lessonTitle);
+            courses.add(lessonTitle + "-Exercise");
+        } else if (!courses.contains(lessonTitle + "-Exercise")) {
+            int indexOfLesson = courses.indexOf(lessonTitle);
 
-        if (schedule.contains(lessonTitle)) {
-            int indexOfLesson = schedule.indexOf(lessonTitle);
+            courses.add(indexOfLesson + 1, lessonTitle + "-Exercise");
+        }
+    }
 
-            if (indexOfLesson + 1 < schedule.size()) {
-                if (!schedule.get(indexOfLesson + 1).equals(lessonExercise)) {
-                    schedule.add(indexOfLesson + 1, lessonExercise);
-                }
+    private static void swap(String lessonTitle, String secondTitle, List<String> courses) {
+        boolean hasExercise1 = courses.contains(lessonTitle+"-Exercise");
+        boolean hasExercise2 = courses.contains(secondTitle+"-Exercise");
+
+        if (courses.contains(lessonTitle) && courses.contains(secondTitle)) {
+            int indexOfFirst = courses.indexOf(lessonTitle);
+            int indexOfSecond = courses.indexOf(secondTitle);
+
+            if (hasExercise1){
+                courses.set(indexOfFirst, secondTitle);
+                courses.set(indexOfSecond, lessonTitle);
+                courses.add(indexOfSecond + 1, lessonTitle+"-Exercise");
+                courses.remove(indexOfFirst + 1);
+            } else if (hasExercise2){
+                courses.set(indexOfSecond, lessonTitle);
+                courses.set(indexOfFirst, secondTitle);
+                courses.add(indexOfFirst + 1, secondTitle+"-Exercise");
+                courses.remove(indexOfSecond + 2); // judge is broken
             } else {
-                schedule.add(lessonExercise);
-            }
-        } else {
-            schedule.add(lessonTitle);
-            schedule.add(lessonExercise);
-        }
-    }
-
-    private static void swapPlaces(String lessonTitle, String otherLessonTitle) {
-        String lessonExercise = lessonTitle + "-Exercise";
-        String otherLessonExercise = otherLessonTitle + "-Exercise";
-        boolean lessonHasExercise = false;
-        boolean otherLessonHasExercise = false;
-
-        if (schedule.contains(lessonTitle) && schedule.contains(otherLessonTitle)) {
-            if (schedule.contains(lessonExercise)) {
-                lessonHasExercise = true;
-            }
-
-            if (schedule.contains(otherLessonExercise)) {
-                otherLessonHasExercise = true;
-            }
-
-            schedule.set(schedule.indexOf(lessonTitle), otherLessonTitle);
-            schedule.set(schedule.lastIndexOf(otherLessonTitle), lessonTitle);
-
-            if (lessonHasExercise) {
-                addExerciseNextToLesson(lessonExercise, lessonTitle);
-            }
-
-            if (otherLessonHasExercise) {
-                addExerciseNextToLesson(otherLessonExercise, otherLessonTitle);
+                courses.set(indexOfSecond, lessonTitle);
+                courses.set(indexOfFirst, secondTitle);
             }
         }
-    }
-
-    private static void addExerciseNextToLesson(String exercise, String lesson) {
-        schedule.remove(exercise);
-        schedule.add(schedule.indexOf(lesson) + 1, exercise);
-    }
-
-    static int stringCount = 0; // при въвеждане на низ, броячът нараства
-
-    // метод за откриване на грешни в низ от потребителя
-    private static String setValue() {
-        String value = scanner.nextLine();
-
-        /* ако има забранени символи или не следва задените шаблони,
-        низът на потребителя не се приема и трябва да се въведе нов */
-        if (!hasValidChars(value) || !doesFollowTemplate(value)) {
-            return setValue();
-        } else {
-            return value;
-        }
-    }
-
-    // хващане на специални/забранени символи
-    private static <T> boolean hasValidChars(T value) {
-        // !#$%&'()*+,./:;<=>?@[]^_`{|}
-        // 0123456789
-        // abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
-        String specialChars = "!#$%&'()*+./;<=>?@[]^_`{|}"; // може да се променят забранените символи
-        boolean isSpecialChar = false;
-        char specialChar = ' ';
-
-        // Търсене на забранен символ чрез сравняване на входните данни с низът със забранени символи
-        for (int i = 0; i < ((String) value).length(); i++) {
-            if (specialChars.contains(Character.toString(value.toString().charAt(i)))) {
-                isSpecialChar = true;
-                specialChar = value.toString().charAt(i); // открит забранен символ
-                break;
-            }
-        }
-
-        // При грешка се показва на потребителя, кой от въведените му символи е забранен
-        if (isSpecialChar) {
-            if (specialChar == ' ') {
-                out.println("Разтоянията не са позволени. Пробвайте пак!");
-            } else {
-                out.printf("%c e неразрешен символ. Пробвайте пак!\n", specialChar);
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    // подтикване на потребителя да въвежда предварително зададени низове.
-    private static <T> boolean doesFollowTemplate(T value) {
-        stringCount++;
-        String[] requiredStrings = {};
-
-        // тук се нагласят шаблоните на низовете, ако имат такива.
-        if (stringCount == 1) {
-            requiredStrings = new String[]{}; // на първия низ. Празно ако няма такъв.
-        } else if (stringCount == 2) {
-            requiredStrings = new String[]{}; // на втория низ. Празно ако няма такъв.
-        } else { // могат да се добавят и още шаблони преди else. Последния шаблон стои празен.
-            requiredStrings = new String[]{};
-        }
-
-        // ако е зададен шаблон се изпълнява следния код.
-        if (requiredStrings.length != 0) {
-            List<String> requiredList = List.of(requiredStrings); // създава се списък със задължителни входни данни
-
-            if (!requiredList.contains(value.toString())) { // ако се въведе нещо, различно от зададеното в шаблона
-                out.println("Моля въведете един от следните избори:");
-
-                // завърта се цикъл, който да покаже на потребителя, кои са възможните опции
-                out.println(String.join(" | ", requiredStrings)); // разделител
-
-                stringCount--; // не се брои сгрешения низ.
-
-                return false;
-            }
-        }
-
-        return true;
     }
 }
