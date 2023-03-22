@@ -64,6 +64,9 @@ Examples:
  */
 package RegularExpressions.Exercise;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,29 +75,73 @@ import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class StarEnigma {
-    static Scanner scanner = new Scanner(in);
+    private static final Scanner scanner = new Scanner(in);
+    private static final List<String> attackedPlanetsList = new ArrayList<>();
+    private static final List<String> destroyedPlanetsList = new ArrayList<>();
+
+    private static int attackedPlanetsCount = 0;
+    private static int destroyedPlanetsCount = 0;
 
     public static void main(String[] args) {
         int messagesCount = Integer.parseInt(scanner.nextLine());
 
         for(int i = 1; i <= messagesCount; i++) {
             String input = scanner.nextLine();
-            String regex = "[s t a r S T A R]";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(input);
-            int decryptionKey = 0;
-
-            while (matcher.find()) {
-                decryptionKey++;
-            }
-
-            StringBuilder decryptedMessage = new StringBuilder();
-
-            for (int characterIndex = 0; characterIndex < input.length(); characterIndex++) {
-                decryptedMessage.append((char) (input.charAt(characterIndex) - decryptionKey));
-            }
-
-            out.println(decryptedMessage); // @(?<planet>[A-Z][a-z]+)[^A-Za-z]*:
+            String decryptedMessage = decrypt(input);
+            extractInfoFrom(decryptedMessage);
         }
+
+        print("Attacked planets");
+        print("Destroyed planets");
+    }
+
+    private static void extractInfoFrom(String decryptedMessage) {
+        String regex2 = "@(?<planet>[A-Za-z]+)[^-@!:>]*:(?<population>\\d+)[^-@!:>]*!(?<attackType>[AD])![^-@!:>]*->(?<soldierCount>\\d+)";
+        Pattern pattern2 = Pattern.compile(regex2);
+        Matcher matcher2 = pattern2.matcher(decryptedMessage);
+
+        while (matcher2.find()) {
+            String attackType = matcher2.group("attackType");
+            String planet = matcher2.group("planet");
+            if (attackType.equals("A")) {
+                attackedPlanetsCount++;
+                attackedPlanetsList.add(planet);
+
+            } else if (attackType.equals("D")) {
+                destroyedPlanetsCount++;
+                destroyedPlanetsList.add(planet);
+            }
+        }
+    }
+
+    private static void print(String typeOfPlanets) {
+        if (typeOfPlanets.contains("Attacked")) {
+            out.printf("%s: %d\n", typeOfPlanets, attackedPlanetsCount);
+            Collections.sort(attackedPlanetsList);
+            attackedPlanetsList.forEach(planet -> out.println("-> " + planet));
+        } else if (typeOfPlanets.contains("Destroyed")) {
+            out.printf("%s: %d\n", typeOfPlanets, destroyedPlanetsCount);
+            Collections.sort(destroyedPlanetsList);
+            destroyedPlanetsList.forEach(planet -> out.println("-> " + planet));
+        }
+    }
+
+    private static String decrypt(String input) {
+        String regex = "[s t a r S T A R]";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        int decryptionKey = 0;
+
+        while (matcher.find()) {
+            decryptionKey++;
+        }
+
+        StringBuilder decryptedMessage = new StringBuilder();
+
+        for (int characterIndex = 0; characterIndex < input.length(); characterIndex++) {
+            decryptedMessage.append((char) (input.charAt(characterIndex) - decryptionKey));
+        }
+
+        return decryptedMessage.toString();
     }
 }
