@@ -56,7 +56,7 @@ public class Furniture {
         double totalMoneySpend = 0;
 
         while (!userInput.equals("Purchase")) {
-            Pattern pattern = Pattern.compile(">>(?<furniture>\\w+)<<(?<price>\\d+[.]*\\d+)!(?<quantity>\\d+)\\b");
+            Pattern pattern = Pattern.compile(">>(?<furniture>\\w+)<<(?<price>\\d+[.]?\\d+)!(?<quantity>\\d+)\\b");
             Matcher matcher = pattern.matcher(userInput);
 
             while (matcher.find()) {
