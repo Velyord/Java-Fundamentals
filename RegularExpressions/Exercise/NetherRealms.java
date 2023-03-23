@@ -103,7 +103,7 @@ public class NetherRealms {
     }
 
     public static void main(String[] args) {
-        String[] participants = scanner.nextLine().split(",\\s*");
+        String[] participants = scanner.nextLine().split(",");
         List<Participant> participantList = new ArrayList<>();
 
         for (int i = 0; i < participants.length; i++) {
