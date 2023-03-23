@@ -5,11 +5,10 @@ Task:
 // package PackageName;
 
 import java.util.*;
-import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class OldMainTemplate {
-    static Scanner scanner = new Scanner(in);
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
