@@ -8,7 +8,7 @@ import java.util.*;
 import static java.lang.System.out;
 
 public class OldMainTemplate {
-    static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
