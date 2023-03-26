@@ -64,15 +64,41 @@ import static java.lang.System.out;
 
 public class PlantDiscovery {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Map<String, Integer> plantRarityMap = new LinkedHashMap<>();
-    private static final Map<String, List<Integer>> plantRatingMap = new LinkedHashMap<>();
-    private static final Map<String, Double> plantAvgRating = new LinkedHashMap<>();
-    private static boolean doesPlantExist;
+
+    private static class Plant {
+        String name;
+        int rarity;
+        List<Integer> ratings;
+
+        public Plant(String name, Integer rarity) {
+            this.name = name;
+            this.rarity = rarity;
+            ratings = new ArrayList<>();
+        }
+
+        public Double getAvgRating() {
+            double avgRating;
+            int sum = 0;
+
+            if (ratings.size() > 0) {
+                for (int rating : ratings) {
+                    sum += rating;
+                }
+
+                avgRating = (double) sum / ratings.size();
+            } else {
+                avgRating = 0.0;
+            }
+
+            return avgRating;
+        }
+    }
+
+    private static final List<Plant> plantList = new ArrayList<>();
 
     public static void main(String[] args) {
-        populateRarityMap();
+        populatePlantList();
         executeCommands();
-        populateAvgMap();
         printPlantInfo();
     }
 
@@ -82,19 +108,19 @@ public class PlantDiscovery {
         while (!commands.equals("Exhibition")) {
             String[] commandParts = commands.split(" ");
             String command = commandParts[0];
-            String plant = commandParts[1];
+            String plantName = commandParts[1];
 
             switch (command) {
                 case "Rate:":
                     int rating = Integer.parseInt(commandParts[3]);
-                    rate(plant, rating);
+                    rate(plantName, rating);
                     break;
                 case "Update:":
                     int rarity = Integer.parseInt(commandParts[3]);
-                    update(plant, rarity);
+                    update(plantName, rarity);
                     break;
                 case "Reset:":
-                    reset(plant);
+                    reset(plantName);
                     break;
             }
 
@@ -102,98 +128,75 @@ public class PlantDiscovery {
         }
     }
 
-    private static void reset(String plant) {
-        if (plantRarityMap.containsKey(plant)) {
-            doesPlantExist = checkIfEntryExists(plant, "plantRatingMap");
+    private static void reset(String plantName) {
+        int plantIndex = getIndex(plantName);
 
-            if (doesPlantExist) {
-                plantRatingMap.get(plant).removeAll(plantRatingMap.get(plant));
-            }
+        if (plantIndex != -1) {
+            List<Integer> toBeRemoved = plantList.get(plantIndex).ratings;
+            plantList.get(plantIndex).ratings.removeAll(toBeRemoved);
+        } else {
+            out.println("error");
         }
     }
 
-    private static void update(String plant, int rarity) {
-        doesPlantExist = checkIfEntryExists(plant, "plantRarityMap");
+    private static void update(String plantName, int rarity) {
+        int plantIndex = getIndex(plantName);
 
-        if (doesPlantExist) {
-            plantRarityMap.put(plant, rarity);
+        if (plantIndex != -1) {
+            plantList.get(plantIndex).rarity = rarity;
+        } else {
+            out.println("error");
         }
     }
 
-    private static void rate(String plant, int rating) {
-        if (plantRarityMap.containsKey(plant)) {
-            doesPlantExist = checkIfEntryExists(plant, "plantRatingMap");
+    private static void rate(String plantName, int rating) {
+        int plantIndex = getIndex(plantName);
 
-            if (doesPlantExist) {
-                plantRatingMap.get(plant).add(rating);
-            } else {
-                List<Integer> plantRatingList = new ArrayList<>();
-                plantRatingList.add(rating);
-                plantRatingMap.put(plant, plantRatingList);
-            }
+        if (plantIndex != -1) {
+            plantList.get(plantIndex).ratings.add(rating);
+        } else {
+            out.println("error");
         }
     }
 
-    private static void populateRarityMap() {
+    private static void populatePlantList() {
         int iterations = Integer.parseInt(scanner.nextLine());
 
         for (int i = 1; i <= iterations; i++) {
             String plantInfo = scanner.nextLine();
-            String plant = plantInfo.split("<->")[0];
+            String plantName = plantInfo.split("<->")[0];
             int rarity = Integer.parseInt(plantInfo.split("<->")[1]);
+            int plantIndex = getIndex(plantName);
 
-            plantRarityMap.put(plant, rarity);
-        }
-    }
-
-    private static void populateAvgMap() {
-        for (Map.Entry<String, List<Integer>> entry : plantRatingMap.entrySet()) {
-            plantAvgRating.put(entry.getKey(), getAverageRatingFor(entry));
+            if (plantIndex != -1) {
+                plantList.get(plantIndex).rarity = rarity;
+            } else {
+                Plant plant = new Plant(plantName, rarity);
+                plantList.add(plant);
+            }
         }
     }
 
     private static void printPlantInfo() {
         out.println("Plants for the exhibition:");
 
-        for (Map.Entry<String, Integer> entry : plantRarityMap.entrySet()) {
-            double avgRating = plantAvgRating.get(entry.getKey());
-
-            if (Double.isNaN(avgRating)) {
-                avgRating = 0;
-            }
+        for (Plant plant : plantList) {
+            double avgRating = plant.getAvgRating();
 
             out.printf(
                     "- %s; Rarity: %d; Rating: %.2f\n",
-                    entry.getKey(), entry.getValue(), avgRating
+                    plant.name, plant.rarity, avgRating
             );
         }
     }
 
-    private static Double getAverageRatingFor(Map.Entry<String, List<Integer>> entry) {
-        int ratingSum = 0;
-
-        for (int rate : entry.getValue()) {
-            ratingSum += rate;
-        }
-
-        return (double) ratingSum / entry.getValue().size();
-    }
-
-    private static boolean checkIfEntryExists(String plant, String map) {
-        if (map.equals("plantRarityMap")) {
-            for (Map.Entry<String, Integer> entry : plantRarityMap.entrySet()) {
-                if (entry.getKey().equals(plant)) {
-                    return true;
-                }
-            }
-        } else if (map.equals("plantRatingMap")){
-            for (Map.Entry<String, List<Integer>> entry : plantRatingMap.entrySet()) {
-                if (entry.getKey().equals(plant)) {
-                    return true;
-                }
+    private static int getIndex(String plantName) {
+        for (int index = 0; index < plantList.size(); index++) {
+            if (plantList.get(index).name.equals(plantName)) {
+                return index;
             }
         }
 
-        return false;
+        return -1;
     }
 }
