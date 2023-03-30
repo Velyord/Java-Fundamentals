@@ -61,17 +61,22 @@ public class FancyBarcodes {
         String regex = "@#+[A-Z][A-Za-z0-9]{4,}[A-Z]@#+";
         for (int i = 0; i < n; i++) {
             String input = scanner.nextLine();
+
             if (input.matches(regex)) {
-                String productGroup = "";
+                StringBuilder productGroup = new StringBuilder();
+
                 for (int j = 0; j < input.length(); j++) {
                     char currentChar = input.charAt(j);
+
                     if (Character.isDigit(currentChar)) {
-                        productGroup += currentChar;
+                        productGroup.append(currentChar);
                     }
                 }
-                if (productGroup.isEmpty()) {
-                    productGroup = "00";
+
+                if (productGroup.length() == 0) {
+                    productGroup = new StringBuilder("00");
                 }
+
                 System.out.printf("Product group: %s%n", productGroup);
             } else {
                 System.out.println("Invalid barcode");
