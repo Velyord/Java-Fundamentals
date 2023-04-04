@@ -67,7 +67,7 @@ public class GuineaPig {
         double weight = Double.parseDouble(scanner.nextLine());
 
         for (int day = 1; day <= 30; day++) {
-            food -= 300;
+            food -= 0.3;
 
             if (day % 2 == 0) {
                 hay -= 0.05 * food;
@@ -84,8 +84,8 @@ public class GuineaPig {
         }
 
         System.out.printf(
-                "Everything is fine! Puppy is happy! Food: %.2f, Hay: %.2f, Cover: %.2f.%n",
-                food, hay, cover
+            "Everything is fine! Puppy is happy! Food: %.2f, Hay: %.2f, Cover: %.2f.%n",
+            food, hay, cover
         );
     }
 }
