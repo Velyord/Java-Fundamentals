@@ -98,8 +98,8 @@ public class ThePianist {
     private static final List<Piece> pieceList = new ArrayList<>();
 
     private static class Piece {
-        private String piece;
-        private String composer;
+        private final String piece;
+        private final String composer;
         private String key;
 
         public Piece(String piece, String composer, String key) {
@@ -112,16 +112,8 @@ public class ThePianist {
             return piece;
         }
 
-        public void setPiece(String piece) {
-            this.piece = piece;
-        }
-
         public String getComposer() {
             return composer;
-        }
-
-        public void setComposer(String composer) {
-            this.composer = composer;
         }
 
         public String getKey() {
