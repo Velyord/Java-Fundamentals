@@ -134,18 +134,12 @@ public class ThePianist {
     }
 
     public static void main(String[] args) {
-        int countOfPieces = Integer.parseInt(scanner.nextLine());
+        populatePieceList();
+        executeCommands();
+        printPieces();
+    }
 
-
-        for (int i = 1; i <= countOfPieces; i++) {
-            String[] userInput = scanner.nextLine().split("\\|");
-            String pieceName = userInput[0];
-            String composer = userInput[1];
-            String key = userInput[2];
-            Piece piece = new Piece(pieceName, composer, key);
-            pieceList.add(piece);
-        }
-
+    private static void executeCommands() {
         String commands = scanner.nextLine();
 
         while (!commands.equals("Stop")) {
@@ -180,8 +174,8 @@ public class ThePianist {
                         out.printf("Successfully removed %s!\n", pieceToBeRemoved);
                     } else {
                         out.printf(
-                            "Invalid operation! %s does not exist in the collection.\n",
-                            pieceToBeRemoved
+                                "Invalid operation! %s does not exist in the collection.\n",
+                                pieceToBeRemoved
                         );
                     }
                     break;
@@ -195,8 +189,8 @@ public class ThePianist {
                         out.printf("Changed the key of %s to %s!\n", pieceToBeChanged, newKey);
                     } else {
                         out.printf(
-                            "Invalid operation! %s does not exist in the collection.\n",
-                            pieceToBeChanged
+                                "Invalid operation! %s does not exist in the collection.\n",
+                                pieceToBeChanged
                         );
                     }
                     break;
@@ -204,8 +198,19 @@ public class ThePianist {
 
             commands = scanner.nextLine();
         }
+    }
 
-        printPieces();
+    private static void populatePieceList() {
+        int countOfPieces = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 1; i <= countOfPieces; i++) {
+            String[] userInput = scanner.nextLine().split("\\|");
+            String pieceName = userInput[0];
+            String composer = userInput[1];
+            String key = userInput[2];
+            Piece piece = new Piece(pieceName, composer, key);
+            pieceList.add(piece);
+        }
     }
 
     private static int getIndexOf(String pieceName) {
