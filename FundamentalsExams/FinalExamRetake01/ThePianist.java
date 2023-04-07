@@ -137,58 +137,72 @@ public class ThePianist {
         while (!commands.equals("Stop")) {
             String[] commandParts = commands.split("\\|");
             String command = commandParts[0];
-            int pieceIndex = -1;
 
             switch (command) {
                 case "Add":
                     String pieceName = commandParts[1];
                     String composer = commandParts[2];
                     String key = commandParts[3];
-                    pieceIndex = getIndexOf(pieceName);
-
-                    if (pieceIndex != -1) {
-                        out.printf("%s is already in the collection!\n", pieceName);
-                    } else {
-                        Piece newPiece = new Piece(pieceName, composer, key);
-                        pieceList.add(newPiece);
-                        out.printf(
-                                "%s by %s in %s added to the collection!\n",
-                                pieceName, composer, key
-                        );
-                    }
+                    addPiece(pieceName, composer, key);
                     break;
                 case "Remove":
                     String pieceToBeRemoved = commandParts[1];
-                    pieceIndex = getIndexOf(pieceToBeRemoved);
-
-                    if (pieceIndex != -1) {
-                        pieceList.remove(pieceIndex);
-                        out.printf("Successfully removed %s!\n", pieceToBeRemoved);
-                    } else {
-                        out.printf(
-                                "Invalid operation! %s does not exist in the collection.\n",
-                                pieceToBeRemoved
-                        );
-                    }
+                    removePiece(pieceToBeRemoved);
                     break;
                 case "ChangeKey":
                     String pieceToBeChanged = commandParts[1];
                     String newKey = commandParts[2];
-                    pieceIndex = getIndexOf(pieceToBeChanged);
-
-                    if (pieceIndex != -1) {
-                        pieceList.get(pieceIndex).setKey(newKey);
-                        out.printf("Changed the key of %s to %s!\n", pieceToBeChanged, newKey);
-                    } else {
-                        out.printf(
-                                "Invalid operation! %s does not exist in the collection.\n",
-                                pieceToBeChanged
-                        );
-                    }
+                    changeKey(pieceToBeChanged, newKey);
                     break;
             }
 
             commands = scanner.nextLine();
+        }
+    }
+
+    private static void changeKey(String pieceToBeChanged, String newKey) {
+        int pieceIndex = getIndexOf(pieceToBeChanged);
+
+        if (pieceIndex != -1) {
+            pieceList.get(pieceIndex).setKey(newKey);
+
+            out.printf("Changed the key of %s to %s!\n", pieceToBeChanged, newKey);
+        } else {
+            out.printf(
+                    "Invalid operation! %s does not exist in the collection.\n",
+                    pieceToBeChanged
+            );
+        }
+    }
+
+    private static void removePiece(String pieceToBeRemoved) {
+        int pieceIndex = getIndexOf(pieceToBeRemoved);
+
+        if (pieceIndex != -1) {
+            pieceList.remove(pieceIndex);
+
+            out.printf("Successfully removed %s!\n", pieceToBeRemoved);
+        } else {
+            out.printf(
+                    "Invalid operation! %s does not exist in the collection.\n",
+                    pieceToBeRemoved
+            );
+        }
+    }
+
+    private static void addPiece(String pieceName, String composer, String key) {
+        int pieceIndex = getIndexOf(pieceName);
+
+        if (pieceIndex != -1) {
+            out.printf("%s is already in the collection!\n", pieceName);
+        } else {
+            Piece newPiece = new Piece(pieceName, composer, key);
+            pieceList.add(newPiece);
+
+            out.printf(
+                    "%s by %s in %s added to the collection!\n",
+                    pieceName, composer, key
+            );
         }
     }
 
