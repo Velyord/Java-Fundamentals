@@ -54,53 +54,29 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WinningTicket {
-    private static final Scanner scanner = new Scanner(System.in);
+public class WinningTicket { // solved by Borovaneca (https://github.com/Borovaneca/Fundamentals-Java-Jan-2023/blob/main/RegularExpression/Exercise/MoreExercise/WinningTicket.java)
+    private static final String REGEX = "(?=.{20}).*?(?=(?<ch>[@#$^]))(?<match>\\k<ch>{6,}).*(?<=.{10})\\k<match>.*";
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
+    private static final Pattern SEPARATOR = Pattern.compile("\\s*,\\s*");
 
     public static void main(String[] args) {
-        String input = scanner.nextLine();
-        String[] tickets = input.split(",\\s+");
+        Scanner scan = new Scanner(System.in);
+        String[] tickets = SEPARATOR.split(scan.nextLine().trim());
 
         for (String ticket : tickets) {
-            ticket = ticket.trim();
-            String leftHalf = ticket.substring(0, ticket.length() / 2);
-            String rightHalf = ticket.substring(ticket.length() / 2);
-            String regex = "([@#$^]{6,10})";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcherLeft = pattern.matcher(leftHalf);
-            Matcher matcherRight = pattern.matcher(rightHalf);
-
             if (ticket.length() != 20) {
                 System.out.println("invalid ticket");
-            } else if (matcherLeft.find() && matcherRight.find()) {
-                String leftMatch = matcherLeft.group(1);
-                String rightMatch = matcherRight.group(1);
-
-                if (leftMatch.equals(rightMatch)) {
-                    if (leftMatch.length() == 10) {
-                        System.out.printf(
-                            "ticket \"%s\" - %d%s Jackpot!\n",
-                            ticket, leftMatch.length(), leftMatch.charAt(0)
-                        );
-                    } else {
-                        System.out.printf(
-                            "ticket \"%s\" - %d%s\n",
-                            ticket, leftMatch.length(), leftMatch.charAt(0)
-                        );
-                    }
-                } else {
-                    System.out.printf(
-                        "ticket \"%s\" - no match\n",
-                        ticket
-                    );
-                }
             } else {
-                System.out.printf(
-                    "ticket \"%s\" - no match\n",
-                    ticket
-                );
+                Matcher matcher = PATTERN.matcher(ticket);
+                if (matcher.matches()) {
+                    String match = matcher.group("match");
+                    System.out.printf("ticket \"%s\" - %d%s%s%n",
+                            ticket, match.length(), match.charAt(0),
+                            (match.length() == 10) ? " Jackpot!" : "");
+                } else {
+                    System.out.printf("ticket \"%s\" - no match%n", ticket);
+                }
             }
         }
-
     }
 }
