@@ -72,10 +72,6 @@ public class MultiplyBigNumber {
         int onMind = 0;
         StringBuilder finalResult = new StringBuilder();
 
-        if (num1.equals("0") || num2.equals("0")) {
-            return "0";
-        }
-
 //        for (int i = 0; i < num1.length(); i++) {
 //            if (num1.charAt(i) == '0') {
 //                num1 = num1.substring(1);
@@ -97,6 +93,10 @@ public class MultiplyBigNumber {
 //        if (countZeros == num1.length()) {
 //            return "0";
 //        }
+
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
 
         if (num2.equals("1")) {
             return num1;
