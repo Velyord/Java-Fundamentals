@@ -22,10 +22,7 @@ Examples:
  */
 package TextProcessing.Exercise;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.RoundingMode;
-import java.util.Random;
+//import java.math.BigDecimal;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -60,10 +57,6 @@ public class MultiplyBigNumber {
         String num1 = scanner.nextLine();
         String num2 = scanner.nextLine();
 
-//        BigDecimal bigDecimal1 = new BigDecimal(num1);
-//        BigDecimal bigDecimal2 = new BigDecimal(num2);
-//        out.println(bigDecimal1.multiply(bigDecimal2));
-
         String reversedFinalResult = calculate(num1, num2);
         out.println(reversedFinalResult);
     }
@@ -72,27 +65,11 @@ public class MultiplyBigNumber {
         int onMind = 0;
         StringBuilder finalResult = new StringBuilder();
 
-//        for (int i = 0; i < num1.length(); i++) {
-//            if (num1.charAt(i) == '0') {
-//                num1 = num1.substring(1);
-//            } else {
-//                break;
-//            }
-//        }
+        num1 = trimStartingZeros(num1);
 
-//        int countZeros = 0;
-//
-//        for (int i = 0; i < num1.length(); i++) {
-//            if (num1.charAt(i) == '0') {
-//                countZeros++;
-//            } else {
-//                break;
-//            }
-//        }
-//
-//        if (countZeros == num1.length()) {
-//            return "0";
-//        }
+        if (num1.length() == 0) {
+            return "0";
+        }
 
         if (num1.equals("0") || num2.equals("0")) {
             return "0";
@@ -122,6 +99,19 @@ public class MultiplyBigNumber {
         }
 
         return reverse(finalResult.toString());
+    }
+
+    private static String trimStartingZeros(String num1) {
+        int repeat = num1.length();
+
+        for (int i = 0; i < repeat; i++) {
+            if (num1.charAt(0) == '0') {
+                num1 = num1.substring(1);
+            } else {
+                break;
+            }
+        }
+        return num1;
     }
 
     private static String reverse(String input) {
