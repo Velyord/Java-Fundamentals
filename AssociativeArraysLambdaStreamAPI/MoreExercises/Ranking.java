@@ -92,12 +92,108 @@ Examples:
  */
 package AssociativeArraysLambdaStreamAPI.MoreExercises;
 
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Ranking {
     static Scanner scanner = new Scanner(System.in);
+    public static Map<String, String> contests = new LinkedHashMap<>();
+    public static Map<String, Map<String, Integer>> users = new TreeMap<>();
 
     public static void main(String[] args) {
+        populateContests();
+        populateUsers();
+        printBestCandidate();
+        printRanking();
+    }
 
+    private static void printRanking() {
+        System.out.println("Ranking:");
+
+        for (Map.Entry<String, Map<String, Integer>> user : users.entrySet()) {
+            System.out.println(user.getKey());
+
+            List<Map.Entry<String, Integer>> sortedContestsByPoints = user
+                .getValue()
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toList());
+
+            Collections.reverse(sortedContestsByPoints);
+
+            for (Map.Entry<String, Integer> contest : sortedContestsByPoints) {
+                System.out.printf(
+                    "#  %s -> %d\n",
+                    contest.getKey(), contest.getValue()
+                );
+            }
+        }
+    }
+
+    private static void printBestCandidate() {
+        int maxPoints = 0;
+        String bestUser = "";
+
+        for (Map.Entry<String, Map<String, Integer>> user : users.entrySet()) {
+            int totalPoints = 0;
+
+            for (Map.Entry<String, Integer> contest : user.getValue().entrySet()) {
+                totalPoints += contest.getValue();
+            }
+
+            if (totalPoints > maxPoints) {
+                maxPoints = totalPoints;
+                bestUser = user.getKey();
+            }
+        }
+
+        System.out.printf(
+            "Best candidate is %s with total %d points.%n",
+            bestUser, maxPoints
+        );
+    }
+
+    private static void populateUsers() {
+        String input = scanner.nextLine();
+
+        while (!input.equals("end of submissions")) {
+            String[] contestInfo = input.split("=>");
+            String contest = contestInfo[0];
+            String password = contestInfo[1];
+            String username = contestInfo[2];
+            int points = Integer.parseInt(contestInfo[3]);
+            boolean isContestValid = contests.containsKey(contest) && contests.get(contest).equals(password);
+
+            if (isContestValid) {
+                if (!users.containsKey(username)) {
+                    users.put(username, new LinkedHashMap<>());
+                }
+
+                if (!users.get(username).containsKey(contest)) {
+                    users.get(username).put(contest, points);
+                } else {
+                    if (users.get(username).get(contest) < points) {
+                        users.get(username).put(contest, points);
+                    }
+                }
+            }
+
+            input = scanner.nextLine();
+        }
+    }
+
+    private static void populateContests() {
+        String input = scanner.nextLine();
+
+        while (!input.equals("end of contests")) {
+            String[] contestInfo = input.split(":");
+            String contest = contestInfo[0];
+            String password = contestInfo[1];
+
+            contests.put(contest, password);
+
+            input = scanner.nextLine();
+        }
     }
 }
