@@ -89,17 +89,76 @@ public class Snowwhite {
     private static final List<Dwarf> dwarfs = new ArrayList<>();
 
     public static void main(String[] args) {
-        // TODO code application logic here
+        populateDwarfs();
+        deleteDwarfsWithSameNameAndColorDependingOnPhysics();
+        printSortedDwarfs();
+    }
+
+    private static void printSortedDwarfs() {
+        dwarfs
+                .stream()
+                .sorted((d1, d2) -> {
+                    if (d1.getPhysics() == d2.getPhysics()) {
+                        return Integer.compare(
+                                countDwarfsByColor(d2.getColor()),
+                                countDwarfsByColor(d1.getColor())
+                        );
+                    } else {
+                        return Integer.compare(d2.getPhysics(), d1.getPhysics());
+                    }
+                })
+                .forEach(d ->
+                        System.out.printf(
+                                "(%s) %s <-> %d\n",
+                                d.getColor(), d.getName(), d.getPhysics()
+                        )
+                );
+    }
+
+    private static void deleteDwarfsWithSameNameAndColorDependingOnPhysics() {
+        for (int i = 0; i < dwarfs.size(); i++) {
+            Dwarf dwarf = dwarfs.get(i);
+
+            for (int j = i + 1; j < dwarfs.size(); j++) {
+                Dwarf dwarf2 = dwarfs.get(j);
+
+                if (dwarf.getName().equals(dwarf2.getName()) &&
+                        dwarf.getColor().equals(dwarf2.getColor())) {
+                    if (dwarf.getPhysics() < dwarf2.getPhysics()) {
+                        dwarfs.remove(dwarf);
+                    } else {
+                        dwarfs.remove(dwarf2);
+                    }
+                }
+            }
+        }
+    }
+
+    private static void populateDwarfs() {
         String input = scanner.nextLine();
+
         while (!input.equals("Once upon a time")) {
             String[] tokens = input.split(" <:> ");
-            String name = tokens[0];
-            String color = tokens[1];
-            int physics = Integer.parseInt(tokens[2]);
+            String dwarfName = tokens[0];
+            String dwarfColor = tokens[1];
+            int dwarfPhysics = Integer.parseInt(tokens[2]);
+            Dwarf newDwarf = new Dwarf(dwarfName, dwarfColor, dwarfPhysics);
 
-
+            dwarfs.add(newDwarf);
 
             input = scanner.nextLine();
         }
+    }
+
+    private static int countDwarfsByColor(String color) {
+        int count = 0;
+
+        for (Dwarf dwarf : dwarfs) {
+            if (dwarf.getColor().equals(color)) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }
