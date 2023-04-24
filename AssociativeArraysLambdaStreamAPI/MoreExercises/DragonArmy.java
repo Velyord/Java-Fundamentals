@@ -66,112 +66,85 @@ Examples:
 package AssociativeArraysLambdaStreamAPI.MoreExercises;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static java.lang.System.out;
 
 public class DragonArmy {
-    static Scanner scanner = new Scanner(System.in);
+    private static final int DEFAULT_DMG = 45;
+    private static final int DEFAULT_HEALTH = 250;
+    private static final int DEFAULT_ARMOR = 10;
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Map<String, TreeMap<String, int[]>> dragons = new LinkedHashMap<>();
 
-    private static class Dragon {
-        private final String type;
-        private final String name;
-        private final int damage;
-        private final int health;
-        private final int armor;
+    public static void main(String[] args) {
+        populateDragons();
+        printDragons();
+    }
 
-        public Dragon(String type, String name, int damage, int health, int armor) {
-            this.type = type;
-            this.name = name;
-            this.damage = damage;
-            this.health = health;
-            this.armor = armor;
-        }
+    private static void printDragons() {
+        for (Map.Entry<String, TreeMap<String, int[]>> typeInfo : dragons.entrySet()) {
+            double[] average = calculateAverage(typeInfo.getValue());
 
-        public String getType() {
-            return type;
-        }
+            out.printf(
+                    "%s::(%.2f/%.2f/%.2f)\n",
+                    typeInfo.getKey(),
+                    average[0],
+                    average[1],
+                    average[2]
+            );
 
-        public String getName() {
-            return name;
-        }
-
-        public int getDamage() {
-            return damage;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public int getArmor() {
-            return armor;
+            for (Map.Entry<String, int[]> dragonInfo : typeInfo.getValue().entrySet()) {
+                out.printf(
+                        "-%s -> damage: %d, health: %d, armor: %d\n",
+                        dragonInfo.getKey(),
+                        dragonInfo.getValue()[0],
+                        dragonInfo.getValue()[1],
+                        dragonInfo.getValue()[2]
+                );
+            }
         }
     }
 
-    private static final List<Dragon> dragons = new ArrayList<>();
-
-    public static void main(String[] args) {
+    private static void populateDragons() {
         int n = Integer.parseInt(scanner.nextLine());
 
         for (int i = 1; i <= n; i++) {
-            String[] input = scanner.nextLine().split("\\s+");
-            String type = input[0];
-            String name = input[1];
-            int damage = 0;
-            int health = 0;
-            int armor = 0;
+            String[] tokens = scanner.nextLine().split(" ");
+            String type = tokens[0];
+            String name = tokens[1];
+            int damage = tokens[2].equals("null") ? DEFAULT_DMG    : Integer.parseInt(tokens[2]);
+            int health = tokens[3].equals("null") ? DEFAULT_HEALTH : Integer.parseInt(tokens[3]);
+            int armor  = tokens[4].equals("null") ? DEFAULT_ARMOR  : Integer.parseInt(tokens[4]);
 
-            if (input[2].equals("null")) {
-                damage = 45;
-            } else {
-                damage = Integer.parseInt(input[2]);
+            if (!dragons.containsKey(type)) {
+                dragons.put(type, new TreeMap<>());
+            }
+            if (!dragons.get(type).containsKey(name)) {
+                dragons.get(type).put(name, new int[3]);
             }
 
-            if (input[3].equals("null")) {
-                health = 250;
-            } else {
-                health = Integer.parseInt(input[3]);
-            }
+            dragons.get(type).get(name)[0] = damage;
+            dragons.get(type).get(name)[1] = health;
+            dragons.get(type).get(name)[2] = armor;
+        }
+    }
 
-            if (input[4].equals("null")) {
-                armor = 10;
-            } else {
-                armor = Integer.parseInt(input[4]);
-            }
+    private static double[] calculateAverage(TreeMap<String, int[]> map) {
+        double totalEntries = map.size();
+        int totalDamage = 0;
+        int totalHealth = 0;
+        int totalArmor = 0;
 
-            Dragon newDragon = new Dragon(type, name, damage, health, armor);
-
-            for (Dragon dragon : dragons) {
-                if (dragon.getName().equals(newDragon.getName()) &&
-                        dragon.getType().equals(newDragon.getType())) {
-                    dragons.remove(dragon);
-                    break;
-                }
-            }
-
-            dragons.add(newDragon);
+        for (Map.Entry<String, int[]> entry : map.entrySet()) {
+            totalDamage += entry.getValue()[0];
+            totalHealth += entry.getValue()[1];
+            totalArmor  += entry.getValue()[2];
         }
 
-        dragons.stream()
-                .collect(Collectors.groupingBy(Dragon::getType))
-                .forEach((type, dragons) -> {
-                    double averageDamage = dragons.stream()
-                            .mapToInt(Dragon::getDamage)
-                            .average()
-                            .orElse(0);
-                    double averageHealth = dragons.stream()
-                            .mapToInt(Dragon::getHealth)
-                            .average()
-                            .orElse(0);
-                    double averageArmor = dragons.stream()
-                            .mapToInt(Dragon::getArmor)
-                            .average()
-                            .orElse(0);
-
-                    System.out.printf("%s::(%.2f/%.2f/%.2f)%n", type, averageDamage, averageHealth, averageArmor);
-                    dragons.stream()
-                            .sorted(Comparator.comparing(Dragon::getName))
-                            .forEach(dragon -> System.out.printf("-%s -> damage: %d, health: %d, armor: %d%n",
-                                    dragon.getName(), dragon.getDamage(), dragon.getHealth(), dragon.getArmor()));
-                });
+        return new double[] {
+            totalDamage / totalEntries,
+            totalHealth / totalEntries,
+            totalArmor  / totalEntries
+        };
     }
 }
