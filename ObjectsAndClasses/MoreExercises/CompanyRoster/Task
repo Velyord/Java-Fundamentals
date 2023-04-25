@@ -1,0 +1,36 @@
+Task:
+    Define a class Employee with the following information:
+    name, salary, position, department, email, and age. The
+    name, salary, position, and department are mandatory, while the rest are optional.
+    Your task is to write a program that takes N lines of employees
+    from the console and calculates the department with
+    the highest average salary, and prints for each employee in that department
+    his name, salary, email, and age –
+    sorted by salary in descending order. If an employee doesn't have an email –
+    in place of that field, you should print
+    "n/a" instead, if he doesn't have an age – print "-1" instead.
+    The salary should be printed in two decimal places
+    after the separator.
+Hint:
+    you can define a Department class with a list of employees.
+Examples:
+    4
+    Peter 120.00 Dev Development peter@abv.bg 28
+    Todor 333.33 Manager Marketing 33
+    Itan 840.20 ProjectLeader Development itan@itan.com
+    George 0.20 Freeloader Nowhere 18
+    ->
+    Highest Average Salary: Development
+    Itan 840.20 itan@itan.com -1
+    Peter 120.00 peter@abv.bg 28
+    6
+    Stan 496.37 Temp Coding stan@yahoo.com
+    Yana 610.13 Manager Sales
+    Todor 609.99 Manager Sales todor@abv.bg 44
+    Venecia 0.02 Director BeerDrinking beer@beer.br 23
+    Andrey 700.00 Director Coding
+    Popeye 13.3333 Sailor SpinachGroup popeye@pop.ey
+    ->
+    Highest Average Salary: Sales
+    Yana 610.13 n/a -1
+    Todor 609.99 todor@abv.bg 44

@@ -1,7 +1,3 @@
-/*
-Task:
-
-*/
 package Template;
 
 import static Template.NumberValidator.setNumber;
