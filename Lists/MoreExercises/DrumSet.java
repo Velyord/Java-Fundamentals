@@ -79,15 +79,16 @@ import java.util.stream.Collectors;
 
 public class DrumSet {
     static Scanner scanner = new Scanner(System.in);
+    private static double savings;
 
     public static void main(String[] args) {
-        double savings = Double.parseDouble(scanner.nextLine());
+        savings = Double.parseDouble(scanner.nextLine());
         List<Integer> initialDrumQuality = populate();
         List<Integer> drumSet = new ArrayList<>(initialDrumQuality);
 
-        practice(savings, initialDrumQuality, drumSet);
+        practice(initialDrumQuality, drumSet);
         printDrumHealth(drumSet);
-        printSavings(savings);
+        printSavings();
     }
 
     private static List<Integer> populate() {
@@ -97,7 +98,7 @@ public class DrumSet {
                 .collect(Collectors.toList());
     }
 
-    private static void printSavings(double savings) {
+    private static void printSavings() {
         System.out.printf("%nGabsy has %.2flv.", savings);
     }
 
@@ -107,32 +108,33 @@ public class DrumSet {
         }
     }
 
-    private static void practice(double savings, List<Integer> initialDrumQuality, List<Integer> drumSet) {
+    private static void practice(List<Integer> initialDrumQuality, List<Integer> drumSet) {
         String userInput = scanner.nextLine();
 
         while (!userInput.equals("Hit it again, Gabsy!")) {
             int hitPower = Integer.parseInt(userInput);
 
-            for (int drum : drumSet) { // TODO: fix ConcurrentModificationException
-                int drumIndex = drumSet.indexOf(drum);
+            for (int drubIndex = 0; drubIndex < drumSet.size(); drubIndex++) {
+                int drum = drumSet.get(drubIndex);
                 drum -= hitPower;
 
                 if (drum <= 0) {
-                    int drumInitialQuality = initialDrumQuality.get(drumIndex);
-                    int drumPrice = initialDrumQuality.get(drumIndex) * 3;
+                    int drumInitialQuality = initialDrumQuality.get(drubIndex);
+                    int drumPrice = initialDrumQuality.get(drubIndex) * 3;
 
                     if (savings >= drumPrice) {
                         savings -= drumPrice;
-                        drumSet.set(drumIndex, drumInitialQuality);
+                        drumSet.set(drubIndex, drumInitialQuality);
                     } else {
-                        drumSet.remove(drumIndex);
-                        initialDrumQuality.remove(drumIndex);
+                        drumSet.remove(drubIndex);
+                        initialDrumQuality.remove(drubIndex);
+                        drubIndex--;
                     }
 
                     continue;
                 }
 
-                drumSet.set(drumIndex, drum);
+                drumSet.set(drubIndex, drum);
             }
 
             userInput = scanner.nextLine();
